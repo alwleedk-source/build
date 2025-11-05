@@ -1,0 +1,127 @@
+import { Link } from 'wouter';
+import { ArrowLeft, Check } from 'lucide-react';
+import { getAllServices } from '@/data/services';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
+export default function ServicesPage() {
+  const services = getAllServices();
+
+  return (
+    <div className="min-h-screen">
+      <Header />
+      
+      <main className="pt-32 pb-24">
+        <div className="container">
+          {/* Back Button */}
+          <Link href="/">
+            <a className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8">
+              <ArrowLeft className="w-5 h-5" />
+              Terug naar home
+            </a>
+          </Link>
+
+          {/* Page Header */}
+          <div className="max-w-2xl mb-16">
+            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
+              Onze Diensten
+            </p>
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+              Alle diensten
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              BuildCraft biedt een compleet pakket aan bouwdiensten. Van nieuwbouw tot onderhoud, wij staan voor u klaar met vakmanschap en kwaliteit.
+            </p>
+          </div>
+
+          {/* Services List */}
+          <div className="space-y-12">
+            {services.map((service, index) => {
+              const Icon = service.icon;
+              return (
+                <div
+                  key={service.id}
+                  className={`grid lg:grid-cols-2 gap-12 items-center ${
+                    index % 2 === 1 ? 'lg:flex-row-reverse' : ''
+                  }`}
+                >
+                  {/* Content */}
+                  <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
+                    <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
+                      <Icon className="w-8 h-8 text-primary" />
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                      {service.title}
+                    </h2>
+                    <p className="text-lg text-muted-foreground mb-6">
+                      {service.longDescription}
+                    </p>
+                    
+                    {/* Features List */}
+                    <ul className="space-y-3">
+                      {service.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                          <span className="text-foreground">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Image Placeholder */}
+                  <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
+                    <div className="aspect-[4/3] rounded-2xl bg-muted border border-border overflow-hidden">
+                      <img
+                        src={`https://images.unsplash.com/photo-${
+                          [
+                            '1600585154340-be6161a56a0c',
+                            '1581094794329-c8112a89af12',
+                            '1589939705384-5185137a336d',
+                            '1621905251189-08b45d6a269e',
+                            '1486406146926-c627a92ad1ab',
+                            '1565008576549-57569a49371d',
+                          ][index]
+                        }?w=800&h=600&fit=crop`}
+                        alt={service.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* CTA Section */}
+          <div className="mt-24 p-12 bg-card rounded-2xl border border-border text-center">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Interesse in onze diensten?
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Neem contact met ons op voor meer informatie of een vrijblijvende offerte. Wij helpen u graag verder.
+            </p>
+            <Link href="/#contact">
+              <a className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl transition-all">
+                Neem contact op
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M7.5 15L12.5 10L7.5 5" />
+                </svg>
+              </a>
+            </Link>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
