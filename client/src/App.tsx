@@ -11,7 +11,10 @@ import OverOns from "./pages/OverOns";
 import ServiceDetail from "./pages/ServiceDetail";
 import BlogPage from "./pages/BlogPage";
 import BlogPost from "./pages/BlogPost";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "@/pages/AdminDashboard";
+import Dashboard from "@/pages/admin/Dashboard";
+import Projects from "@/pages/admin/Projects";
+import ProjectForm from "@/pages/admin/ProjectForm";
 import Login from "./pages/Login";
 import Header from "./components/Header";
 
@@ -25,8 +28,12 @@ function Router() {
       <Route path="/over-ons" component={OverOns} />
       <Route path="/diensten/:slug" component={ServiceDetail} />
       <Route path="/blog" component={BlogPage} />
-      <Route path="/blog/:slug" component={BlogPost} />      <Route path={"/admin"} component={AdminDashboard} />
-      <Route path={"/login"} component={Login} />      <Route path="/404" component={NotFound} />
+      <Route path="/blog/:slug" component={BlogPost} />
+      <Route path="/admin" component={Dashboard} />
+      <Route path="/admin/projects" component={Projects} />
+      <Route path="/admin/projects/:id" component={ProjectForm} />
+      <Route path="/login" component={Login} />
+      <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>

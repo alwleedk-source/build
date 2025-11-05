@@ -33,6 +33,8 @@ export const projects = mysqlTable("projects", {
   category: mysqlEnum("category", ["Residentieel", "Commercieel", "Industrieel"]).notNull(),
   image: varchar("image", { length: 500 }).notNull(),
   featured: int("featured").default(0).notNull(), // 0 = false, 1 = true
+  showOnHomepage: int("showOnHomepage").default(0).notNull(), // 0 = false, 1 = true
+  order: int("order").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -50,6 +52,7 @@ export const services = mysqlTable("services", {
   icon: varchar("icon", { length: 50 }).notNull(), // Icon name from lucide-react
   features: text("features").notNull(), // JSON array of features
   showOnHomepage: int("showOnHomepage").default(0).notNull(), // 0 = false, 1 = true
+  order: int("order").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -74,3 +77,89 @@ export const blogPosts = mysqlTable("blogPosts", {
 
 export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = typeof blogPosts.$inferInsert;
+
+// Testimonials table
+export const testimonials = mysqlTable("testimonials", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  position: varchar("position", { length: 255 }).notNull(),
+  company: varchar("company", { length: 255 }),
+  content: text("content").notNull(),
+  rating: int("rating").default(5).notNull(), // 1-5 stars
+  image: varchar("image", { length: 500 }),
+  order: int("order").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Testimonial = typeof testimonials.$inferSelect;
+export type InsertTestimonial = typeof testimonials.$inferInsert;
+
+// Team Members table
+export const teamMembers = mysqlTable("teamMembers", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  position: varchar("position", { length: 255 }).notNull(),
+  bio: text("bio"),
+  image: varchar("image", { length: 500 }).notNull(),
+  email: varchar("email", { length: 320 }),
+  phone: varchar("phone", { length: 50 }),
+  order: int("order").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type TeamMember = typeof teamMembers.$inferSelect;
+export type InsertTeamMember = typeof teamMembers.$inferInsert;
+
+// Site Settings table
+export const siteSettings = mysqlTable("siteSettings", {
+  id: int("id").autoincrement().primaryKey(),
+  key: varchar("key", { length: 255 }).notNull().unique(),
+  value: text("value").notNull(),
+  type: mysqlEnum("type", ["text", "number", "boolean", "json", "image"]).default("text").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SiteSetting = typeof siteSettings.$inferSelect;
+export type InsertSiteSetting = typeof siteSettings.$inferInsert;
+
+// Homepage Sections table
+export const homepageSections = mysqlTable("homepageSections", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull().unique(), // hero, services, projects, testimonials, contact
+  isVisible: int("isVisible").default(1).notNull(), // 0 = hidden, 1 = visible
+  order: int("order").default(0).notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type HomepageSection = typeof homepageSections.$inferSelect;
+export type InsertHomepageSection = typeof homepageSections.$inferInsert;
+
+// Contact Messages table
+export const contactMessages = mysqlTable("contactMessages", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  message: text("message").notNull(),
+  isRead: int("isRead").default(0).notNull(), // 0 = unread, 1 = read
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ContactMessage = typeof contactMessages.$inferSelect;
+export type InsertContactMessage = typeof contactMessages.$inferInsert;
+
+// Media Library table
+export const mediaLibrary = mysqlTable("mediaLibrary", {
+  id: int("id").autoincrement().primaryKey(),
+  filename: varchar("filename", { length: 255 }).notNull(),
+  url: varchar("url", { length: 500 }).notNull(),
+  type: mysqlEnum("type", ["image", "video", "document"]).default("image").notNull(),
+  category: varchar("category", { length: 100 }), // projects, services, blog, team, general
+  size: int("size"), // file size in bytes
+  uploadedAt: timestamp("uploadedAt").defaultNow().notNull(),
+});
+
+export type Media = typeof mediaLibrary.$inferSelect;
+export type InsertMedia = typeof mediaLibrary.$inferInsert;
