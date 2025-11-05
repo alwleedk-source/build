@@ -15,6 +15,11 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import Dashboard from "@/pages/admin/Dashboard";
 import Projects from "@/pages/admin/Projects";
 import ProjectForm from "@/pages/admin/ProjectForm";
+import Services from "@/pages/admin/Services";
+import ServiceForm from "@/pages/admin/ServiceForm";
+import BlogPosts from "@/pages/admin/BlogPosts";
+import BlogPostForm from "@/pages/admin/BlogPostForm";
+import HomeSettings from "@/pages/admin/HomeSettings";
 import Login from "./pages/Login";
 import Header from "./components/Header";
 
@@ -32,6 +37,11 @@ function Router() {
       <Route path="/admin" component={Dashboard} />
       <Route path="/admin/projects" component={Projects} />
       <Route path="/admin/projects/:id" component={ProjectForm} />
+      <Route path="/admin/services" component={Services} />
+      <Route path="/admin/services/:id" component={ServiceForm} />
+      <Route path="/admin/blog" component={BlogPosts} />
+      <Route path="/admin/blog/:id" component={BlogPostForm} />
+      <Route path="/admin/settings/home" component={HomeSettings} />
       <Route path="/login" component={Login} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
