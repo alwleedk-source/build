@@ -1,104 +1,17 @@
-import { useRoute } from "wouter";
-import { useEffect, useState } from "react";
+import { useRoute, Link } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Calendar, User, ArrowLeft, Share2 } from "lucide-react";
+import { Calendar, ArrowLeft, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface BlogPostData {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  image: string;
-  category: string;
-  author: string;
-  date: string;
-}
+import { trpc } from '@/lib/trpc';
 
 export default function BlogPost() {
   const [, params] = useRoute("/blog/:slug");
-  const [post, setPost] = useState<BlogPostData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const slug = params?.slug || '';
+  
+  const postQuery = trpc.blog.getBySlug.useQuery({ slug });
 
-  useEffect(() => {
-    // Temporary static data - will be replaced with API call
-    const posts: BlogPostData[] = [
-      {
-        id: 1,
-        title: "5 Tips voor een Succesvolle Nieuwbouw",
-        slug: "5-tips-voor-succesvolle-nieuwbouw",
-        excerpt: "Bent u van plan om een nieuw huis te bouwen? Deze 5 essentiële tips helpen u om uw nieuwbouwproject tot een succes te maken.",
-        content: `
-# Introductie
-
-Het bouwen van een nieuw huis is een opwindend maar complex proces. Met de juiste voorbereiding en kennis kunt u veel stress en kosten besparen. In dit artikel delen wij vijf essentiële tips die uw nieuwbouwproject tot een succes maken.
-
-## 1. Begin met een Duidelijk Plan
-
-Een gedetailleerd bouwplan is de basis van elk succesvol project. Neem de tijd om uw wensen en behoeften op papier te zetten. Denk na over:
-
-- Het aantal kamers en hun indeling
-- Toekomstige uitbreidingsmogelijkheden
-- Energiezuinige voorzieningen
-- Budget en tijdlijn
-
-## 2. Kies de Juiste Locatie
-
-De locatie van uw nieuwe huis is net zo belangrijk als het ontwerp zelf. Overweeg factoren zoals:
-
-- Bereikbaarheid van werk, scholen en voorzieningen
-- Bodemgesteldheid en bouwmogelijkheden
-- Toekomstige ontwikkelingen in de buurt
-- Zonoriëntatie voor optimaal daglicht
-
-## 3. Werk met Ervaren Professionals
-
-Een betrouwbaar bouwteam is cruciaal. Zorg ervoor dat u werkt met:
-
-- Gecertificeerde en ervaren aannemers
-- Architecten met een bewezen track record
-- Transparante communicatie en duidelijke afspraken
-- Goede referenties van eerdere klanten
-
-## 4. Focus op Duurzaamheid
-
-Duurzaam bouwen is niet alleen goed voor het milieu, maar bespaart u ook geld op lange termijn:
-
-- Hoogwaardige isolatie
-- Zonnepanelen en warmtepompen
-- Waterbesparende voorzieningen
-- Duurzame materialen
-
-## 5. Plan voor de Toekomst
-
-Denk vooruit en bouw flexibel:
-
-- Aanpasbare ruimtes voor veranderende behoeften
-- Smart home technologie
-- Toegankelijkheid voor alle levensfasen
-- Onderhoudsvriendelijke materialen
-
-## Conclusie
-
-Met deze vijf tips bent u goed voorbereid om uw nieuwbouwproject succesvol te maken. Neem de tijd voor goede voorbereiding en werk samen met ervaren professionals. Het resultaat is een huis waar u jarenlang met plezier zult wonen.
-
-Heeft u vragen over nieuwbouw? Neem gerust contact met ons op voor een vrijblijvend adviesgesprek.
-        `,
-        image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&h=800&fit=crop",
-        category: "Nieuwbouw",
-        author: "Jan de Vries",
-        date: "2024-10-15",
-      },
-    ];
-
-    const foundPost = posts.find(p => p.slug === params?.slug);
-    setPost(foundPost || null);
-    setLoading(false);
-  }, [params?.slug]);
-
-  if (loading) {
+  if (postQuery.isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -106,21 +19,22 @@ Heeft u vragen over nieuwbouw? Neem gerust contact met ons op voor een vrijblijv
     );
   }
 
+  const post = postQuery.data;
+
   if (!post) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Artikel niet gevonden</h1>
           <Button asChild>
-            <a href="/blog">Terug naar blog</a>
+            <Link href="/blog">Terug naar blog</Link>
           </Button>
         </div>
       </div>
     );
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (date: Date) => {
     return date.toLocaleDateString('nl-NL', { 
       year: 'numeric', 
       month: 'long', 
@@ -136,10 +50,10 @@ Heeft u vragen over nieuwbouw? Neem gerust contact met ons op voor een vrijblijv
         {/* Back Button */}
         <div className="container mb-8">
           <Button variant="ghost" asChild>
-            <a href="/blog" className="flex items-center gap-2">
+            <Link href="/blog" className="flex items-center gap-2">
               <ArrowLeft className="w-4 h-4" />
               Terug naar blog
-            </a>
+            </Link>
           </Button>
         </div>
 
@@ -161,12 +75,8 @@ Heeft u vragen over nieuwbouw? Neem gerust contact met ons op voor een vrijblijv
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-6 text-muted-foreground mb-8 pb-8 border-b border-border">
               <div className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                <span>{post.author}</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5" />
-                <span>{formatDate(post.date)}</span>
+                <span>{formatDate(post.createdAt)}</span>
               </div>
               <button className="flex items-center gap-2 hover:text-primary transition-colors ml-auto">
                 <Share2 className="w-5 h-5" />
@@ -214,6 +124,18 @@ Heeft u vragen over nieuwbouw? Neem gerust contact met ons op voor een vrijblijv
                     </ul>
                   );
                 }
+                // Handle bold text
+                const boldRegex = /\*\*(.*?)\*\*/g;
+                if (boldRegex.test(paragraph)) {
+                  const parts = paragraph.split(boldRegex);
+                  return (
+                    <p key={index} className="text-muted-foreground leading-relaxed mb-6">
+                      {parts.map((part, i) => 
+                        i % 2 === 1 ? <strong key={i} className="font-bold text-foreground">{part}</strong> : part
+                      )}
+                    </p>
+                  );
+                }
                 // Regular paragraphs
                 if (paragraph.trim()) {
                   return (
@@ -235,9 +157,9 @@ Heeft u vragen over nieuwbouw? Neem gerust contact met ons op voor een vrijblijv
                 Neem contact met ons op voor persoonlijk advies.
               </p>
               <Button asChild>
-                <a href="/#contact">
+                <Link href="/#contact">
                   Neem contact op
-                </a>
+                </Link>
               </Button>
             </div>
           </div>

@@ -1,11 +1,21 @@
 import { Link } from 'wouter';
-import { ArrowLeft, Check } from 'lucide-react';
-import { getAllServices } from '@/data/services';
+import { ArrowLeft, Check, Building2 } from 'lucide-react';
+import { trpc } from '@/lib/trpc';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export default function ServicesPage() {
-  const services = getAllServices();
+  const servicesQuery = trpc.services.getAll.useQuery();
+
+  if (servicesQuery.isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-muted-foreground">Diensten laden...</p>
+      </div>
+    );
+  }
+
+  const services = servicesQuery.data || [];
 
   return (
     <div className="min-h-screen">
@@ -36,8 +46,8 @@ export default function ServicesPage() {
 
           {/* Services List */}
           <div className="space-y-12">
-            {services.map((service, index) => {
-              const Icon = service.icon;
+            {services.map((service: any, index: number) => {
+              const Icon = service.icon || Building2;
               return (
                 <div
                   key={service.id}
@@ -59,7 +69,7 @@ export default function ServicesPage() {
                     
                     {/* Features List */}
                     <ul className="space-y-3">
-                      {service.features.map((feature, i) => (
+                      {(service.features || []).map((feature: string, i: number) => (
                         <li key={i} className="flex items-start gap-3">
                           <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                           <span className="text-foreground">{feature}</span>

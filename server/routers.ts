@@ -28,6 +28,9 @@ export const appRouter = router({
     getFeatured: publicProcedure.query(async () => {
       return await db.getFeaturedProjects();
     }),
+    getHomepage: publicProcedure.query(async () => {
+      return await db.getHomepageProjects();
+    }),
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {

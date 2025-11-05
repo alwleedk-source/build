@@ -1,16 +1,30 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
 import { ArrowLeft } from 'lucide-react';
-import { projects, categories, type ProjectCategory } from '@/data/projects';
+import { trpc } from '@/lib/trpc';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
+type ProjectCategory = 'Alle' | 'Residentieel' | 'Commercieel' | 'Industrieel';
+
 export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('Alle');
+  const projectsQuery = trpc.projects.getAll.useQuery();
 
+  if (projectsQuery.isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-muted-foreground">Projecten laden...</p>
+      </div>
+    );
+  }
+
+  const allProjects = projectsQuery.data || [];
   const filteredProjects = activeCategory === 'Alle' 
-    ? projects 
-    : projects.filter(project => project.category === activeCategory);
+    ? allProjects 
+    : allProjects.filter((project: any) => project.category === activeCategory);
+
+  const categories: ProjectCategory[] = ['Alle', 'Residentieel', 'Commercieel', 'Industrieel'];
 
   return (
     <div className="min-h-screen">
@@ -63,7 +77,7 @@ export default function ProjectsPage() {
 
           {/* Projects Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project: any) => (
               <div
                 key={project.id}
                 className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
@@ -88,7 +102,7 @@ export default function ProjectsPage() {
                       {project.category}
                     </span>
                   </div>
-                  {project.featured && (
+                  {project.featured === 1 && (
                     <div className="absolute top-4 right-4">
                       <span className="px-3 py-1 bg-background/90 text-foreground text-sm font-medium rounded-full backdrop-blur-sm">
                         Uitgelicht

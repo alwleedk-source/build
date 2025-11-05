@@ -1,8 +1,28 @@
-import { getFeaturedServices } from '@/data/services';
 import { Link } from 'wouter';
+import { trpc } from '@/lib/trpc';
+import { Hammer, PaintBucket, Wrench, Building2 } from 'lucide-react';
+
+const iconMap: Record<string, any> = {
+  Hammer,
+  PaintBucket,
+  Wrench,
+  Building2,
+};
 
 export default function ServicesHome() {
-  const services = getFeaturedServices();
+  const servicesQuery = trpc.services.getHomepage.useQuery();
+
+  if (servicesQuery.isLoading) {
+    return (
+      <section id="diensten" className="py-24">
+        <div className="container text-center">
+          <p className="text-muted-foreground">Diensten laden...</p>
+        </div>
+      </section>
+    );
+  }
+
+  const services = servicesQuery.data || [];
 
   return (
     <section id="diensten" className="py-24 bg-background">
@@ -22,21 +42,21 @@ export default function ServicesHome() {
 
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service) => {
-            const Icon = service.icon;
+          {services.map((service: any) => {
+            const IconComponent = iconMap[service.icon] || Building2;
             return (
               <div
                 key={service.id}
                 className="group p-8 rounded-2xl bg-card border border-border hover:border-primary hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
               >
                 <div className="w-14 h-14 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
-                  <Icon className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
+                  <IconComponent className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground group-hover:text-primary mb-3 transition-colors duration-300">
                   {service.title}
                 </h3>
                 <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
-                  {service.description}
+                  {service.shortDescription}
                 </p>
                 
                 {/* Arrow indicator on hover */}

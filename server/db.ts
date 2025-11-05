@@ -107,6 +107,12 @@ export async function getFeaturedProjects() {
   return await db.select().from(projects).where(eq(projects.featured, 1)).orderBy(desc(projects.createdAt));
 }
 
+export async function getHomepageProjects() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(projects).where(eq(projects.showOnHomepage, 1)).orderBy(projects.order).limit(6);
+}
+
 export async function getProjectById(id: number) {
   const db = await getDb();
   if (!db) return undefined;
