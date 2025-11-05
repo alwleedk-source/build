@@ -46,9 +46,9 @@ export default function ServicesPage() {
                   }`}
                 >
                   {/* Content */}
-                  <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                    <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
-                      <Icon className="w-8 h-8 text-primary" />
+                  <div className={`group ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+                    <div className="w-16 h-16 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+                      <Icon className="w-8 h-8 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
                     </div>
                     <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                       {service.title}
@@ -69,8 +69,8 @@ export default function ServicesPage() {
                   </div>
 
                   {/* Image Placeholder */}
-                  <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-                    <div className="aspect-[4/3] rounded-2xl bg-muted border border-border overflow-hidden">
+                  <div className={`group ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
+                    <div className="aspect-[4/3] rounded-2xl bg-muted border border-border overflow-hidden hover:shadow-2xl transition-all duration-300 relative">
                       <img
                         src={`https://images.unsplash.com/photo-${
                           [
@@ -83,8 +83,10 @@ export default function ServicesPage() {
                           ][index]
                         }?w=800&h=600&fit=crop`}
                         alt={service.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
+                      {/* Dark Overlay on Hover */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
                     </div>
                   </div>
                 </div>

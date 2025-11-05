@@ -25,17 +25,28 @@ export default function ProjectsHome() {
           {featuredProjects.map((project) => (
             <div
               key={project.id}
-              className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-xl transition-all duration-300"
+              className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
             >
               <div className="relative h-64 overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                {/* Dark Overlay on Hover */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300" />
+                
+                {/* Category Badge */}
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-primary text-primary-foreground text-sm font-medium rounded-full">
+                  <span className="px-3 py-1 bg-primary text-primary-foreground text-sm font-medium rounded-full shadow-lg">
                     {project.category}
+                  </span>
+                </div>
+                
+                {/* View Project Button - Shows on Hover */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    Bekijk project
                   </span>
                 </div>
               </div>
