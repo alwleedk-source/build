@@ -46,7 +46,7 @@ export default function ServicesPage() {
                   }`}
                 >
                   {/* Content */}
-                  <div className={`group ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+                  <a href={`/diensten/${service.slug}`} className={`group block ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
                     <div className="w-16 h-16 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
                       <Icon className="w-8 h-8 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
                     </div>
@@ -66,7 +66,14 @@ export default function ServicesPage() {
                         </li>
                       ))}
                     </ul>
-                  </div>
+                    
+                    <div className="mt-6 text-primary font-medium flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      Lees meer
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  </a>
 
                   {/* Image Placeholder */}
                   <div className={`group ${index % 2 === 1 ? 'lg:order-1' : ''}`}>

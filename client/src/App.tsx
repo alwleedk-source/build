@@ -7,14 +7,25 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import ProjectsPage from "./pages/ProjectsPage";
 import ServicesPage from "./pages/ServicesPage";
+import OverOns from "./pages/OverOns";
+import ServiceDetail from "./pages/ServiceDetail";
+import BlogPage from "./pages/BlogPage";
+import BlogPost from "./pages/BlogPost";
+import AdminDashboard from "./pages/AdminDashboard";
 import Header from "./components/Header";
 
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/projecten" component={ProjectsPage} />
       <Route path="/diensten" component={ServicesPage} />
+      <Route path="/over-ons" component={OverOns} />
+      <Route path="/diensten/:slug" component={ServiceDetail} />
+      <Route path="/blog" component={BlogPage} />
+      <Route path="/blog/:slug" component={BlogPost} />
+      <Route path="/admin" component={AdminDashboard} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

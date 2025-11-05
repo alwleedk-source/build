@@ -17,11 +17,12 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { href: '#home', label: 'Home' },
-    { href: '#diensten', label: 'Diensten' },
-    { href: '#projecten', label: 'Projecten' },
-    { href: '#over-ons', label: 'Over Ons' },
-    { href: '#contact', label: 'Contact' },
+    { href: '/', label: 'Home' },
+    { href: '/diensten', label: 'Diensten' },
+    { href: '/projecten', label: 'Projecten' },
+    { href: '/over-ons', label: 'Over Ons' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/#contact', label: 'Contact' },
   ];
 
   return (
@@ -33,7 +34,7 @@ export default function Header() {
       <div className="container">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-3 group">
+          <a href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center transition-transform group-hover:scale-110">
               <span className="text-2xl font-bold text-primary-foreground">B</span>
             </div>

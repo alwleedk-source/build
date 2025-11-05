@@ -44,3 +44,60 @@
 - [x] إضافة تأثير رفع (lift) للبطاقات
 - [x] تحسين تأثيرات الخدمات مع حركة الأيقونات
 - [x] إضافة تأثيرات انتقالية سلسة
+
+## ترقية شاملة - نظام إدارة محتوى متكامل
+
+### Phase 1: ترقية المشروع
+- [x] ترقية المشروع إلى web-db-user
+- [x] إعداد قاعدة البيانات
+
+### Phase 2: قاعدة البيانات والنماذج
+- [x] إنشاء جدول Projects في قاعدة البيانات
+- [x] إنشاء جدول Services في قاعدة البيانات
+- [x] إنشاء جدول BlogPosts في قاعدة البيانات
+- [x] إنشاء API endpoints للمشاريع
+- [x] إنشاء API endpoints للخدمات
+- [x] إنشاء API endpoints للمقالات
+
+### Phase 3: صفحة Over Ons
+- [x] تصميم صفحة Over Ons
+- [x] إضافة قسم قصة الشركة
+- [x] إضافة قسم الفريق
+- [x] إضافة قسم القيم والرؤية
+
+### Phase 4: صفحات منفصلة للخدمات (SEO)
+- [x] إنشاء صفحة /diensten/nieuwbouw
+- [x] إنشاء صفحة /diensten/renovatie
+- [x] إنشاء صفحة /diensten/afwerking
+- [x] إنشاء صفحة /diensten/onderhoud
+- [x] إنشاء صفحة /diensten/commerciele-bouw
+- [x] إنشاء صفحة /diensten/industriele-bouw
+- [ ] إضافة SEO meta tags لكل صفحة
+
+### Phase 5: نظام Blog
+- [x] إنشاء صفحة /blog (قائمة المقالات)
+- [x] إنشاء صفحة /blog/[slug] (مقال واحد)
+- [x] إضافة نظام التصنيفات
+- [ ] إضافة نظام البحث
+
+### Phase 6: لوحة التحكم
+- [x] إنشاء صفحة /admin
+- [x] إدارة المشاريع (CRUD + featured) - عبر Database UI
+- [x] إدارة الخدمات (CRUD + homepage display) - عبر Database UI
+- [x] إدارة مقالات Blog (CRUD) - عبر Database UI
+- [ ] نظام رفع الصور
+- [x] نظام المصادقة والحماية
+
+### Phase 7: Scroll Animations
+- [x] إضافة useScrollAnimation hook
+- [x] تأثيرات fade-in للأقسام
+- [x] تأثيرات slide-up للبطاقات
+- [x] إنشاء FadeIn component
+- [x] تحسين تأثيرات الصفحة الرئيسية
+
+### Phase 8: اختبار نهائي
+- [x] اختبار جميع صفحات الموقع
+- [x] اختبار لوحة التحكم
+- [x] اختبار إضافة/تعديل/حذف المحتوى - عبر Database UI
+- [x] اختبار الـ SEO - صفحات منفصلة لكل خدمة
+- [ ] حفظ checkpoint نهائي
