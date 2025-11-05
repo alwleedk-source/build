@@ -65,7 +65,7 @@ export default function ProjectsHome() {
         {/* CTA */}
         <div className="text-center mt-16">
           <Link href="/projecten">
-            <a className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all">
+            <span className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all cursor-pointer">
               Bekijk alle projecten
               <svg
                 width="20"
@@ -79,7 +79,7 @@ export default function ProjectsHome() {
               >
                 <path d="M7.5 15L12.5 10L7.5 5" />
               </svg>
-            </a>
+            </span>
           </Link>
         </div>
       </div>
