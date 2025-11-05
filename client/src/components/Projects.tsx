@@ -1,30 +1,85 @@
-const projects = [
+import { useState } from 'react';
+
+type ProjectCategory = 'الكل' | 'سكني' | 'تجاري' | 'صناعي';
+
+interface Project {
+  title: string;
+  category: ProjectCategory;
+  image: string;
+  description: string;
+}
+
+const projects: Project[] = [
   {
     title: 'Moderne Villa Amsterdam',
-    category: 'Nieuwbouw',
+    category: 'سكني',
     image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop',
     description: 'Luxe villa met duurzame materialen en moderne architectuur.',
   },
   {
     title: 'Kantoorgebouw Rotterdam',
-    category: 'Renovatie',
+    category: 'تجاري',
     image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop',
     description: 'Complete renovatie van historisch kantoorpand.',
   },
   {
     title: 'Appartementencomplex Utrecht',
-    category: 'Nieuwbouw',
+    category: 'سكني',
     image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop',
     description: 'Energieneutraal complex met 50 appartementen.',
   },
+  {
+    title: 'Fabriek Den Haag',
+    category: 'صناعي',
+    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=600&fit=crop',
+    description: 'Moderne productiefaciliteit met duurzame energie.',
+  },
+  {
+    title: 'Winkelcentrum Eindhoven',
+    category: 'تجاري',
+    image: 'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=800&h=600&fit=crop',
+    description: 'Renovatie en uitbreiding van winkelcentrum.',
+  },
+  {
+    title: 'Luxe Penthouse Amsterdam',
+    category: 'سكني',
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop',
+    description: 'Exclusief penthouse met panoramisch uitzicht.',
+  },
+  {
+    title: 'Magazijn Rotterdam',
+    category: 'صناعي',
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&h=600&fit=crop',
+    description: 'Logistiek centrum met moderne faciliteiten.',
+  },
+  {
+    title: 'Restaurant Utrecht',
+    category: 'تجاري',
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop',
+    description: 'Stijlvol restaurant met open keuken concept.',
+  },
+  {
+    title: 'Productiehal Tilburg',
+    category: 'صناعي',
+    image: 'https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&h=600&fit=crop',
+    description: 'Hoogwaardige productiehal met geautomatiseerde systemen.',
+  },
 ];
 
+const categories: ProjectCategory[] = ['الكل', 'سكني', 'تجاري', 'صناعي'];
+
 export default function Projects() {
+  const [activeCategory, setActiveCategory] = useState<ProjectCategory>('الكل');
+
+  const filteredProjects = activeCategory === 'الكل' 
+    ? projects 
+    : projects.filter(project => project.category === activeCategory);
+
   return (
     <section id="projecten" className="py-24 bg-muted/30">
       <div className="container">
         {/* Section Header */}
-        <div className="max-w-2xl mx-auto text-center mb-16">
+        <div className="max-w-2xl mx-auto text-center mb-12">
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             Onze Projecten
           </p>
@@ -36,11 +91,28 @@ export default function Projects() {
           </p>
         </div>
 
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                activeCategory === category
+                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
+                  : 'bg-card text-foreground border border-border hover:border-primary/50 hover:shadow-md'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
+          {filteredProjects.map((project, index) => (
             <div
-              key={index}
+              key={`${project.title}-${index}`}
               className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-xl transition-all duration-300"
             >
               <div className="relative h-64 overflow-hidden">
@@ -66,6 +138,15 @@ export default function Projects() {
             </div>
           ))}
         </div>
+
+        {/* Empty State */}
+        {filteredProjects.length === 0 && (
+          <div className="text-center py-16">
+            <p className="text-muted-foreground text-lg">
+              Geen projecten gevonden in deze categorie.
+            </p>
+          </div>
+        )}
 
         {/* CTA */}
         <div className="text-center mt-16">
