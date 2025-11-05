@@ -1,39 +1,33 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { trpc } from "@/lib/trpc";
 import { LayoutDashboard, FolderKanban, Wrench, FileText, Users } from "lucide-react";
 
 export default function AdminDashboard() {
+  const [, setLocation] = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { data: user } = trpc.auth.me.useQuery();
   const { data: projects } = trpc.projects.getAll.useQuery();
   const { data: services } = trpc.services.getAll.useQuery();
   const { data: blogPosts } = trpc.blog.getAll.useQuery();
 
-  // Redirect if not admin
+  // التحقق من تسجيل الدخول
   useEffect(() => {
-    if (user && user.role !== 'admin') {
-      window.location.href = '/';
+    const isAdmin = localStorage.getItem("isAdmin");
+    if (!isAdmin) {
+      setLocation("/login");
+    } else {
+      setIsAuthenticated(true);
     }
-  }, [user]);
+  }, [setLocation]);
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Toegang geweigerd</h1>
-          <p className="text-muted-foreground mb-6">U moet ingelogd zijn als admin.</p>
-          <a href="/" className="text-primary hover:underline">
-            Terug naar home
-          </a>
-        </div>
-      </div>
-    );
-  }
-
-  if (user.role !== 'admin') {
+  if (!isAuthenticated) {
     return null;
   }
+  
+  const adminUser = localStorage.getItem("adminUser") || "Admin";
 
   const stats = [
     {
@@ -79,7 +73,7 @@ export default function AdminDashboard() {
                   Admin Dashboard
                 </h1>
                 <p className="text-muted-foreground">
-                  Welkom terug, {user.name || 'Admin'}
+                  Welkom terug, {adminUser}
                 </p>
               </div>
             </div>

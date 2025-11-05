@@ -101,3 +101,16 @@
 - [x] اختبار إضافة/تعديل/حذف المحتوى - عبر Database UI
 - [x] اختبار الـ SEO - صفحات منفصلة لكل خدمة
 - [x] حفظ checkpoint نهائي
+
+## صفحة تسجيل الدخول
+- [ ] إنشاء صفحة Login
+- [ ] إضافة زر تسجيل الدخول في Header
+- [ ] ربط Manus OAuth
+- [ ] اختبار تسجيل الدخول والوصول إلى Admin
+
+## نظام تسجيل دخول مستقل
+- [x] إنشاء صفحة Login مع username/password
+- [x] إضافة نظام مصادقة بسيط (localStorage-based)
+- [x] حماية صفحة Admin
+- [x] إضافة زر Login/Logout في Header
+- [x] إنشاء حساب admin افتراضي (admin / BuildCraft2024!)

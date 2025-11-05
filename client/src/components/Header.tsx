@@ -6,6 +6,25 @@ import { APP_LOGO, APP_TITLE } from '@/const';
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  // التحقق من حالة تسجيل الدخول
+  useEffect(() => {
+    const checkAuth = () => {
+      const isAdmin = localStorage.getItem("isAdmin");
+      setIsLoggedIn(!!isAdmin);
+    };
+    checkAuth();
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
+  }, []);
+  
+  const handleLogout = () => {
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("adminUser");
+    setIsLoggedIn(false);
+    window.location.href = "/";
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,27 +75,42 @@ export default function Header() {
           </nav>
 
           {/* CTA Button */}
-          <div className="hidden md:block">
-            <Button asChild className="rounded-full">
-              <a href="#contact">
-                Neem Contact Op
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  className="ml-2"
+          <div className="hidden md:flex items-center gap-4">
+            {isLoggedIn ? (
+              <>
+                <Button asChild variant="outline" className="rounded-full">
+                  <a href="/admin">Admin</a>
+                </Button>
+                <Button
+                  onClick={handleLogout}
+                  variant="destructive"
+                  className="rounded-full"
                 >
-                  <path
-                    d="M6 12L10 8L6 4"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </a>
-            </Button>
+                  Uitloggen
+                </Button>
+              </>
+            ) : (
+              <Button asChild className="rounded-full">
+                <a href="#contact">
+                  Neem Contact Op
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    className="ml-2"
+                  >
+                    <path
+                      d="M6 12L10 8L6 4"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </a>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
