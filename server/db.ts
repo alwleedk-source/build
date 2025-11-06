@@ -4,7 +4,12 @@ import {
   InsertUser, users,
   projects, InsertProject,
   services, InsertService,
-  blogPosts, InsertBlogPost
+  blogPosts, InsertBlogPost,
+  testimonials, InsertTestimonial,
+  teamMembers, InsertTeamMember,
+  contactMessages, InsertContactMessage,
+  mediaLibrary, InsertMedia,
+  siteSettings, InsertSiteSetting
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -229,4 +234,159 @@ export async function deleteBlogPost(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.delete(blogPosts).where(eq(blogPosts.id, id));
+}
+
+
+// ========== Testimonials ==========
+export async function getAllTestimonials() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(testimonials).orderBy(testimonials.order, testimonials.createdAt);
+}
+
+export async function getTestimonialById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(testimonials).where(eq(testimonials.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createTestimonial(testimonial: InsertTestimonial) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(testimonials).values(testimonial);
+  return result;
+}
+
+export async function updateTestimonial(id: number, testimonial: Partial<InsertTestimonial>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(testimonials).set(testimonial).where(eq(testimonials.id, id));
+}
+
+export async function deleteTestimonial(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(testimonials).where(eq(testimonials.id, id));
+}
+
+// ========== Team Members ==========
+export async function getAllTeamMembers() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(teamMembers).orderBy(teamMembers.order, teamMembers.createdAt);
+}
+
+export async function getTeamMemberById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(teamMembers).where(eq(teamMembers.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createTeamMember(member: InsertTeamMember) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(teamMembers).values(member);
+  return result;
+}
+
+export async function updateTeamMember(id: number, member: Partial<InsertTeamMember>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(teamMembers).set(member).where(eq(teamMembers.id, id));
+}
+
+export async function deleteTeamMember(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(teamMembers).where(eq(teamMembers.id, id));
+}
+
+// ========== Contact Messages ==========
+export async function getAllMessages() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+}
+
+export async function getMessageById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(contactMessages).where(eq(contactMessages.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createMessage(message: InsertContactMessage) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(contactMessages).values(message);
+  return result;
+}
+
+export async function updateMessageStatus(id: number, isRead: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(contactMessages).set({ isRead }).where(eq(contactMessages.id, id));
+}
+
+export async function deleteMessage(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(contactMessages).where(eq(contactMessages.id, id));
+}
+
+// ========== Media Library ==========
+export async function getAllMedia() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(mediaLibrary).orderBy(desc(mediaLibrary.uploadedAt));
+}
+
+export async function getMediaById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(mediaLibrary).where(eq(mediaLibrary.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createMedia(media: InsertMedia) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(mediaLibrary).values(media);
+  return result;
+}
+
+export async function deleteMedia(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(mediaLibrary).where(eq(mediaLibrary.id, id));
+}
+
+// ========== Site Settings ==========
+export async function getAllSettings() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(siteSettings);
+}
+
+export async function getSettingByKey(key: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(siteSettings).where(eq(siteSettings.key, key)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function upsertSetting(key: string, value: string, type: "text" | "number" | "boolean" | "json" | "image" = "text") {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(siteSettings).values({ key, value, type }).onDuplicateKeyUpdate({
+    set: { value, type, updatedAt: new Date() },
+  });
+}
+
+export async function deleteSetting(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(siteSettings).where(eq(siteSettings.id, id));
 }

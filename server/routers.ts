@@ -4,7 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
-import { InsertProject, InsertService, InsertBlogPost } from "../drizzle/schema";
+import { InsertProject, InsertService, InsertBlogPost, InsertTestimonial, InsertTeamMember, InsertContactMessage, InsertMedia, InsertSiteSetting } from "../drizzle/schema";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -176,6 +176,194 @@ export const appRouter = router({
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.deleteBlogPost(input.id);
+        return { success: true };
+      }),
+  }),
+
+  // Testimonials router
+  testimonials: router({
+    getAll: publicProcedure.query(async () => {
+      return await db.getAllTestimonials();
+    }),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getTestimonialById(input.id);
+      }),
+    create: adminProcedure
+      .input(z.object({
+        name: z.string(),
+        position: z.string(),
+        company: z.string().optional(),
+        content: z.string(),
+        rating: z.number().min(1).max(5).optional(),
+        image: z.string().optional(),
+        order: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.createTestimonial(input as InsertTestimonial);
+      }),
+    update: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        position: z.string().optional(),
+        company: z.string().optional(),
+        content: z.string().optional(),
+        rating: z.number().min(1).max(5).optional(),
+        image: z.string().optional(),
+        order: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        await db.updateTestimonial(id, data);
+        return { success: true };
+      }),
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteTestimonial(input.id);
+        return { success: true };
+      }),
+  }),
+
+  // Team router
+  team: router({
+    getAll: publicProcedure.query(async () => {
+      return await db.getAllTeamMembers();
+    }),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getTeamMemberById(input.id);
+      }),
+    create: adminProcedure
+      .input(z.object({
+        name: z.string(),
+        position: z.string(),
+        bio: z.string().optional(),
+        image: z.string(),
+        email: z.string().optional(),
+        phone: z.string().optional(),
+        order: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.createTeamMember(input as InsertTeamMember);
+      }),
+    update: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        position: z.string().optional(),
+        bio: z.string().optional(),
+        image: z.string().optional(),
+        email: z.string().optional(),
+        phone: z.string().optional(),
+        order: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        await db.updateTeamMember(id, data);
+        return { success: true };
+      }),
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteTeamMember(input.id);
+        return { success: true };
+      }),
+  }),
+
+  // Messages router
+  messages: router({
+    getAll: adminProcedure.query(async () => {
+      return await db.getAllMessages();
+    }),
+    getById: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getMessageById(input.id);
+      }),
+    create: publicProcedure
+      .input(z.object({
+        name: z.string(),
+        email: z.string().email(),
+        phone: z.string().optional(),
+        message: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.createMessage(input as InsertContactMessage);
+      }),
+    updateStatus: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        isRead: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateMessageStatus(input.id, input.isRead);
+        return { success: true };
+      }),
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteMessage(input.id);
+        return { success: true };
+      }),
+  }),
+
+  // Media router
+  media: router({
+    getAll: adminProcedure.query(async () => {
+      return await db.getAllMedia();
+    }),
+    getById: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getMediaById(input.id);
+      }),
+    create: adminProcedure
+      .input(z.object({
+        filename: z.string(),
+        url: z.string(),
+        type: z.enum(["image", "video", "document"]).optional(),
+        category: z.string().optional(),
+        size: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.createMedia(input as InsertMedia);
+      }),
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteMedia(input.id);
+        return { success: true };
+      }),
+  }),
+
+  // Settings router
+  settings: router({
+    getAll: adminProcedure.query(async () => {
+      return await db.getAllSettings();
+    }),
+    getByKey: publicProcedure
+      .input(z.object({ key: z.string() }))
+      .query(async ({ input }) => {
+        return await db.getSettingByKey(input.key);
+      }),
+    upsert: adminProcedure
+      .input(z.object({
+        key: z.string(),
+        value: z.string(),
+        type: z.enum(["text", "number", "boolean", "json", "image"]).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        await db.upsertSetting(input.key, input.value, input.type);
+        return { success: true };
+      }),
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteSetting(input.id);
         return { success: true };
       }),
   }),
