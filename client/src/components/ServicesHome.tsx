@@ -56,7 +56,7 @@ export default function ServicesHome() {
                   {service.title}
                 </h3>
                 <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
-                  {service.shortDescription}
+                  {service.description}
                 </p>
                 
                 {/* Arrow indicator on hover */}

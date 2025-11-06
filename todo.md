@@ -352,3 +352,8 @@ All core features are implemented, tested, and working perfectly:
 - [x] Active/Inactive status toggle
 - [x] Statistics cards (Total, Active)
 - [x] Tested with Volvo partner successfully
+
+
+## 🐛 Bug: Services Short Description Not Showing on Homepage
+
+- [x] Fix ServicesHome component to display service description (changed shortDescription to description)
