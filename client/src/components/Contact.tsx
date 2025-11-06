@@ -12,11 +12,23 @@ export default function Contact() {
     phone: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
 
   const createMessageMutation = trpc.contactMessages.create.useMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Prevent spam clicks with cooldown
+    if (isSubmitting || cooldownSeconds > 0) {
+      if (cooldownSeconds > 0) {
+        toast.error(`Wacht nog ${cooldownSeconds} seconden voordat u opnieuw verzendt.`);
+      }
+      return;
+    }
+    
+    setIsSubmitting(true);
     
     try {
       await createMessageMutation.mutateAsync({
@@ -28,10 +40,49 @@ export default function Contact() {
       
       toast.success('Bedankt voor uw bericht! We nemen spoedig contact met u op.');
       setFormData({ name: '', email: '', phone: '', message: '' });
+      
+      // Start 3-second cooldown
+      setCooldownSeconds(3);
+      const interval = setInterval(() => {
+        setCooldownSeconds((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
     } catch (error: any) {
-      // Show specific error message from backend
-      const errorMessage = error?.message || 'Er is een fout opgetreden. Probeer het later opnieuw.';
+      // Parse tRPC errors for user-friendly messages
+      let errorMessage = 'Er is een fout opgetreden. Probeer het later opnieuw.';
+      
+      // Check if error.message is a JSON string (Zod validation errors)
+      if (error?.message && typeof error.message === 'string') {
+        // Try to parse as JSON array first
+        if (error.message.trim().startsWith('[')) {
+          try {
+            const issues = JSON.parse(error.message);
+            if (Array.isArray(issues) && issues.length > 0 && issues[0].message) {
+              errorMessage = issues[0].message;
+            }
+          } catch (e) {
+            // If parsing fails, try regex extraction
+            const messageMatch = error.message.match(/"message"\s*:\s*"([^"]+)"/);
+            if (messageMatch && messageMatch[1]) {
+              errorMessage = messageMatch[1];
+            } else {
+              errorMessage = 'Ongeldige invoer. Controleer uw gegevens.';
+            }
+          }
+        } else {
+          // Regular error message (rate limiting, duplicate, etc.)
+          errorMessage = error.message;
+        }
+      }
+      
       toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -187,10 +238,10 @@ export default function Contact() {
 
               <Button
                 type="submit"
-                disabled={createMessageMutation.isPending}
+                disabled={isSubmitting || cooldownSeconds > 0}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 rounded-xl transition-all hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                {createMessageMutation.isPending ? (
+                {isSubmitting ? (
                   <>
                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -198,6 +249,8 @@ export default function Contact() {
                     </svg>
                     Verzenden...
                   </>
+                ) : cooldownSeconds > 0 ? (
+                  `Wacht ${cooldownSeconds}s...`
                 ) : (
                   <>
                     Verstuur bericht
