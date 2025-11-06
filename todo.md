@@ -347,3 +347,14 @@ All core features are implemented, tested, and working perfectly:
 - [x] Remove scroll animations opacity effect
 - [x] Keep only translate animations
 - [x] Make sections always visible like other sections
+
+
+## ✨ Enhancement - Add Scroll Animations to DIENSTEN & PROJECTEN (User Request)
+
+### Animations to Add
+- [x] Add fade-in effect (opacity 0 → 1) for headers
+- [x] Add slide-in effect from bottom for cards
+- [x] Add scale effect for images
+- [x] Add stagger delays for sequential appearance
+- [x] Ensure animations are smooth and noticeable
+- [x] Test animations on scroll

@@ -25,10 +25,10 @@ export default function ProjectsHome() {
         {/* Section Header */}
         <div 
           ref={headerRef}
-          className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ${
+          className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ease-out ${
             headerInView 
-              ? 'translate-y-0' 
-              : 'translate-y-10'
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-16'
           }`}
         >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
@@ -47,18 +47,23 @@ export default function ProjectsHome() {
           {projects.map((project: any, index: number) => (
             <div
               key={project.id}
-              className={`group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 ${
+              className={`group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 ease-out ${
                 gridInView
-                  ? 'translate-y-0'
-                  : 'translate-y-10'
+                  ? 'opacity-100 translate-y-0 scale-100'
+                  : 'opacity-0 translate-y-16 scale-95'
               }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div className="relative h-64 overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className={`w-full h-full object-cover transition-all duration-1000 ease-out ${
+                    gridInView 
+                      ? 'scale-100 group-hover:scale-110' 
+                      : 'scale-110'
+                  }`}
+                  style={{ transitionDelay: `${index * 150 + 200}ms` }}
                 />
                 {project.featured === 1 && (
                   <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
@@ -84,10 +89,10 @@ export default function ProjectsHome() {
 
         {/* CTA */}
         <div 
-          className={`text-center mt-12 transition-all duration-1000 delay-700 ${
+          className={`text-center mt-12 transition-all duration-1000 ease-out delay-900 ${
             gridInView
-              ? 'translate-y-0'
-              : 'translate-y-10'
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-16'
           }`}
         >
           <Link href="/projecten">

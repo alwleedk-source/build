@@ -33,10 +33,10 @@ export default function ServicesHome() {
         {/* Section Header */}
         <div 
           ref={headerRef}
-          className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ${
+          className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ease-out ${
             headerInView 
-              ? 'translate-y-0' 
-              : 'translate-y-10'
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-16'
           }`}
         >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
@@ -58,12 +58,12 @@ export default function ServicesHome() {
               <Link
                 key={service.id}
                 href={`/diensten/${service.slug}`}
-                className={`group block transition-all duration-700 ${
+                className={`group block transition-all duration-700 ease-out ${
                   gridInView
-                    ? 'translate-y-0'
-                    : 'translate-y-10'
+                    ? 'opacity-100 translate-y-0 scale-100'
+                    : 'opacity-0 translate-y-16 scale-95'
                 }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
+                style={{ transitionDelay: `${index * 150}ms` }}
               >
                 <div className="h-full p-8 rounded-2xl bg-card border border-border hover:border-primary hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer">
                   <div className="w-14 h-14 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
@@ -100,10 +100,10 @@ export default function ServicesHome() {
 
         {/* View All Link */}
         <div 
-          className={`text-center mt-12 transition-all duration-1000 delay-500 ${
+          className={`text-center mt-12 transition-all duration-1000 ease-out delay-600 ${
             gridInView
-              ? 'translate-y-0'
-              : 'translate-y-10'
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-16'
           }`}
         >
           <Link
