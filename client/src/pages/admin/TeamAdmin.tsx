@@ -4,6 +4,16 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +22,8 @@ import { Loader2, Plus, Pencil, Trash2, Mail, Phone } from "lucide-react";
 
 export default function TeamAdmin() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -60,12 +72,19 @@ export default function TeamAdmin() {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Weet je zeker dat je dit teamlid wilt verwijderen?")) return;
+  const openDeleteDialog = (id: number) => {
+    setDeletingId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingId) return;
     try {
-      await deleteMutation.mutateAsync({ id });
+      await deleteMutation.mutateAsync({ id: deletingId });
       toast.success("Teamlid verwijderd!");
       refetch();
+      setDeleteDialogOpen(false);
+      setDeletingId(null);
     } catch (error) {
       toast.error("Er is een fout opgetreden");
     }
@@ -135,7 +154,7 @@ export default function TeamAdmin() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleDelete(member.id)}
+                        onClick={() => openDeleteDialog(member.id)}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -275,6 +294,23 @@ export default function TeamAdmin() {
             </form>
           </DialogContent>
         </Dialog>
+
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Weet je het zeker?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Deze actie kan niet ongedaan worden gemaakt. Dit zal het teamlid permanent verwijderen.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuleren</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Verwijderen
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </AdminLayout>
   );

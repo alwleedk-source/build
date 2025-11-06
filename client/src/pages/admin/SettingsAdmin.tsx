@@ -4,6 +4,16 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -13,6 +23,8 @@ import { Loader2, Plus, Pencil, Trash2, Settings as SettingsIcon } from "lucide-
 
 export default function SettingsAdmin() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     key: "",
@@ -47,12 +59,19 @@ export default function SettingsAdmin() {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Weet je zeker dat je deze instelling wilt verwijderen?")) return;
+  const openDeleteDialog = (id: number) => {
+    setDeletingId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingId) return;
     try {
-      await deleteMutation.mutateAsync({ id });
+      await deleteMutation.mutateAsync({ id: deletingId });
       toast.success("Instelling verwijderd!");
       refetch();
+      setDeleteDialogOpen(false);
+      setDeletingId(null);
     } catch (error) {
       toast.error("Er is een fout opgetreden");
     }
@@ -118,7 +137,7 @@ export default function SettingsAdmin() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleDelete(setting.id)}
+                        onClick={() => openDeleteDialog(setting.id)}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -221,6 +240,23 @@ export default function SettingsAdmin() {
             </form>
           </DialogContent>
         </Dialog>
+
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Weet je het zeker?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Deze actie kan niet ongedaan worden gemaakt. Dit zal de instelling permanent verwijderen.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuleren</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Verwijderen
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </AdminLayout>
   );

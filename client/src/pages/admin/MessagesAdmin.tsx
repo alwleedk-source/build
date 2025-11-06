@@ -1,12 +1,25 @@
+import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { Loader2, Mail, MailOpen, Trash2, Phone, User } from "lucide-react";
 
 export default function MessagesAdmin() {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const { data: messages, isLoading, refetch } = trpc.messages.getAll.useQuery();
   const updateStatusMutation = trpc.messages.updateStatus.useMutation();
   const deleteMutation = trpc.messages.delete.useMutation();
@@ -21,12 +34,19 @@ export default function MessagesAdmin() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Weet je zeker dat je dit bericht wilt verwijderen?")) return;
+  const openDeleteDialog = (id: number) => {
+    setDeletingId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingId) return;
     try {
-      await deleteMutation.mutateAsync({ id });
+      await deleteMutation.mutateAsync({ id: deletingId });
       toast.success("Bericht verwijderd!");
       refetch();
+      setDeleteDialogOpen(false);
+      setDeletingId(null);
     } catch (error) {
       toast.error("Er is een fout opgetreden");
     }
@@ -93,7 +113,7 @@ export default function MessagesAdmin() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleDelete(message.id)}
+                        onClick={() => openDeleteDialog(message.id)}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -123,6 +143,22 @@ export default function MessagesAdmin() {
             ))}
           </div>
         )}
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Weet je het zeker?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Deze actie kan niet ongedaan worden gemaakt. Dit zal het bericht permanent verwijderen.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuleren</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Verwijderen
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </AdminLayout>
   );
