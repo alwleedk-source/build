@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { Hammer, PaintBucket, Wrench, Building2 } from 'lucide-react';
+import ScrollReveal from '@/components/ScrollReveal';
 
 const iconMap: Record<string, any> = {
   Hammer,
@@ -28,6 +29,7 @@ export default function ServicesHome() {
     <section id="diensten" className="py-24 bg-background">
       <div className="container">
         {/* Section Header */}
+        <ScrollReveal animation="fadeIn" duration={800}>
         <div className="max-w-2xl mx-auto text-center mb-16">
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             Onze Diensten
@@ -39,14 +41,15 @@ export default function ServicesHome() {
             Van nieuwbouw tot onderhoud, wij bieden een compleet pakket aan bouwdiensten voor particulieren en bedrijven.
           </p>
         </div>
+        </ScrollReveal>
 
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service: any) => {
+          {services.map((service: any, index: number) => {
             const IconComponent = iconMap[service.icon] || Building2;
             return (
+              <ScrollReveal key={service.id} animation="slideUp" delay={index * 100} duration={600}>
               <div
-                key={service.id}
                 className="group p-8 rounded-2xl bg-card border border-border hover:border-primary hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
               >
                 <div className="w-14 h-14 rounded-xl bg-primary/10 group-hover:bg-primary flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
@@ -76,6 +79,7 @@ export default function ServicesHome() {
                   </svg>
                 </div>
               </div>
+              </ScrollReveal>
             );
           })}
         </div>

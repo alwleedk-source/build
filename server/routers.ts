@@ -257,6 +257,27 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // Site Settings router
+  siteSettings: router({
+    getAll: publicProcedure.query(async () => {
+      return await db.getAllSiteSettings();
+    }),
+    getByKey: publicProcedure
+      .input(z.object({ key: z.string() }))
+      .query(async ({ input }) => {
+        return await db.getSiteSettingByKey(input.key);
+      }),
+    upsert: adminProcedure
+      .input(z.object({
+        key: z.string(),
+        value: z.string(),
+        type: z.enum(["text", "boolean", "number", "json"]).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.upsertSiteSetting(input);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { trpc } from '@/lib/trpc';
+import ScrollReveal from '@/components/ScrollReveal';
 
 export default function ProjectsHome() {
   const projectsQuery = trpc.projects.getHomepage.useQuery();
@@ -20,6 +21,7 @@ export default function ProjectsHome() {
     <section id="projecten" className="py-24 bg-muted/30">
       <div className="container">
         {/* Section Header */}
+        <ScrollReveal animation="fadeIn" duration={800}>
         <div className="max-w-2xl mx-auto text-center mb-16">
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             Onze Projecten
@@ -31,12 +33,13 @@ export default function ProjectsHome() {
             Een selectie van onze meest recente en trotse projecten.
           </p>
         </div>
+        </ScrollReveal>
 
         {/* Projects Grid - Only Homepage Projects (6 projects) */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project: any) => (
+          {projects.map((project: any, index: number) => (
+            <ScrollReveal key={project.id} animation="slideUp" delay={index * 100} duration={600}>
             <div
-              key={project.id}
               className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
             >
               <div className="relative h-64 overflow-hidden">
@@ -64,6 +67,7 @@ export default function ProjectsHome() {
                 </p>
               </div>
             </div>
+            </ScrollReveal>
           ))}
         </div>
 

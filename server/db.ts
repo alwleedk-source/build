@@ -5,7 +5,8 @@ import {
   projects, InsertProject,
   services, InsertService,
   blogPosts, InsertBlogPost,
-  partners, InsertPartner
+  partners, InsertPartner,
+  siteSettings
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -299,4 +300,41 @@ export async function updatePartnersOrder(items: { id: number; order: number }[]
   for (const item of items) {
     await db.update(partners).set({ order: item.order }).where(eq(partners.id, item.id));
   }
+}
+
+
+// ========== Site Settings ==========
+export async function getAllSiteSettings() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(siteSettings);
+}
+
+export async function getSiteSettingByKey(key: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(siteSettings).where(eq(siteSettings.key, key)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function upsertSiteSetting(setting: { key: string; value: string; type?: "text" | "boolean" | "number" | "json" | "image" }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Check if setting exists
+  const existing = await getSiteSettingByKey(setting.key);
+  
+  if (existing) {
+    // Update existing setting
+    await db.update(siteSettings).set({ value: setting.value }).where(eq(siteSettings.key, setting.key));
+  } else {
+    // Insert new setting
+    await db.insert(siteSettings).values({
+      key: setting.key,
+      value: setting.value,
+      type: (setting.type || 'text') as "text" | "boolean" | "number" | "json" | "image",
+    });
+  }
+  
+  return { success: true };
 }

@@ -357,3 +357,41 @@ All core features are implemented, tested, and working perfectly:
 ## 🐛 Bug: Services Short Description Not Showing on Homepage
 
 - [x] Fix ServicesHome component to display service description (changed shortDescription to description)
+
+
+## 🎯 New Feature: Scroll Animations
+
+- [ ] Create ScrollReveal component with Intersection Observer
+- [ ] Add FadeIn animation
+- [ ] Add SlideUp animation
+- [ ] Add Scale animation
+- [ ] Add Stagger animation for multiple elements
+- [ ] Apply animations to Homepage sections
+- [ ] Apply animations to Services page
+- [ ] Apply animations to Projects page
+- [ ] Apply animations to Blog page
+- [ ] Test animations in browser
+
+
+## 🎯 Recent Updates
+
+### Scroll Animations (In Progress)
+- [x] Created ScrollReveal component with Intersection Observer
+- [x] Added fade-in, slide-up, scale animations
+- [x] Applied animations to ServicesHome component
+- [x] Applied animations to ProjectsHome component
+- [ ] Test animations in browser (need to verify visual effects)
+- [ ] Apply animations to other sections (Testimonials, Partners, Contact)
+
+### Site Settings System
+- [x] Added siteSettings router in tRPC
+- [x] Added database functions (getAllSiteSettings, getSiteSettingByKey, upsertSiteSetting)
+- [x] Seeded default settings for section visibility
+- [ ] Connect Home.tsx to Settings (currently disabled for testing)
+- [ ] Fix Settings integration to work properly with loading states
+
+### Bug Fixes
+- [x] Fixed services short description not showing (changed shortDescription to description)
+- [x] Fixed nested anchor tags error in AdminLayout
+- [x] Fixed 404 errors in admin pages (removed non-existent pages from sidebar)
+- [x] Fixed programming error in /diensten page (features JSON parsing)
