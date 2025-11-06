@@ -367,3 +367,24 @@ All core features are implemented, tested, and working perfectly:
 - [x] Remove opacity from animations
 - [x] Keep only translate and scale effects
 - [x] Ensure sections are always visible
+
+
+## 🎨 Enhancement - Make Scroll Animations More Noticeable (User Reported)
+
+### Issue
+- [x] Scroll animations in DIENSTEN section not noticeable
+- [x] Scroll animations in PROJECTEN section not noticeable
+- [x] Increase translate distance (16px → 32px)
+- [x] Increase scale effect (95% → 90%)
+- [x] Add rotation effect to icons
+- [x] Test animations visibility
+
+
+## 🔧 Fix - Simplify Animations to Match Other Sections (User Reported)
+
+### Issue
+- [x] Current animations are too exaggerated (scale-90, rotate, etc.)
+- [x] User wants simple animations like Testimonials and Contact sections
+- [x] Use simple translate-y only (removed fade-in to ensure visibility)
+- [x] Remove scale and rotate effects from scroll animations
+- [x] Match animation style with other sections

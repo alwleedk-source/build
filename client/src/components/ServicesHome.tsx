@@ -33,10 +33,10 @@ export default function ServicesHome() {
         {/* Section Header */}
         <div 
           ref={headerRef}
-          className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ease-out ${
+          className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ${
             headerInView 
               ? 'translate-y-0' 
-              : 'translate-y-16'
+              : 'translate-y-10'
           }`}
         >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
@@ -58,10 +58,10 @@ export default function ServicesHome() {
               <Link
                 key={service.id}
                 href={`/diensten/${service.slug}`}
-                className={`group block transition-all duration-700 ease-out ${
+                className={`group block transition-all duration-700 ${
                   gridInView
-                    ? 'translate-y-0 scale-100'
-                    : 'translate-y-16 scale-95'
+                    ? 'translate-y-0'
+                    : 'translate-y-10'
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
@@ -100,10 +100,10 @@ export default function ServicesHome() {
 
         {/* View All Link */}
         <div 
-          className={`text-center mt-12 transition-all duration-1000 ease-out delay-600 ${
+          className={`text-center mt-12 transition-all duration-1000 delay-600 ${
             gridInView
               ? 'translate-y-0'
-              : 'translate-y-16'
+              : 'translate-y-10'
           }`}
         >
           <Link
