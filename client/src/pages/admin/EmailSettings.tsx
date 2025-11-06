@@ -8,7 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
-import { Loader2, Mail, Server, User, Lock, Send } from "lucide-react";
+import { Loader2, Mail, Server, User, Lock, Send, Info, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function EmailSettings() {
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,8 @@ export default function EmailSettings() {
     autoReplyEnabled: 0,
     autoReplySubject: "Bedankt voor uw bericht",
     autoReplyMessage: "",
+    notificationEnabled: 0,
+    notificationEmail: "",
   });
 
   const { data: emailSettings, isLoading } = trpc.emailSettings.get.useQuery();
@@ -39,6 +42,8 @@ export default function EmailSettings() {
         autoReplyEnabled: emailSettings.autoReplyEnabled || 0,
         autoReplySubject: emailSettings.autoReplySubject || "Bedankt voor uw bericht",
         autoReplyMessage: emailSettings.autoReplyMessage || "",
+        notificationEnabled: emailSettings.notificationEnabled || 0,
+        notificationEmail: emailSettings.notificationEmail || "",
       });
     }
   }, [emailSettings]);
@@ -77,6 +82,55 @@ export default function EmailSettings() {
             Configureer SMTP-instellingen voor automatische email antwoorden
           </p>
         </div>
+
+        {/* SMTP Setup Instructions */}
+        <Alert className="mb-6">
+          <Info className="h-4 w-4" />
+          <AlertTitle>SMTP Configuratie Vereist</AlertTitle>
+          <AlertDescription className="mt-2 space-y-2">
+            <p>
+              Om automatische emails te versturen, heeft u geldige SMTP-inloggegevens nodig van uw emailprovider.
+            </p>
+            <div className="mt-3">
+              <p className="font-semibold mb-2">Populaire SMTP Providers:</p>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>
+                  <strong>Gmail:</strong> smtp.gmail.com:587 (vereist App Password - zie{" "}
+                  <a
+                    href="https://support.google.com/accounts/answer/185833"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    instructies
+                  </a>
+                  )
+                </li>
+                <li>
+                  <strong>SendGrid:</strong> smtp.sendgrid.net:587 (gratis tier beschikbaar)
+                </li>
+                <li>
+                  <strong>Mailgun:</strong> smtp.mailgun.org:587 (gratis tier beschikbaar)
+                </li>
+                <li>
+                  <strong>Office 365:</strong> smtp.office365.com:587
+                </li>
+              </ul>
+            </div>
+            <div className="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-md border border-yellow-200 dark:border-yellow-800">
+              <div className="flex gap-2">
+                <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-semibold text-yellow-800 dark:text-yellow-200">Let op:</p>
+                  <p className="text-yellow-700 dark:text-yellow-300">
+                    Voor Gmail moet u een "App Password" gebruiken in plaats van uw normale wachtwoord.
+                    Normale Gmail-wachtwoorden werken niet voor SMTP-authenticatie.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </AlertDescription>
+        </Alert>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* SMTP Settings */}
@@ -250,6 +304,53 @@ export default function EmailSettings() {
                     </p>
                   </div>
                 </>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Admin Notification Settings */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Mail className="w-5 h-5" />
+                Admin Notificaties
+              </CardTitle>
+              <CardDescription>
+                Ontvang een email notificatie wanneer een nieuwe bericht binnenkomt
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="notificationEnabled">Notificaties inschakelen</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Verstuur een email naar de beheerder bij nieuwe berichten
+                  </p>
+                </div>
+                <Switch
+                  id="notificationEnabled"
+                  checked={formData.notificationEnabled === 1}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, notificationEnabled: checked ? 1 : 0 })
+                  }
+                />
+              </div>
+
+              {formData.notificationEnabled === 1 && (
+                <div className="space-y-2">
+                  <Label htmlFor="notificationEmail">Notificatie Email *</Label>
+                  <Input
+                    id="notificationEmail"
+                    type="email"
+                    placeholder="admin@buildcraft.nl"
+                    value={formData.notificationEmail}
+                    onChange={(e) => setFormData({ ...formData, notificationEmail: e.target.value })}
+                    required={formData.notificationEnabled === 1}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Dit email adres ontvangt notificaties wanneer klanten een bericht versturen
+                  </p>
+                </div>
               )}
             </CardContent>
           </Card>

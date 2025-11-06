@@ -413,8 +413,9 @@ export async function getContactMessageById(id: number) {
 export async function createContactMessage(data: InsertContactMessage) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  await db.insert(contactMessages).values(data);
-  return { success: true };
+  const result = await db.insert(contactMessages).values(data);
+  // @ts-ignore - insertId exists but not in type definition
+  return { success: true, id: Number(result.insertId) || 0 };
 }
 
 export async function markContactMessageAsRead(id: number, isRead: number = 1) {

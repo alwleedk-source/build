@@ -563,3 +563,35 @@ Modified all create/update functions to return `{ success: true }` instead of ra
 - System tested with test SMTP credentials
 - Email sending integrated with contact form
 - Ready for production use with real SMTP credentials (Gmail, SendGrid, Mailgun, etc.)
+
+
+## 📬 Admin Email Notification Feature (In Progress)
+
+### Backend Implementation
+- [ ] Add notification email field to emailSettings schema
+- [ ] Add notification enabled toggle to emailSettings
+- [ ] Create email notification template for admin
+- [ ] Integrate notification sending with contact form submission
+
+### Settings & Configuration
+- [ ] Add notification email field in Email Settings page
+- [ ] Add toggle to enable/disable admin notifications
+- [ ] Professional email template with message details
+
+### Testing
+- [ ] Send test message from contact form
+- [ ] Verify message saved in database
+- [ ] Verify auto-reply sent to customer
+- [ ] Verify notification sent to admin
+- [ ] Check console logs for errors
+
+
+## 📝 Email Settings UI Improvements - COMPLETED ✅
+
+- [x] Add informative alert box explaining SMTP setup
+- [x] Add instructions for popular email providers (Gmail, SendGrid, Mailgun, Office 365)
+- [x] Add note about App Passwords for Gmail
+- [x] Professional blue alert box with Info icon
+- [x] Yellow warning box for Gmail App Password requirement
+- [x] Direct link to Google's App Password instructions
+- [x] List of SMTP providers with ports and availability notes

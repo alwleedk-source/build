@@ -306,22 +306,46 @@ export const appRouter = router({
         // Send auto-reply email if enabled
         try {
           const emailSettings = await db.getEmailSettings();
-          if (emailSettings && emailSettings.autoReplyEnabled === 1) {
-            const { sendEmail, generateAutoReplyEmail } = await import('./email');
-            const { html, text } = generateAutoReplyEmail(
-              input.name,
-              emailSettings.autoReplyMessage?.replace('{naam}', input.name)
-            );
+          if (emailSettings) {
+            const { sendEmail, generateAutoReplyEmail, generateAdminNotificationEmail } = await import('./email');
             
-            await sendEmail(emailSettings, {
-              to: input.email,
-              subject: emailSettings.autoReplySubject || 'Bedankt voor uw bericht',
-              html,
-              text,
-            });
+            // Send auto-reply to customer
+            if (emailSettings.autoReplyEnabled === 1) {
+              const { html, text } = generateAutoReplyEmail(
+                input.name,
+                emailSettings.autoReplyMessage?.replace('{naam}', input.name)
+              );
+              
+              await sendEmail(emailSettings, {
+                to: input.email,
+                subject: emailSettings.autoReplySubject || 'Bedankt voor uw bericht',
+                html,
+                text,
+              });
+            }
+            
+            // Send notification to admin
+            if (emailSettings.notificationEnabled === 1 && emailSettings.notificationEmail) {
+              const adminUrl = process.env.VITE_APP_URL || 'https://buildcraft.manus.space';
+              const { html: adminHtml, text: adminText } = generateAdminNotificationEmail(
+                input.name,
+                input.email,
+                input.phone || null,
+                input.message,
+                result.id || 0,
+                adminUrl
+              );
+              
+              await sendEmail(emailSettings, {
+                to: emailSettings.notificationEmail,
+                subject: `Nieuw bericht van ${input.name}`,
+                html: adminHtml,
+                text: adminText,
+              });
+            }
           }
         } catch (emailError) {
-          console.error('Error sending auto-reply email:', emailError);
+          console.error('Error sending emails:', emailError);
           // Don't fail the request if email fails
         }
         
