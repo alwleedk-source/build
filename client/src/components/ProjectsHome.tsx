@@ -1,8 +1,11 @@
 import { Link } from 'wouter';
 import { trpc } from '@/lib/trpc';
+import { useInView } from '@/hooks/useInView';
 
 export default function ProjectsHome() {
   const projectsQuery = trpc.projects.getHomepage.useQuery();
+  const { ref: headerRef, isInView: headerInView } = useInView({ threshold: 0.2 });
+  const { ref: gridRef, isInView: gridInView } = useInView({ threshold: 0.1 });
 
   if (projectsQuery.isLoading) {
     return (
@@ -20,7 +23,14 @@ export default function ProjectsHome() {
     <section id="projecten" className="py-24 bg-muted/30">
       <div className="container">
         {/* Section Header */}
-        <div className="max-w-2xl mx-auto text-center mb-16">
+        <div 
+          ref={headerRef}
+          className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ${
+            headerInView 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-10'
+          }`}
+        >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
             Onze Projecten
           </p>
@@ -33,11 +43,16 @@ export default function ProjectsHome() {
         </div>
 
         {/* Projects Grid - Only Homepage Projects (6 projects) */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project: any) => (
+        <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project: any, index: number) => (
             <div
               key={project.id}
-              className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+              className={`group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 ${
+                gridInView
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-10'
+              }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div className="relative h-64 overflow-hidden">
                 <img
@@ -68,7 +83,13 @@ export default function ProjectsHome() {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-12">
+        <div 
+          className={`text-center mt-12 transition-all duration-1000 delay-700 ${
+            gridInView
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-10'
+          }`}
+        >
           <Link href="/projecten">
             <button className="group inline-flex items-center gap-2 text-primary font-semibold hover:gap-4 transition-all">
               Bekijk alle projecten

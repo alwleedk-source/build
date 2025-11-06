@@ -1,7 +1,24 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useInView } from '@/hooks/useInView';
+import { useCountUp } from '@/hooks/useCountUp';
+import { useEffect } from 'react';
 
 export default function Hero() {
+  const { ref: statsRef, isInView: statsInView } = useInView({ threshold: 0.3 });
+  
+  const yearsCounter = useCountUp({ end: 15, duration: 2000, suffix: '+' });
+  const projectsCounter = useCountUp({ end: 500, duration: 2500, suffix: '+' });
+  const satisfactionCounter = useCountUp({ end: 98, duration: 2000, suffix: '%' });
+
+  useEffect(() => {
+    if (statsInView) {
+      yearsCounter.startCounting();
+      projectsCounter.startCounting();
+      satisfactionCounter.startCounting();
+    }
+  }, [statsInView]);
+
   return (
     <section id="home" className="min-h-screen flex items-center pt-20 relative overflow-hidden">
       {/* Background gradient */}
@@ -11,25 +28,37 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="space-y-8">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+            {/* Badge - fade in */}
+            <div 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 animate-fade-in-up"
+              style={{ animationDelay: '0.1s' }}
+            >
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <span className="text-sm font-medium text-foreground">Nieuwe beschikbaarheid</span>
             </div>
 
-            {/* Heading */}
+            {/* Heading - fade in */}
             <div className="space-y-4">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-foreground">
+              <h1 
+                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-foreground animate-fade-in-up"
+                style={{ animationDelay: '0.2s' }}
+              >
                 Bouw uw dromen
                 <span className="block text-primary">met BuildCraft</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
+              <p 
+                className="text-lg md:text-xl text-muted-foreground max-w-xl animate-fade-in-up"
+                style={{ animationDelay: '0.3s' }}
+              >
                 Professionele bouw- en onderhoudsdiensten voor uw gebouwen. Van nieuwbouw tot renovatie, wij maken het mogelijk.
               </p>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            {/* CTA Buttons - fade in */}
+            <div 
+              className="flex flex-col sm:flex-row gap-4 animate-fade-in-up"
+              style={{ animationDelay: '0.4s' }}
+            >
               <Button size="lg" className="rounded-full group" asChild>
                 <a href="#contact">
                   Neem Contact Op
@@ -41,25 +70,38 @@ export default function Hero() {
               </Button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-foreground">15+</div>
+            {/* Stats with counter animation */}
+            <div 
+              ref={statsRef}
+              className="grid grid-cols-3 gap-8 pt-8 border-t border-border animate-fade-in-up"
+              style={{ animationDelay: '0.5s' }}
+            >
+              <div className="transform transition-transform hover:scale-110 duration-300">
+                <div className="text-3xl md:text-4xl font-bold text-foreground">
+                  {yearsCounter.displayValue}
+                </div>
                 <div className="text-sm text-muted-foreground">Jaar ervaring</div>
               </div>
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-foreground">500+</div>
+              <div className="transform transition-transform hover:scale-110 duration-300">
+                <div className="text-3xl md:text-4xl font-bold text-foreground">
+                  {projectsCounter.displayValue}
+                </div>
                 <div className="text-sm text-muted-foreground">Projecten</div>
               </div>
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-foreground">98%</div>
+              <div className="transform transition-transform hover:scale-110 duration-300">
+                <div className="text-3xl md:text-4xl font-bold text-foreground">
+                  {satisfactionCounter.displayValue}
+                </div>
                 <div className="text-sm text-muted-foreground">Tevredenheid</div>
               </div>
             </div>
           </div>
 
-          {/* Illustration */}
-          <div className="relative lg:h-[600px] flex items-center justify-center">
+          {/* Illustration - scale in */}
+          <div 
+            className="relative lg:h-[600px] flex items-center justify-center animate-scale-in"
+            style={{ animationDelay: '0.6s' }}
+          >
             <svg
               viewBox="0 0 600 600"
               fill="none"
@@ -141,8 +183,40 @@ export default function Hero() {
           }
         }
         
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
         .animate-float {
           animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-fade-in-up {
+          opacity: 0;
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-scale-in {
+          opacity: 0;
+          animation: scaleIn 1s ease-out forwards;
         }
       `}</style>
     </section>
