@@ -358,3 +358,12 @@ All core features are implemented, tested, and working perfectly:
 - [x] Add stagger delays for sequential appearance
 - [x] Ensure animations are smooth and noticeable
 - [x] Test animations on scroll
+
+
+## 🐛 Bug Fix - Sections Not Showing Again (User Reported)
+
+### Issue
+- [x] DIENSTEN and PROJECTEN sections not showing (opacity-0 problem)
+- [x] Remove opacity from animations
+- [x] Keep only translate and scale effects
+- [x] Ensure sections are always visible
