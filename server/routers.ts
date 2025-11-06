@@ -55,6 +55,7 @@ export const appRouter = router({
         category: z.enum(["Residentieel", "Commercieel", "Industrieel"]).optional(),
         image: z.string().optional(),
         featured: z.number().optional(),
+        showOnHomepage: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
         const { id, ...data } = input;
@@ -65,6 +66,17 @@ export const appRouter = router({
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.deleteProject(input.id);
+        return { success: true };
+      }),
+    updateOrder: adminProcedure
+      .input(z.object({
+        items: z.array(z.object({
+          id: z.number(),
+          order: z.number(),
+        })),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateProjectsOrder(input.items);
         return { success: true };
       }),
   }),
@@ -120,6 +132,17 @@ export const appRouter = router({
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.deleteService(input.id);
+        return { success: true };
+      }),
+    updateOrder: adminProcedure
+      .input(z.object({
+        items: z.array(z.object({
+          id: z.number(),
+          order: z.number(),
+        })),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updateServicesOrder(input.items);
         return { success: true };
       }),
   }),

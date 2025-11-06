@@ -305,3 +305,17 @@ All core features are implemented, tested, and working perfectly:
 
 - [x] Fix 404 errors in most Admin pages
 - [x] Fix programming error in /diensten page
+
+
+## 🎯 New Feature: Drag & Drop Reordering
+
+- [x] Install @dnd-kit library for drag and drop functionality
+- [x] Add displayOrder field to projects table in database (order field already exists)
+- [x] Add displayOrder field to services table in database (order field already exists)
+- [x] Create API endpoint to update project order (updateOrder mutation)
+- [x] Create API endpoint to update service order (updateOrder mutation)
+- [x] Implement drag & drop in Projects admin page
+- [x] Implement drag & drop in Services admin page
+- [x] Add visual indicators during drag (cursor, opacity, GripVertical icon)
+- [x] Auto-save order to database on drop
+- [x] Test drag & drop functionality in browser

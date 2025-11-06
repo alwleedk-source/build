@@ -139,6 +139,16 @@ export async function deleteProject(id: number) {
   await db.delete(projects).where(eq(projects.id, id));
 }
 
+export async function updateProjectsOrder(items: { id: number; order: number }[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Update each project's order
+  for (const item of items) {
+    await db.update(projects).set({ order: item.order }).where(eq(projects.id, item.id));
+  }
+}
+
 // ========== Services ==========
 export async function getAllServices() {
   const db = await getDb();
@@ -183,6 +193,16 @@ export async function deleteService(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.delete(services).where(eq(services.id, id));
+}
+
+export async function updateServicesOrder(items: { id: number; order: number }[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Update each service's order
+  for (const item of items) {
+    await db.update(services).set({ order: item.order }).where(eq(services.id, item.id));
+  }
 }
 
 // ========== Blog Posts ==========
