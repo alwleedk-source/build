@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { APP_LOGO, APP_TITLE } from '@/const';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 export default function Header() {
+  const { settings } = useSiteSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,7 +59,7 @@ export default function Header() {
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center transition-transform group-hover:scale-110">
               <span className="text-2xl font-bold text-primary-foreground">B</span>
             </div>
-            <span className="text-xl font-bold text-foreground">{APP_TITLE}</span>
+            <span className="text-xl font-bold text-foreground">{settings.siteTitle}</span>
           </a>
 
           {/* Desktop Navigation */}

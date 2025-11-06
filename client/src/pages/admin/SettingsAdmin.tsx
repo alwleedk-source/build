@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, Palette, Globe, Phone, Share2, Search, FileText, Code, Mail } from "lucide-react";
+import { Save, Palette, Globe, Phone, Share2, Search, FileText, Code, Mail, Loader2 } from "lucide-react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
+import { trpc } from "@/lib/trpc";
 
 export default function SettingsAdmin() {
   const [, setLocation] = useLocation();
@@ -55,13 +56,71 @@ export default function SettingsAdmin() {
     showContact: true,
   });
 
-  const handleSave = (section: string) => {
-    toast.success(`${section} instellingen opgeslagen!`);
+  // Fetch all settings from database
+  const { data: allSettings, isLoading } = trpc.siteSettings.getAll.useQuery();
+  const upsertMutation = trpc.siteSettings.upsert.useMutation();
+
+  // Load settings from database
+  useEffect(() => {
+    if (allSettings && allSettings.length > 0) {
+      const settingsObj: any = {};
+      allSettings.forEach((setting) => {
+        let value: any = setting.value;
+        // Parse boolean and number types
+        if (setting.type === 'boolean') {
+          value = value === 'true' || value === '1';
+        } else if (setting.type === 'number') {
+          value = parseFloat(value);
+        }
+        settingsObj[setting.key] = value;
+      });
+      setSettings((prev) => ({ ...prev, ...settingsObj }));
+    }
+  }, [allSettings]);
+
+  const handleSave = async (section: string) => {
+    try {
+      // Save all settings to database
+      const settingsToSave = Object.entries(settings);
+      
+      for (const [key, value] of settingsToSave) {
+        let type: 'text' | 'boolean' | 'number' | 'json' = 'text';
+        let stringValue = String(value);
+        
+        if (typeof value === 'boolean') {
+          type = 'boolean';
+          stringValue = value ? '1' : '0';
+        } else if (typeof value === 'number') {
+          type = 'number';
+        }
+        
+        await upsertMutation.mutateAsync({
+          key,
+          value: stringValue,
+          type,
+        });
+      }
+      
+      toast.success(`${section} instellingen opgeslagen!`);
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast.error('Fout bij opslaan instellingen');
+    }
   };
 
-  const handleSaveAll = () => {
-    toast.success("Alle instellingen opgeslagen!");
+  const handleSaveAll = async () => {
+    await handleSave("Alle");
   };
+
+  if (isLoading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -74,8 +133,12 @@ export default function SettingsAdmin() {
               Beheer alle website-instellingen
             </p>
           </div>
-          <Button onClick={handleSaveAll} className="gap-2">
-            <Save className="w-4 h-4" />
+          <Button onClick={handleSaveAll} className="gap-2" disabled={upsertMutation.isPending}>
+            {upsertMutation.isPending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
             Alles Opslaan
           </Button>
         </div>
@@ -115,7 +178,7 @@ export default function SettingsAdmin() {
               <Code className="w-4 h-4" />
               <span className="hidden sm:inline">Analytics</span>
             </TabsTrigger>
-            <TabsTrigger value="email" className="gap-2">
+            <TabsTrigger value="email" className="gap-2" onClick={() => setLocation("/admin/settings/email")}>
               <Mail className="w-4 h-4" />
               <span className="hidden sm:inline">Email</span>
             </TabsTrigger>
@@ -163,8 +226,12 @@ export default function SettingsAdmin() {
                     )}
                   </div>
                 </div>
-                <Button onClick={() => handleSave("Algemeen")} className="mt-4">
-                  <Save className="w-4 h-4 mr-2" />
+                <Button onClick={() => handleSave("Algemeen")} className="mt-4" disabled={upsertMutation.isPending}>
+                  {upsertMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
                   Opslaan
                 </Button>
               </div>
@@ -247,8 +314,12 @@ export default function SettingsAdmin() {
                     />
                   </div>
                 </div>
-                <Button onClick={() => handleSave("Homepage")} className="mt-4">
-                  <Save className="w-4 h-4 mr-2" />
+                <Button onClick={() => handleSave("Homepage")} className="mt-4" disabled={upsertMutation.isPending}>
+                  {upsertMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
                   Opslaan
                 </Button>
               </div>
@@ -259,10 +330,10 @@ export default function SettingsAdmin() {
           <TabsContent value="contact">
             <Card className="p-6 space-y-6">
               <div>
-                <h2 className="text-xl font-semibold mb-4">Contactgegevens</h2>
+                <h2 className="text-xl font-semibold mb-4">Contact Informatie</h2>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="contactEmail">E-mailadres</Label>
+                    <Label htmlFor="contactEmail">Email</Label>
                     <Input
                       id="contactEmail"
                       type="email"
@@ -271,10 +342,9 @@ export default function SettingsAdmin() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="contactPhone">Telefoonnummer</Label>
+                    <Label htmlFor="contactPhone">Telefoon</Label>
                     <Input
                       id="contactPhone"
-                      type="tel"
                       value={settings.contactPhone}
                       onChange={(e) => setSettings({ ...settings, contactPhone: e.target.value })}
                     />
@@ -285,12 +355,16 @@ export default function SettingsAdmin() {
                       id="contactAddress"
                       value={settings.contactAddress}
                       onChange={(e) => setSettings({ ...settings, contactAddress: e.target.value })}
-                      rows={3}
+                      rows={2}
                     />
                   </div>
                 </div>
-                <Button onClick={() => handleSave("Contact")} className="mt-4">
-                  <Save className="w-4 h-4 mr-2" />
+                <Button onClick={() => handleSave("Contact")} className="mt-4" disabled={upsertMutation.isPending}>
+                  {upsertMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
                   Opslaan
                 </Button>
               </div>
@@ -309,7 +383,7 @@ export default function SettingsAdmin() {
                       id="facebookUrl"
                       value={settings.facebookUrl}
                       onChange={(e) => setSettings({ ...settings, facebookUrl: e.target.value })}
-                      placeholder="https://facebook.com/..."
+                      placeholder="https://facebook.com/yourpage"
                     />
                   </div>
                   <div>
@@ -318,7 +392,7 @@ export default function SettingsAdmin() {
                       id="linkedinUrl"
                       value={settings.linkedinUrl}
                       onChange={(e) => setSettings({ ...settings, linkedinUrl: e.target.value })}
-                      placeholder="https://linkedin.com/company/..."
+                      placeholder="https://linkedin.com/company/yourcompany"
                     />
                   </div>
                   <div>
@@ -327,7 +401,7 @@ export default function SettingsAdmin() {
                       id="instagramUrl"
                       value={settings.instagramUrl}
                       onChange={(e) => setSettings({ ...settings, instagramUrl: e.target.value })}
-                      placeholder="https://instagram.com/..."
+                      placeholder="https://instagram.com/yourpage"
                     />
                   </div>
                   <div>
@@ -336,12 +410,16 @@ export default function SettingsAdmin() {
                       id="twitterUrl"
                       value={settings.twitterUrl}
                       onChange={(e) => setSettings({ ...settings, twitterUrl: e.target.value })}
-                      placeholder="https://twitter.com/..."
+                      placeholder="https://twitter.com/yourpage"
                     />
                   </div>
                 </div>
-                <Button onClick={() => handleSave("Social Media")} className="mt-4">
-                  <Save className="w-4 h-4 mr-2" />
+                <Button onClick={() => handleSave("Social")} className="mt-4" disabled={upsertMutation.isPending}>
+                  {upsertMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
                   Opslaan
                 </Button>
               </div>
@@ -355,7 +433,7 @@ export default function SettingsAdmin() {
                 <h2 className="text-xl font-semibold mb-4">SEO Instellingen</h2>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="metaTitle">Meta Title</Label>
+                    <Label htmlFor="metaTitle">Meta Titel</Label>
                     <Input
                       id="metaTitle"
                       value={settings.metaTitle}
@@ -363,7 +441,7 @@ export default function SettingsAdmin() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="metaDescription">Meta Description</Label>
+                    <Label htmlFor="metaDescription">Meta Beschrijving</Label>
                     <Textarea
                       id="metaDescription"
                       value={settings.metaDescription}
@@ -381,8 +459,12 @@ export default function SettingsAdmin() {
                     />
                   </div>
                 </div>
-                <Button onClick={() => handleSave("SEO")} className="mt-4">
-                  <Save className="w-4 h-4 mr-2" />
+                <Button onClick={() => handleSave("SEO")} className="mt-4" disabled={upsertMutation.isPending}>
+                  {upsertMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
                   Opslaan
                 </Button>
               </div>
@@ -396,7 +478,7 @@ export default function SettingsAdmin() {
                 <h2 className="text-xl font-semibold mb-4">Footer Instellingen</h2>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="footerCopyright">Copyright Text</Label>
+                    <Label htmlFor="footerCopyright">Copyright Tekst</Label>
                     <Input
                       id="footerCopyright"
                       value={settings.footerCopyright}
@@ -413,8 +495,12 @@ export default function SettingsAdmin() {
                     />
                   </div>
                 </div>
-                <Button onClick={() => handleSave("Footer")} className="mt-4">
-                  <Save className="w-4 h-4 mr-2" />
+                <Button onClick={() => handleSave("Footer")} className="mt-4" disabled={upsertMutation.isPending}>
+                  {upsertMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
                   Opslaan
                 </Button>
               </div>
@@ -425,7 +511,7 @@ export default function SettingsAdmin() {
           <TabsContent value="colors">
             <Card className="p-6 space-y-6">
               <div>
-                <h2 className="text-xl font-semibold mb-4">Kleurenschema</h2>
+                <h2 className="text-xl font-semibold mb-4">Kleur Instellingen</h2>
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="primaryColor">Primaire Kleur</Label>
@@ -462,8 +548,12 @@ export default function SettingsAdmin() {
                     </div>
                   </div>
                 </div>
-                <Button onClick={() => handleSave("Kleuren")} className="mt-4">
-                  <Save className="w-4 h-4 mr-2" />
+                <Button onClick={() => handleSave("Kleuren")} className="mt-4" disabled={upsertMutation.isPending}>
+                  {upsertMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
                   Opslaan
                 </Button>
               </div>
@@ -477,23 +567,21 @@ export default function SettingsAdmin() {
                 <h2 className="text-xl font-semibold mb-4">Analytics & Tracking</h2>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="googleAnalytics">Google Analytics Code</Label>
-                    <Textarea
+                    <Label htmlFor="googleAnalytics">Google Analytics ID</Label>
+                    <Input
                       id="googleAnalytics"
                       value={settings.googleAnalytics}
                       onChange={(e) => setSettings({ ...settings, googleAnalytics: e.target.value })}
-                      rows={4}
-                      placeholder="<!-- Google Analytics Code -->"
+                      placeholder="G-XXXXXXXXXX"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="facebookPixel">Facebook Pixel Code</Label>
-                    <Textarea
+                    <Label htmlFor="facebookPixel">Facebook Pixel ID</Label>
+                    <Input
                       id="facebookPixel"
                       value={settings.facebookPixel}
                       onChange={(e) => setSettings({ ...settings, facebookPixel: e.target.value })}
-                      rows={4}
-                      placeholder="<!-- Facebook Pixel Code -->"
+                      placeholder="123456789"
                     />
                   </div>
                   <div>
@@ -502,39 +590,19 @@ export default function SettingsAdmin() {
                       id="customTrackingCode"
                       value={settings.customTrackingCode}
                       onChange={(e) => setSettings({ ...settings, customTrackingCode: e.target.value })}
-                      rows={4}
-                      placeholder="<!-- Custom Tracking Code -->"
+                      rows={5}
+                      placeholder="<script>...</script>"
                     />
                   </div>
                 </div>
-                <Button onClick={() => handleSave("Analytics")} className="mt-4">
-                  <Save className="w-4 h-4 mr-2" />
+                <Button onClick={() => handleSave("Analytics")} className="mt-4" disabled={upsertMutation.isPending}>
+                  {upsertMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
                   Opslaan
                 </Button>
-              </div>
-            </Card>
-          </TabsContent>
-
-          {/* Email Tab */}
-          <TabsContent value="email">
-            <Card className="p-6">
-              <div>
-                <h2 className="text-xl font-semibold mb-2">Email Instellingen</h2>
-                <p className="text-muted-foreground mb-6">
-                  Configureer SMTP-instellingen voor automatische email antwoorden en notificaties
-                </p>
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    Voor uitgebreide email configuratie, inclusief SMTP-instellingen, automatische antwoorden en admin notificaties:
-                  </p>
-                  <Button
-                    onClick={() => setLocation("/admin/settings/email")}
-                    className="gap-2"
-                  >
-                    <Mail className="w-4 h-4" />
-                    Ga naar Email Instellingen
-                  </Button>
-                </div>
               </div>
             </Card>
           </TabsContent>
