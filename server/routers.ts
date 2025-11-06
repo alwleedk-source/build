@@ -357,7 +357,9 @@ export const appRouter = router({
               const { html, text, subject } = generateAutoReplyEmail(
                 input.name,
                 input.message,
-                emailSettings.autoReplySubject || 'Bedankt voor uw bericht'
+                emailSettings.autoReplySubject || 'Bedankt voor uw bericht',
+                emailSettings.contactPhone || undefined,
+                emailSettings.contactEmail || undefined
               );
               
               const result = await sendEmail({
@@ -378,7 +380,8 @@ export const appRouter = router({
             console.log('[EMAIL] Notifications enabled:', emailSettings.notificationEnabled);
             console.log('[EMAIL] Notification email:', emailSettings.notificationEmail);
             if (emailSettings.notificationEnabled === 1 && emailSettings.notificationEmail) {
-              console.log('[EMAIL] Sending admin notification to:', emailSettings.notificationEmail);            const adminUrl = process.env.VITE_APP_URL || 'http://localhost:3000';
+              console.log('[EMAIL] Sending admin notification to:', emailSettings.notificationEmail);
+              const adminUrl = process.env.BASE_URL || process.env.VITE_APP_URL || 'https://3000-inpva7zdyqt9cs1afrhno-86331ac5.manusvm.computer';
               const { html: adminHtml, text: adminText } = generateAdminNotificationEmail(
                 input.name,
                 input.email,

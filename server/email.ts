@@ -49,7 +49,9 @@ export async function sendEmail(
 export function generateAutoReplyEmail(
   customerName: string,
   customerMessage: string,
-  customSubject?: string
+  customSubject?: string,
+  contactPhone?: string,
+  contactEmail?: string
 ): { html: string; text: string; subject: string } {
   const subject = customSubject || 'Bedankt voor uw bericht';
 
@@ -112,10 +114,10 @@ export function generateAutoReplyEmail(
           
           <p>Ons team zal uw aanvraag beoordelen en binnen 24 uur reageren. Voor dringende zaken kunt u ons bereiken op:</p>
           
-          <ul>
-            <li>Telefoon: +31 6 1234 5678</li>
-            <li>Email: info@buildcraft.nl</li>
-          </ul>
+          ${contactPhone || contactEmail ? '<ul>' : ''}
+            ${contactPhone ? `<li>Telefoon: ${contactPhone}</li>` : ''}
+            ${contactEmail ? `<li>Email: ${contactEmail}</li>` : ''}
+          ${contactPhone || contactEmail ? '</ul>' : ''}
           
           <p>Met vriendelijke groet,<br>
           <strong>Het BuildCraft Team</strong></p>
@@ -137,9 +139,9 @@ Hartelijk dank voor uw bericht. Wij hebben uw aanvraag in goede orde ontvangen e
 Uw bericht:
 ${customerMessage}
 
-Ons team zal uw aanvraag beoordelen en binnen 24 uur reageren. Voor dringende zaken kunt u ons bereiken op:
-- Telefoon: +31 6 1234 5678
-- Email: info@buildcraft.nl
+Ons team zal uw aanvraag beoordelen en binnen 24 uur reageren.${contactPhone || contactEmail ? ' Voor dringende zaken kunt u ons bereiken op:' : ''}
+${contactPhone ? `- Telefoon: ${contactPhone}` : ''}
+${contactEmail ? `- Email: ${contactEmail}` : ''}
 
 Met vriendelijke groet,
 Het BuildCraft Team

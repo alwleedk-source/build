@@ -1001,3 +1001,17 @@ Add email sending functionality using Resend for:
 - [ ] Test admin notification email
 - [ ] Verify Email Settings page controls work
 - [ ] Full end-to-end test from website to admin panel
+
+
+## 🔧 Email Templates Improvements - In Progress
+
+### Issues
+- [ ] Admin Dashboard URL in admin notification uses localhost (should be dynamic)
+- [ ] Contact info in auto-reply is hardcoded (phone, email)
+
+### Tasks
+- [ ] Add contactPhone and contactEmail fields to emailSettings table
+- [ ] Update Email Settings page to include contact info fields
+- [ ] Update generateAutoReplyEmail() to use dynamic contact info from settings
+- [ ] Update routers.ts to get BASE_URL from environment or request headers
+- [ ] Test with real emails to verify changes

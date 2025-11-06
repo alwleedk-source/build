@@ -196,6 +196,8 @@ export const emailSettings = mysqlTable("emailSettings", {
   autoReplyMessage: text("autoReplyMessage"),
   notificationEnabled: int("notificationEnabled").default(0).notNull(), // 0 = disabled, 1 = enabled
   notificationEmail: varchar("notificationEmail", { length: 320 }),
+  contactPhone: varchar("contactPhone", { length: 50 }),
+  contactEmail: varchar("contactEmail", { length: 320 }),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 

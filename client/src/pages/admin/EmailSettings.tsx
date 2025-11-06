@@ -25,6 +25,8 @@ export default function EmailSettings() {
     autoReplyMessage: "",
     notificationEnabled: 0,
     notificationEmail: "",
+    contactPhone: "",
+    contactEmail: "",
   });
 
   const { data: emailSettings, isLoading } = trpc.emailSettings.get.useQuery(undefined, {
@@ -48,6 +50,8 @@ export default function EmailSettings() {
         autoReplyMessage: emailSettings.autoReplyMessage || "",
         notificationEnabled: emailSettings.notificationEnabled || 0,
         notificationEmail: emailSettings.notificationEmail || "",
+        contactPhone: emailSettings.contactPhone || "",
+        contactEmail: emailSettings.contactEmail || "",
       });
     }
   }, [emailSettings]);
@@ -344,12 +348,41 @@ export default function EmailSettings() {
                     placeholder="admin@buildcraft.nl"
                     value={formData.notificationEmail}
                     onChange={(e) => setFormData({ ...formData, notificationEmail: e.target.value })}
+                    required
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     Dit email adres ontvangt notificaties wanneer klanten een bericht versturen
                   </p>
                 </div>
               )}
+
+              <div className="space-y-2">
+                <Label htmlFor="contactPhone">Contact Telefoon</Label>
+                <Input
+                  id="contactPhone"
+                  type="tel"
+                  placeholder="+31 6 1234 5678"
+                  value={formData.contactPhone}
+                  onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+                />
+                <p className="text-sm text-muted-foreground">
+                  Dit telefoonnummer wordt getoond in auto-reply emails
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="contactEmail">Contact Email</Label>
+                <Input
+                  id="contactEmail"
+                  type="email"
+                  placeholder="info@buildcraft.nl"
+                  value={formData.contactEmail}
+                  onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
+                />
+                <p className="text-sm text-muted-foreground">
+                  Dit email adres wordt getoond in auto-reply emails
+                </p>
+              </div>
             </CardContent>
           </Card>
 
