@@ -35,8 +35,8 @@ export default function ServicesHome() {
           ref={headerRef}
           className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ${
             headerInView 
-              ? 'opacity-100 translate-y-0' 
-              : 'opacity-0 translate-y-10'
+              ? 'translate-y-0' 
+              : 'translate-y-10'
           }`}
         >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
@@ -60,8 +60,8 @@ export default function ServicesHome() {
                 href={`/diensten/${service.slug}`}
                 className={`group block transition-all duration-700 ${
                   gridInView
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-10'
+                    ? 'translate-y-0'
+                    : 'translate-y-10'
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -102,8 +102,8 @@ export default function ServicesHome() {
         <div 
           className={`text-center mt-12 transition-all duration-1000 delay-500 ${
             gridInView
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+              ? 'translate-y-0'
+              : 'translate-y-10'
           }`}
         >
           <Link

@@ -336,3 +336,14 @@ All core features are implemented, tested, and working perfectly:
 - [x] Check routing configuration
 - [x] Fix ServicesPage component
 - [x] Test all service pages
+
+
+## 🐛 Bug Fix - DIENSTEN & PROJECTEN Sections Not Visible (User Reported)
+
+### Issue
+- [x] DIENSTEN section not showing on homepage
+- [x] PROJECTEN section not showing on homepage
+- [x] Sections should be visible without opacity-0
+- [x] Remove scroll animations opacity effect
+- [x] Keep only translate animations
+- [x] Make sections always visible like other sections

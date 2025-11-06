@@ -27,8 +27,8 @@ export default function ProjectsHome() {
           ref={headerRef}
           className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ${
             headerInView 
-              ? 'opacity-100 translate-y-0' 
-              : 'opacity-0 translate-y-10'
+              ? 'translate-y-0' 
+              : 'translate-y-10'
           }`}
         >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
@@ -49,8 +49,8 @@ export default function ProjectsHome() {
               key={project.id}
               className={`group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 ${
                 gridInView
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-10'
+                  ? 'translate-y-0'
+                  : 'translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
@@ -86,8 +86,8 @@ export default function ProjectsHome() {
         <div 
           className={`text-center mt-12 transition-all duration-1000 delay-700 ${
             gridInView
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-10'
+              ? 'translate-y-0'
+              : 'translate-y-10'
           }`}
         >
           <Link href="/projecten">
