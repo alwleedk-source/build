@@ -71,6 +71,7 @@ export const blogPosts = mysqlTable("blogPosts", {
   category: varchar("category", { length: 100 }).notNull(),
   authorId: int("authorId").notNull(),
   published: int("published").default(0).notNull(), // 0 = draft, 1 = published
+  order: int("order").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

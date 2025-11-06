@@ -845,3 +845,42 @@ This is appropriate for this project because:
 - Footer: footerCopyright, footerDescription
 - Analytics: googleAnalytics, facebookPixel, customTrackingCode
 - Homepage: showHero, showServices, showProjects, showTestimonials, showPartners, showContact
+
+
+## 🔄 Fix Drag & Drop Order Not Reflecting on Homepage - COMPLETED ✅
+
+### Problem
+- [x] Drag & drop reordering worked in admin dashboard
+- [x] But order didn't reflect on public homepage for Services and Blog
+- [x] Affected: Services, Blog Posts
+
+### Root Cause Found
+- [x] Services: `getHomepageServices()` used `orderBy(desc(services.createdAt))` instead of `orderBy(services.order)`
+- [x] Blog Posts: Missing `order` field in schema + used `orderBy(desc(blogPosts.createdAt))`
+- [x] Projects, Partners, Testimonials: Already working correctly with `orderBy(*.order)`
+
+### Implementation Completed
+1. **server/db.ts**
+   - [x] Fixed `getHomepageServices()`: Changed from `orderBy(desc(services.createdAt))` to `orderBy(services.order)`
+   - [x] Fixed `getPublishedBlogPosts()`: Changed from `orderBy(desc(blogPosts.createdAt))` to `orderBy(blogPosts.order)`
+
+2. **drizzle/schema.ts**
+   - [x] Added `order: int("order").default(0).notNull()` to blogPosts table
+
+3. **Database Migration**
+   - [x] Ran `pnpm db:push` successfully
+   - [x] Migration file created: drizzle/0006_woozy_vivisector.sql
+   - [x] Migration applied to database
+
+### Testing Results
+- [x] Checked Services section on homepage
+- [x] Order matches exactly with admin dashboard order
+- [x] System now respects drag & drop ordering for all sections
+
+### Summary
+**Working Correctly (uses order field):**
+- ✅ Projects: `orderBy(projects.order)`
+- ✅ Services: `orderBy(services.order)` (FIXED)
+- ✅ Blog Posts: `orderBy(blogPosts.order)` (FIXED)
+- ✅ Partners: `orderBy(partners.order)`
+- ✅ Testimonials: `orderBy(testimonials.order)`

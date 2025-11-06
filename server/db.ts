@@ -165,7 +165,7 @@ export async function getAllServices() {
 export async function getHomepageServices() {
   const db = await getDb();
   if (!db) return [];
-  return await db.select().from(services).where(eq(services.showOnHomepage, 1)).orderBy(desc(services.createdAt));
+  return await db.select().from(services).where(eq(services.showOnHomepage, 1)).orderBy(services.order);
 }
 
 export async function getServiceBySlug(slug: string) {
@@ -222,7 +222,7 @@ export async function getAllBlogPosts() {
 export async function getPublishedBlogPosts() {
   const db = await getDb();
   if (!db) return [];
-  return await db.select().from(blogPosts).where(eq(blogPosts.published, 1)).orderBy(desc(blogPosts.createdAt));
+  return await db.select().from(blogPosts).where(eq(blogPosts.published, 1)).orderBy(blogPosts.order);
 }
 
 export async function getBlogPostBySlug(slug: string) {
