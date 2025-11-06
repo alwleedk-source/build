@@ -668,3 +668,67 @@ Modified all create/update functions to return `{ success: true }` instead of ra
 - Initial 403 error may still appear once if user not authenticated (expected behavior)
 - Repeated errors (spam) completely eliminated
 - Console now clean after fixes
+
+
+## 🔍 403 Authentication Error - FIXED ✅
+
+### Issue
+- [x] 403 error was appearing when accessing Email Settings page directly
+- [x] Root cause: tRPC query executed before authentication check completed
+- [x] Query tried to access admin-only endpoint without verified session
+
+### Solution Applied (EmailSettings.tsx)
+- [x] Added authentication check using useAuth() hook
+- [x] Added automatic redirect to /login if not authenticated
+- [x] Added `enabled: isAuthenticated` to tRPC query options
+- [x] Query only executes after authentication is verified
+- [x] Added loading state during authentication check
+- [x] Return null if not authenticated (prevents rendering before redirect)
+
+### Code Changes
+```typescript
+// Added imports
+import { useAuth } from "@/_core/hooks/useAuth";
+import { useLocation } from "wouter";
+
+// Added authentication check
+const { isAuthenticated, loading: authLoading } = useAuth();
+const [, setLocation] = useLocation();
+
+useEffect(() => {
+  if (!authLoading && !isAuthenticated) {
+    setLocation("/login");
+  }
+}, [authLoading, isAuthenticated, setLocation]);
+
+// Modified query to only run when authenticated
+const { data: emailSettings, isLoading } = trpc.emailSettings.get.useQuery(undefined, {
+  retry: false,
+  refetchOnWindowFocus: false,
+  refetchOnMount: false,
+  enabled: isAuthenticated, // ← KEY FIX
+});
+
+// Added authentication loading check
+if (authLoading || isLoading) {
+  return <AdminLayout>...</AdminLayout>;
+}
+
+if (!isAuthenticated) {
+  return null;
+}
+```
+
+### Testing Results
+- [x] Console is completely clean (no 403 errors)
+- [x] Page loads correctly when authenticated
+- [x] Automatic redirect works when not authenticated
+- [x] All SMTP settings functionality preserved
+- [x] Save functionality works correctly
+- [x] No performance impact
+
+### Impact
+✅ **Problem completely solved** - no more 403 errors in console
+✅ **Better UX** - automatic redirect to login if not authenticated
+✅ **Cleaner code** - proper authentication flow
+✅ **No side effects** - all existing functionality works perfectly
