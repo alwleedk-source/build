@@ -7,10 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save, Palette, Globe, Phone, Share2, Search, FileText, Code } from "lucide-react";
+import { Save, Palette, Globe, Phone, Share2, Search, FileText, Code, Mail } from "lucide-react";
+import { useLocation } from "wouter";
 import { toast } from "sonner";
 
 export default function SettingsAdmin() {
+  const [, setLocation] = useLocation();
   const [settings, setSettings] = useState({
     // General
     siteTitle: "BuildCraft - Professional Construction Services",
@@ -80,7 +82,7 @@ export default function SettingsAdmin() {
 
         {/* Tabs */}
         <Tabs defaultValue="general" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-8 gap-2">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-9 gap-2">
             <TabsTrigger value="general" className="gap-2">
               <Globe className="w-4 h-4" />
               <span className="hidden sm:inline">Algemeen</span>
@@ -112,6 +114,10 @@ export default function SettingsAdmin() {
             <TabsTrigger value="analytics" className="gap-2">
               <Code className="w-4 h-4" />
               <span className="hidden sm:inline">Analytics</span>
+            </TabsTrigger>
+            <TabsTrigger value="email" className="gap-2">
+              <Mail className="w-4 h-4" />
+              <span className="hidden sm:inline">Email</span>
             </TabsTrigger>
           </TabsList>
 
@@ -505,6 +511,30 @@ export default function SettingsAdmin() {
                   <Save className="w-4 h-4 mr-2" />
                   Opslaan
                 </Button>
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* Email Tab */}
+          <TabsContent value="email">
+            <Card className="p-6">
+              <div>
+                <h2 className="text-xl font-semibold mb-2">Email Instellingen</h2>
+                <p className="text-muted-foreground mb-6">
+                  Configureer SMTP-instellingen voor automatische email antwoorden en notificaties
+                </p>
+                <div className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    Voor uitgebreide email configuratie, inclusief SMTP-instellingen, automatische antwoorden en admin notificaties:
+                  </p>
+                  <Button
+                    onClick={() => setLocation("/admin/settings/email")}
+                    className="gap-2"
+                  >
+                    <Mail className="w-4 h-4" />
+                    Ga naar Email Instellingen
+                  </Button>
+                </div>
               </div>
             </Card>
           </TabsContent>

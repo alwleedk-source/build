@@ -154,7 +154,6 @@ export default function EmailSettings() {
                     placeholder="smtp.gmail.com"
                     value={formData.smtpHost}
                     onChange={(e) => setFormData({ ...formData, smtpHost: e.target.value })}
-                    required
                   />
                 </div>
 
@@ -166,7 +165,6 @@ export default function EmailSettings() {
                     placeholder="587"
                     value={formData.smtpPort}
                     onChange={(e) => setFormData({ ...formData, smtpPort: parseInt(e.target.value) })}
-                    required
                   />
                   <p className="text-xs text-muted-foreground">
                     Gebruik 587 voor TLS of 465 voor SSL
@@ -186,7 +184,6 @@ export default function EmailSettings() {
                       className="pl-10"
                       value={formData.smtpUser}
                       onChange={(e) => setFormData({ ...formData, smtpUser: e.target.value })}
-                      required
                     />
                   </div>
                 </div>
@@ -202,7 +199,6 @@ export default function EmailSettings() {
                       className="pl-10"
                       value={formData.smtpPassword}
                       onChange={(e) => setFormData({ ...formData, smtpPassword: e.target.value })}
-                      required
                     />
                   </div>
                 </div>
@@ -231,7 +227,6 @@ export default function EmailSettings() {
                     placeholder="info@buildcraft.nl"
                     value={formData.fromEmail}
                     onChange={(e) => setFormData({ ...formData, fromEmail: e.target.value })}
-                    required
                   />
                 </div>
 
@@ -345,7 +340,6 @@ export default function EmailSettings() {
                     placeholder="admin@buildcraft.nl"
                     value={formData.notificationEmail}
                     onChange={(e) => setFormData({ ...formData, notificationEmail: e.target.value })}
-                    required={formData.notificationEnabled === 1}
                   />
                   <p className="text-xs text-muted-foreground">
                     Dit email adres ontvangt notificaties wanneer klanten een bericht versturen

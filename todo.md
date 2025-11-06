@@ -595,3 +595,34 @@ Modified all create/update functions to return `{ success: true }` instead of ra
 - [x] Yellow warning box for Gmail App Password requirement
 - [x] Direct link to Google's App Password instructions
 - [x] List of SMTP providers with ports and availability notes
+
+
+## 🐛 Email Settings Issues
+
+- [ ] Fix save error: "Fout bij opslaan van email instellingen"
+- [ ] Add Email Settings link/card to main Settings page (/admin/settings)
+- [ ] Make Email Settings accessible from Settings page navigation
+
+
+## 🐛 Email Settings Issues - FIXED ✅
+
+### Save Error Fix
+- [x] Fixed "Fout bij opslaan" error when saving email settings
+- [x] Removed `.email()` validation from optional fields (fromEmail, notificationEmail)
+- [x] Removed `required` attribute from all HTML inputs
+- [x] Added missing `notificationEnabled` and `notificationEmail` to tRPC schema
+- [x] Changed schema validation to allow empty strings for optional fields
+
+### Accessibility Fix
+- [x] Added Email Settings link/tab to main Settings page (/admin/settings)
+- [x] Added "Email" tab (9th tab) in Settings page
+- [x] Added button "Ga naar Email Instellingen" to navigate to /admin/settings/email
+- [x] Email Settings now accessible from both:
+  * Direct URL: /admin/settings/email
+  * Settings page: /admin/settings → Email tab
+
+### Testing
+- [x] Tested save functionality - works without errors
+- [x] Tested navigation from Settings page - works correctly
+- [x] Verified console logs - no errors
+- [x] Confirmed all fields save properly

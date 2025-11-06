@@ -374,11 +374,13 @@ export const appRouter = router({
         smtpPort: z.number().optional(),
         smtpUser: z.string().optional(),
         smtpPassword: z.string().optional(),
-        fromEmail: z.string().email().optional(),
+        fromEmail: z.string().optional(),
         fromName: z.string().optional(),
         autoReplyEnabled: z.number().optional(),
         autoReplySubject: z.string().optional(),
         autoReplyMessage: z.string().optional(),
+        notificationEnabled: z.number().optional(),
+        notificationEmail: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         return await db.upsertEmailSettings(input as any);
