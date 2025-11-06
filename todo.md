@@ -983,3 +983,21 @@ This is appropriate for this project because:
 - [x] Button disables during submission
 - [x] Cooldown prevents spam clicks
 - [x] Server protected from resource abuse
+
+
+## 📧 Resend Email Integration - In Progress
+
+### Goal
+Add email sending functionality using Resend for:
+- Auto-reply to customers when they submit contact form
+- Admin notifications when new message arrives
+
+### Tasks
+- [ ] Install resend package
+- [ ] Request RESEND_API_KEY from user
+- [ ] Create email templates (auto-reply, admin notification)
+- [ ] Add backend logic in contactMessages.create mutation
+- [ ] Test auto-reply email
+- [ ] Test admin notification email
+- [ ] Verify Email Settings page controls work
+- [ ] Full end-to-end test from website to admin panel

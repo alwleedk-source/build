@@ -344,28 +344,41 @@ export const appRouter = router({
         
         // Send auto-reply email if enabled
         try {
+          console.log('[EMAIL] Fetching email settings...');
           const emailSettings = await db.getEmailSettings();
+          console.log('[EMAIL] Email settings:', emailSettings);
           if (emailSettings) {
             const { sendEmail, generateAutoReplyEmail, generateAdminNotificationEmail } = await import('./email');
             
             // Send auto-reply to customer
+            console.log('[EMAIL] Auto-reply enabled:', emailSettings.autoReplyEnabled);
             if (emailSettings.autoReplyEnabled === 1) {
-              const { html, text } = generateAutoReplyEmail(
+              console.log('[EMAIL] Sending auto-reply to:', input.email);
+              const { html, text, subject } = generateAutoReplyEmail(
                 input.name,
-                emailSettings.autoReplyMessage?.replace('{naam}', input.name)
+                input.message,
+                emailSettings.autoReplySubject || 'Bedankt voor uw bericht'
               );
               
-              await sendEmail(emailSettings, {
+              const result = await sendEmail({
                 to: input.email,
-                subject: emailSettings.autoReplySubject || 'Bedankt voor uw bericht',
+                subject,
                 html,
                 text,
               });
+              
+              console.log('[EMAIL] Auto-reply result:', result);
+              if (!result.success) {
+                console.error('[EMAIL] Failed to send auto-reply:', result.error);
+              } else {
+                console.log('[EMAIL] Auto-reply sent successfully!');
+              }
             }
-            
-            // Send notification to admin
+                   // Send admin notification if enabled
+            console.log('[EMAIL] Notifications enabled:', emailSettings.notificationEnabled);
+            console.log('[EMAIL] Notification email:', emailSettings.notificationEmail);
             if (emailSettings.notificationEnabled === 1 && emailSettings.notificationEmail) {
-              const adminUrl = process.env.VITE_APP_URL || 'https://buildcraft.manus.space';
+              console.log('[EMAIL] Sending admin notification to:', emailSettings.notificationEmail);            const adminUrl = process.env.VITE_APP_URL || 'http://localhost:3000';
               const { html: adminHtml, text: adminText } = generateAdminNotificationEmail(
                 input.name,
                 input.email,
@@ -375,12 +388,19 @@ export const appRouter = router({
                 adminUrl
               );
               
-              await sendEmail(emailSettings, {
+              const notifResult = await sendEmail({
                 to: emailSettings.notificationEmail,
                 subject: `Nieuw bericht van ${input.name}`,
                 html: adminHtml,
                 text: adminText,
               });
+              
+              console.log('[EMAIL] Admin notification result:', notifResult);
+              if (!notifResult.success) {
+                console.error('[EMAIL] Failed to send admin notification:', notifResult.error);
+              } else {
+                console.log('[EMAIL] Admin notification sent successfully!');
+              }
             }
           }
         } catch (emailError) {
