@@ -113,6 +113,20 @@
 - [x] Homepage settings page (/admin/settings/home):
   - [x] Control Hero section visibility
   - [x] Control sections visibility (Services, Projects, Testimonials, Contact)
+- [x] Advanced Settings page (/admin/settings):
+  - [x] 6 organized tabs (Algemeen, Homepage, Contact, Social, SEO, Footer)
+  - [x] Website title and description management
+  - [x] Logo URL with preview
+  - [x] Primary and secondary color pickers with preview
+  - [x] Homepage sections visibility toggles (Hero, Services, Projects, Testimonials, Contact)
+  - [x] Contact information (email, phone, address)
+  - [x] Social media links (Facebook, LinkedIn, Instagram)
+  - [x] SEO meta tags (title, description, keywords)
+  - [x] Footer content (copyright, description)
+  - [x] Individual save buttons for each field
+  - [x] "Save All" button to save all settings at once
+  - [x] Settings connected to database via siteSettings table
+  - [x] Homepage dynamically shows/hides sections based on settings
 - [x] Protected routes (require authentication)
 - [x] Login/Logout functionality
 
@@ -600,3 +614,69 @@ All core features are implemented, tested, and working perfectly:
 - ✅ Settings page simplified and easy to use
 
 **Ready for production!** 🚀
+
+
+## 🚀 Advanced Settings Enhancement (User Request)
+
+### Homepage Sections Control
+- [ ] Add toggle switches to show/hide sections:
+  - [ ] Hero Section (show/hide)
+  - [ ] Services Section (show/hide)
+  - [ ] Projects Section (show/hide)
+  - [ ] Testimonials Section (show/hide)
+  - [ ] Contact Form (show/hide)
+- [ ] Save section visibility settings to database
+- [ ] Update homepage to respect visibility settings
+
+### Visual Identity Settings
+- [ ] Logo upload and management:
+  - [ ] Upload logo image
+  - [ ] Preview logo before saving
+  - [ ] Set logo dimensions (width, height)
+  - [ ] Logo alt text for SEO
+- [ ] Favicon upload and management
+- [ ] Site name/title (editable)
+- [ ] Primary color picker (visual color selection)
+- [ ] Secondary color picker
+- [ ] Apply colors dynamically to website
+
+### SEO Settings
+- [ ] Meta title (for homepage)
+- [ ] Meta description (for homepage)
+- [ ] Meta keywords
+- [ ] Open Graph image upload
+- [ ] Twitter Card settings
+
+### Footer Settings
+- [ ] Copyright text (editable)
+- [ ] Footer links management:
+  - [ ] Privacy Policy link
+  - [ ] Terms & Conditions link
+  - [ ] Cookie Policy link
+- [ ] Footer description text
+
+### Settings Page Redesign
+- [ ] Organize settings into tabs:
+  - [ ] General (site name, logo, colors)
+  - [ ] Homepage (sections visibility)
+  - [ ] Contact (email, phone, address)
+  - [ ] Social Media (Facebook, LinkedIn, Instagram)
+  - [ ] SEO (meta tags, keywords)
+  - [ ] Footer (copyright, links)
+- [ ] Add visual previews where applicable
+- [ ] Add color pickers for colors
+- [ ] Add image upload components
+- [ ] Add toggle switches for boolean settings
+- [ ] Improve UX with better organization
+
+### Database Updates
+- [ ] Add new settings to siteSettings table or create new tables
+- [ ] Seed default values for new settings
+- [ ] Update tRPC procedures to handle new settings
+
+### Frontend Integration
+- [ ] Update Header component to use logo from settings
+- [ ] Update Home component to respect section visibility
+- [ ] Update Footer component to use settings
+- [ ] Apply color theme from settings
+- [ ] Update meta tags from SEO settings

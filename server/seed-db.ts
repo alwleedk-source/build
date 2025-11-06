@@ -464,6 +464,96 @@ async function seed() {
       key: 'address',
       value: 'Bouwstraat 123, 1012 AB Amsterdam',
       type: 'text' as const
+    },
+    // Homepage Sections Visibility
+    {
+      key: 'show_hero_section',
+      value: 'true',
+      type: 'boolean' as const
+    },
+    {
+      key: 'show_services_section',
+      value: 'true',
+      type: 'boolean' as const
+    },
+    {
+      key: 'show_projects_section',
+      value: 'true',
+      type: 'boolean' as const
+    },
+    {
+      key: 'show_testimonials_section',
+      value: 'true',
+      type: 'boolean' as const
+    },
+    {
+      key: 'show_contact_section',
+      value: 'true',
+      type: 'boolean' as const
+    },
+    // Visual Identity
+    {
+      key: 'site_logo',
+      value: '/logo.png',
+      type: 'text' as const
+    },
+    {
+      key: 'site_favicon',
+      value: '/favicon.ico',
+      type: 'text' as const
+    },
+    {
+      key: 'primary_color',
+      value: '#D4AF37',
+      type: 'text' as const
+    },
+    {
+      key: 'secondary_color',
+      value: '#1a1a1a',
+      type: 'text' as const
+    },
+    // SEO Settings
+    {
+      key: 'meta_title',
+      value: 'BuildCraft - Professional Construction Services',
+      type: 'text' as const
+    },
+    {
+      key: 'meta_description',
+      value: 'Professionele bouw- en onderhoudsdiensten voor uw dromen. Meer dan 15 jaar ervaring in nieuwbouw, renovatie en onderhoud.',
+      type: 'text' as const
+    },
+    {
+      key: 'meta_keywords',
+      value: 'bouw, constructie, nieuwbouw, renovatie, onderhoud, amsterdam, nederland',
+      type: 'text' as const
+    },
+    // Footer Settings
+    {
+      key: 'footer_copyright',
+      value: '© 2025 BuildCraft. Alle rechten voorbehouden.',
+      type: 'text' as const
+    },
+    {
+      key: 'footer_description',
+      value: 'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden in Nederland.',
+      type: 'text' as const
+    },
+    // Social Media (already exist, but adding for completeness)
+    {
+      key: 'facebook_url',
+      value: 'https://facebook.com/buildcraft',
+      type: 'text' as const
+    },
+    {
+      key: 'linkedin_url',
+      value: 'https://linkedin.com/company/buildcraft',
+      type: 'text' as const
+    },
+    {
+      key: 'instagram_url',
+      value: 'https://instagram.com/buildcraft',
+      type: 'text' as const
     }
   ];
 
