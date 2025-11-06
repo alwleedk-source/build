@@ -459,3 +459,42 @@ All core features are implemented, tested, and working perfectly:
 ## 🐛 Bug: Toast Notification Error in Testimonials Admin
 
 - [ ] Fix "Fout bij opslaan" error message in TestimonialsAdmin.tsx (data saves successfully but shows error toast)
+
+
+## 🐛 Bug Fixes Log
+
+### 2025-11-06: Fixed tRPC Serialization Error in All Admin Pages
+
+**Problem:**
+User reported "Fout bij opslaan" (Save error) appearing across all admin pages when saving data, even though the data was being saved successfully to the database.
+
+**Root Cause:**
+All create/update database functions in `server/db.ts` were returning Drizzle's raw result objects, which are not serializable by tRPC. This caused tRPC mutations to throw serialization errors on the frontend, displaying error messages even though the database operations succeeded.
+
+**Solution:**
+Modified all create/update functions to return `{ success: true }` instead of raw Drizzle results:
+
+**Files Changed:**
+- `server/db.ts` - 10 functions modified:
+  * `createProject` (line 126)
+  * `updateProject` (line 133)
+  * `createService` (line 183)
+  * `updateService` (line 190)
+  * `createBlogPost` (line 240)
+  * `updateBlogPost` (line 247)
+  * `createPartner` (line 280)
+  * `updatePartner` (line 287)
+  * `createTestimonial` (line 352) - Already fixed
+  * `updateTestimonial` (line 359) - Already fixed
+
+**Testing Results:**
+✅ Projects: Add/Edit works without errors
+✅ Services: Add/Edit works without errors
+✅ Blog: Add/Edit works without errors
+✅ Partners: Add/Edit works without errors
+✅ Testimonials: Add/Edit works without errors
+✅ No "Fout bij opslaan" messages appear
+✅ All data saves correctly to database
+✅ Console clean from tRPC errors
+
+**Status:** ✅ FIXED - All admin save operations now work correctly

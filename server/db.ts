@@ -126,14 +126,15 @@ export async function getProjectById(id: number) {
 export async function createProject(project: InsertProject) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(projects).values(project);
-  return result;
+  await db.insert(projects).values(project);
+  return { success: true };
 }
 
 export async function updateProject(id: number, project: Partial<InsertProject>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(projects).set(project).where(eq(projects.id, id));
+  return { success: true };
 }
 
 export async function deleteProject(id: number) {
@@ -182,14 +183,15 @@ export async function getServiceById(id: number) {
 export async function createService(service: InsertService) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(services).values(service);
-  return result;
+  await db.insert(services).values(service);
+  return { success: true };
 }
 
 export async function updateService(id: number, service: Partial<InsertService>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(services).set(service).where(eq(services.id, id));
+  return { success: true };
 }
 
 export async function deleteService(id: number) {
@@ -238,14 +240,15 @@ export async function getBlogPostById(id: number) {
 export async function createBlogPost(post: InsertBlogPost) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(blogPosts).values(post);
-  return result;
+  await db.insert(blogPosts).values(post);
+  return { success: true };
 }
 
 export async function updateBlogPost(id: number, post: Partial<InsertBlogPost>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(blogPosts).set(post).where(eq(blogPosts.id, id));
+  return { success: true };
 }
 
 export async function deleteBlogPost(id: number) {
@@ -277,14 +280,15 @@ export async function getPartnerById(id: number) {
 export async function createPartner(partner: InsertPartner) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(partners).values(partner);
-  return result;
+  await db.insert(partners).values(partner);
+  return { success: true };
 }
 
 export async function updatePartner(id: number, partner: Partial<InsertPartner>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(partners).set(partner).where(eq(partners.id, id));
+  return { success: true };
 }
 
 export async function deletePartner(id: number) {

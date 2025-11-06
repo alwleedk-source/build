@@ -1,0 +1,9 @@
+{
+  "query": "DELETE FROM partners WHERE name LIKE '%Test%'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hgcqxRCJXsF3Ww.6d9ac6c039ef --database RvJDY4Kv7DP2d6KMfMpU4s --execute DELETE FROM partners WHERE name LIKE '%Test%'",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 56
+}
