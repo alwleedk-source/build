@@ -27,67 +27,84 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-muted/30">
+    <section id="contact" className="py-24 bg-muted/30 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
+      
       <div className="container">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        {/* Section Header */}
+        <ScrollReveal>
+        <div className="max-w-2xl mx-auto text-center mb-16">
+          <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
+            Neem Contact Op
+          </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+            Laten we uw project bespreken
+          </h2>
+          <p className="text-lg text-muted-foreground">
+            Heeft u een bouwproject in gedachten? Neem contact met ons op voor een vrijblijvende offerte.
+          </p>
+        </div>
+        </ScrollReveal>
+
+        <div className="grid lg:grid-cols-2 gap-16 items-start max-w-6xl mx-auto">
           {/* Left: Contact Info */}
-          <ScrollReveal>
-          <div>
-            <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
-              Neem Contact Op
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Laten we uw project bespreken
-            </h2>
-            <p className="text-lg text-muted-foreground mb-12">
-              Heeft u een bouwproject in gedachten? Neem contact met ons op voor een vrijblijvende offerte.
-            </p>
-
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground mb-1">Telefoon</p>
-                  <a href="tel:+31612345678" className="text-muted-foreground hover:text-primary transition-colors">
-                    +31 6 1234 5678
-                  </a>
-                </div>
+          <div className="space-y-8">
+            {/* Phone */}
+            <ScrollReveal delay={0.1}>
+            <div className="flex items-start gap-6 p-6 rounded-2xl bg-card border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300 group">
+              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+                <Phone className="w-7 h-7 text-primary" />
               </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground mb-1">Email</p>
-                  <a href="mailto:info@buildcraft.nl" className="text-muted-foreground hover:text-primary transition-colors">
-                    info@buildcraft.nl
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground mb-1">Adres</p>
-                  <p className="text-muted-foreground">
-                    Bouwstraat 123<br />
-                    1234 AB Amsterdam<br />
-                    Nederland
-                  </p>
-                </div>
+              <div>
+                <p className="font-semibold text-foreground mb-2 text-lg">Telefoon</p>
+                <a href="tel:+31612345678" className="text-muted-foreground hover:text-primary transition-colors text-lg">
+                  +31 6 1234 5678
+                </a>
+                <p className="text-sm text-muted-foreground mt-1">Ma-Vr: 8:00 - 18:00</p>
               </div>
             </div>
+            </ScrollReveal>
+
+            {/* Email */}
+            <ScrollReveal delay={0.2}>
+            <div className="flex items-start gap-6 p-6 rounded-2xl bg-card border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300 group">
+              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+                <Mail className="w-7 h-7 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground mb-2 text-lg">Email</p>
+                <a href="mailto:info@buildcraft.nl" className="text-muted-foreground hover:text-primary transition-colors text-lg">
+                  info@buildcraft.nl
+                </a>
+                <p className="text-sm text-muted-foreground mt-1">Reactie binnen 24 uur</p>
+              </div>
+            </div>
+            </ScrollReveal>
+
+            {/* Address */}
+            <ScrollReveal delay={0.3}>
+            <div className="flex items-start gap-6 p-6 rounded-2xl bg-card border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300 group">
+              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+                <MapPin className="w-7 h-7 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground mb-2 text-lg">Adres</p>
+                <p className="text-muted-foreground text-lg">
+                  Bouwstraat 123<br />
+                  1234 AB Amsterdam<br />
+                  Nederland
+                </p>
+              </div>
+            </div>
+            </ScrollReveal>
           </div>
-          </ScrollReveal>
 
           {/* Right: Contact Form */}
-          <ScrollReveal delay={0.2}>
-          <div className="bg-card p-8 rounded-2xl border border-border">
+          <ScrollReveal delay={0.4}>
+          <div className="bg-card p-8 rounded-2xl border border-border shadow-xl hover:shadow-2xl transition-all duration-300">
+            <h3 className="text-2xl font-bold text-foreground mb-6">Stuur ons een bericht</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
@@ -100,7 +117,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                   placeholder="Uw naam"
                 />
               </div>
@@ -116,7 +133,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                   placeholder="uw@email.nl"
                 />
               </div>
@@ -131,7 +148,7 @@ export default function Contact() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                   placeholder="+31 6 1234 5678"
                 />
               </div>
@@ -147,14 +164,14 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows={5}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
                   placeholder="Vertel ons over uw project..."
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 rounded-xl transition-all"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 rounded-xl transition-all hover:scale-105 hover:shadow-lg"
               >
                 Verstuur bericht
                 <svg

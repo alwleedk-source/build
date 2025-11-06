@@ -1,31 +1,14 @@
 import { Star } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
-
-const testimonials = [
-  {
-    name: 'Jan de Vries',
-    role: 'Huiseigenaar',
-    content: 'BuildCraft heeft ons huis prachtig gerenoveerd. Professioneel, op tijd en binnen budget. Zeer tevreden!',
-    rating: 5,
-    image: 'https://i.pravatar.cc/150?img=12',
-  },
-  {
-    name: 'Sophie van Dam',
-    role: 'Bedrijfseigenaar',
-    content: 'Uitstekende service en vakmanschap. Ons kantoorpand is volledig getransformeerd. Aanrader!',
-    rating: 5,
-    image: 'https://i.pravatar.cc/150?img=45',
-  },
-  {
-    name: 'Mark Jansen',
-    role: 'Projectontwikkelaar',
-    content: 'Betrouwbare partner voor al onze bouwprojecten. Kwaliteit en communicatie zijn top!',
-    rating: 5,
-    image: 'https://i.pravatar.cc/150?img=33',
-  },
-];
+import { trpc } from '@/lib/trpc';
 
 export default function Testimonials() {
+  const { data: testimonials = [] } = trpc.testimonials.getAll.useQuery();
+
+  if (testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <section id="reviews" className="py-24 bg-background">
       <div className="container">
@@ -47,17 +30,20 @@ export default function Testimonials() {
         {/* Testimonials Grid */}
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <ScrollReveal key={index} delay={index * 0.1}>
+            <ScrollReveal key={testimonial.id} delay={index * 0.15}>
             <div
-              className="p-8 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
+              className="p-8 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:scale-105"
             >
-              {/* Rating with sparkle animation */}
+              {/* Rating with sequential stagger animation */}
               <div className="flex gap-1 mb-6">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
                   <Star 
                     key={i} 
-                    className="w-5 h-5 fill-primary text-primary animate-sparkle" 
-                    style={{ animationDelay: `${i * 0.1}s` }}
+                    className="w-5 h-5 fill-primary text-primary animate-star-pop" 
+                    style={{ 
+                      animationDelay: `${(index * 0.15) + (i * 0.1)}s`,
+                      opacity: 0
+                    }}
                   />
                 ))}
               </div>
@@ -69,17 +55,26 @@ export default function Testimonials() {
 
               {/* Author */}
               <div className="flex items-center gap-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
+                {testimonial.image ? (
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-lg font-semibold text-primary">
+                      {testimonial.name.charAt(0)}
+                    </span>
+                  </div>
+                )}
                 <div>
                   <p className="font-semibold text-foreground">
                     {testimonial.name}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {testimonial.role}
+                    {testimonial.position}
+                    {testimonial.company && ` - ${testimonial.company}`}
                   </p>
                 </div>
               </div>
@@ -90,23 +85,22 @@ export default function Testimonials() {
       </div>
       
       <style>{`
-        @keyframes sparkle {
-          0%, 100% {
-            transform: scale(1);
-            opacity: 1;
+        @keyframes star-pop {
+          0% {
+            transform: scale(0) rotate(-180deg);
+            opacity: 0;
           }
           50% {
-            transform: scale(1.2);
-            opacity: 0.8;
+            transform: scale(1.2) rotate(10deg);
+          }
+          100% {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
           }
         }
         
-        .animate-sparkle {
-          animation: sparkle 2s ease-in-out infinite;
-        }
-        
-        .animate-sparkle:hover {
-          animation: sparkle 0.5s ease-in-out infinite;
+        .animate-star-pop {
+          animation: star-pop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
       `}</style>
     </section>

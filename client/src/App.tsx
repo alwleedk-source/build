@@ -20,6 +20,7 @@ import ServiceForm from "@/pages/admin/ServiceForm";
 import BlogPosts from "@/pages/admin/BlogPosts";
 import BlogPostForm from "@/pages/admin/BlogPostForm";
 import Partners from "@/pages/admin/Partners";
+import TestimonialsAdmin from "@/pages/admin/TestimonialsAdmin";
 import HomeSettings from "@/pages/admin/HomeSettings";
 import SettingsAdmin from "@/pages/admin/SettingsAdmin";
 import Login from "./pages/Login";
@@ -44,6 +45,7 @@ function Router() {
       <Route path="/admin/blog" component={BlogPosts} />
           <Route path="/admin/blog/:id" component={BlogPostForm} />
           <Route path="/admin/partners" component={Partners} />
+          <Route path="/admin/testimonials" component={TestimonialsAdmin} />
           <Route path="/admin/settings/home" component={HomeSettings} />
           <Route path="/admin/settings" component={SettingsAdmin} />
       <Route path="/login" component={Login} />

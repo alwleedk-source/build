@@ -6,6 +6,7 @@ import {
   services, InsertService,
   blogPosts, InsertBlogPost,
   partners, InsertPartner,
+  testimonials, InsertTestimonial,
   siteSettings
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -337,4 +338,43 @@ export async function upsertSiteSetting(setting: { key: string; value: string; t
   }
   
   return { success: true };
+}
+
+
+// ========== Testimonials Functions ==========
+
+export async function getAllTestimonials() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(testimonials).orderBy(testimonials.order);
+}
+
+export async function createTestimonial(data: InsertTestimonial) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(testimonials).values(data);
+  return result;
+}
+
+export async function updateTestimonial(id: number, data: Partial<InsertTestimonial>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(testimonials).set(data).where(eq(testimonials.id, id));
+}
+
+export async function deleteTestimonial(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(testimonials).where(eq(testimonials.id, id));
+}
+
+export async function updateTestimonialsOrder(updates: { id: number; order: number }[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  for (const update of updates) {
+    await db.update(testimonials)
+      .set({ order: update.order })
+      .where(eq(testimonials.id, update.id));
+  }
 }

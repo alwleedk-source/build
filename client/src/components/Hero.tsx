@@ -11,15 +11,17 @@ export default function Hero() {
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <ScrollReveal>
           <div className="space-y-8">
             {/* Badge */}
+            <ScrollReveal delay={0}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <span className="text-sm font-medium text-foreground">Nieuwe beschikbaarheid</span>
             </div>
+            </ScrollReveal>
 
             {/* Heading */}
+            <ScrollReveal delay={0.1}>
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-foreground">
                 Bouw uw dromen
@@ -29,8 +31,10 @@ export default function Hero() {
                 Professionele bouw- en onderhoudsdiensten voor uw gebouwen. Van nieuwbouw tot renovatie, wij maken het mogelijk.
               </p>
             </div>
+            </ScrollReveal>
 
             {/* CTA Buttons */}
+            <ScrollReveal delay={0.2}>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="rounded-full group" asChild>
                 <a href="#contact">
@@ -42,27 +46,29 @@ export default function Hero() {
                 <a href="#diensten">Onze Diensten</a>
               </Button>
             </div>
+            </ScrollReveal>
 
             {/* Stats */}
+            <ScrollReveal delay={0.3}>
             <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
-              <div>
+              <div className="animate-count-up">
                 <div className="text-3xl md:text-4xl font-bold text-foreground">15+</div>
                 <div className="text-sm text-muted-foreground">Jaar ervaring</div>
               </div>
-              <div>
+              <div className="animate-count-up" style={{ animationDelay: '0.1s' }}>
                 <div className="text-3xl md:text-4xl font-bold text-foreground">500+</div>
                 <div className="text-sm text-muted-foreground">Projecten</div>
               </div>
-              <div>
+              <div className="animate-count-up" style={{ animationDelay: '0.2s' }}>
                 <div className="text-3xl md:text-4xl font-bold text-foreground">98%</div>
                 <div className="text-sm text-muted-foreground">Tevredenheid</div>
               </div>
             </div>
+            </ScrollReveal>
           </div>
-          </ScrollReveal>
 
           {/* Illustration */}
-          <ScrollReveal delay={0.2}>
+          <ScrollReveal delay={0.4}>
           <div className="relative lg:h-[600px] flex items-center justify-center">
             <svg
               viewBox="0 0 600 600"
@@ -146,8 +152,24 @@ export default function Hero() {
           }
         }
         
+        @keyframes count-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        
         .animate-float {
           animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-count-up {
+          animation: count-up 0.8s ease-out forwards;
+          opacity: 0;
         }
       `}</style>
     </section>

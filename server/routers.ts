@@ -4,7 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
-import { InsertProject, InsertService, InsertBlogPost, InsertPartner } from "../drizzle/schema";
+import { InsertProject, InsertService, InsertBlogPost, InsertPartner, InsertTestimonial } from "../drizzle/schema";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -276,6 +276,49 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         return await db.upsertSiteSetting(input);
+      }),
+  }),
+
+  // Testimonials router
+  testimonials: router({
+    getAll: publicProcedure.query(async () => {
+      return await db.getAllTestimonials();
+    }),
+    create: adminProcedure
+      .input(z.object({
+        name: z.string(),
+        position: z.string(),
+        company: z.string().optional(),
+        content: z.string(),
+        rating: z.number().min(1).max(5),
+        image: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.createTestimonial(input as InsertTestimonial);
+      }),
+    update: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        position: z.string().optional(),
+        company: z.string().optional(),
+        content: z.string().optional(),
+        rating: z.number().min(1).max(5).optional(),
+        image: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        return await db.updateTestimonial(id, data);
+      }),
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        return await db.deleteTestimonial(input.id);
+      }),
+    updateOrder: adminProcedure
+      .input(z.array(z.object({ id: z.number(), order: z.number() })))
+      .mutation(async ({ input }) => {
+        return await db.updateTestimonialsOrder(input);
       }),
   }),
 });

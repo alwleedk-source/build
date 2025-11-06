@@ -71,12 +71,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       icon: Users,
       path: "/admin/partners",
     },
+    {
+      title: "Testimonials",
+      icon: Star,
+      path: "/admin/testimonials",
+    },
     // Temporarily disabled - pages not created yet
-    // {
-    //   title: "Testimonials",
-    //   icon: Star,
-    //   path: "/admin/testimonials",
-    // },
     // {
     //   title: "Team",
     //   icon: Users,

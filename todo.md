@@ -407,3 +407,25 @@ All core features are implemented, tested, and working perfectly:
 - [x] Add Footer animations (fade-in on scroll)
 - [x] Add Services animations (fade-in and slide-up cards)
 - [x] Add Projects animations (fade-in and slide-up cards)
+
+
+## 🎨 Animation Improvements
+
+- [ ] Improve Testimonials stars animation (sequential stagger effect)
+- [ ] Improve Hero Section animations (separate animations for text, buttons, and stats)
+- [ ] Improve Contact Section animations (more visible and smooth)
+- [ ] Improve Footer animations (more visible and smooth)
+
+
+## 🎯 New Feature: Testimonials Management
+
+- [ ] Add testimonials API endpoints (getAll, create, update, delete, updateOrder)
+- [ ] Create Testimonials Admin page at /admin/testimonials
+- [ ] Add/Edit/Delete testimonials
+- [ ] Drag & Drop for reordering testimonials
+- [ ] Star rating selector (1-5 stars)
+- [ ] Customer photo upload
+- [ ] Show/Hide testimonial toggle
+- [ ] Connect Testimonials.tsx component to database
+- [ ] Add Testimonials to Sidebar navigation
+- [ ] Test in browser
