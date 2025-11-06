@@ -19,7 +19,9 @@ import Services from "@/pages/admin/Services";
 import ServiceForm from "@/pages/admin/ServiceForm";
 import BlogPosts from "@/pages/admin/BlogPosts";
 import BlogPostForm from "@/pages/admin/BlogPostForm";
+import Partners from "@/pages/admin/Partners";
 import HomeSettings from "@/pages/admin/HomeSettings";
+import SettingsAdmin from "@/pages/admin/SettingsAdmin";
 import Login from "./pages/Login";
 import Header from "./components/Header";
 
@@ -40,8 +42,10 @@ function Router() {
       <Route path="/admin/services" component={Services} />
       <Route path="/admin/services/:id" component={ServiceForm} />
       <Route path="/admin/blog" component={BlogPosts} />
-      <Route path="/admin/blog/:id" component={BlogPostForm} />
-      <Route path="/admin/settings/home" component={HomeSettings} />
+          <Route path="/admin/blog/:id" component={BlogPostForm} />
+          <Route path="/admin/partners" component={Partners} />
+          <Route path="/admin/settings/home" component={HomeSettings} />
+          <Route path="/admin/settings" component={SettingsAdmin} />
       <Route path="/login" component={Login} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}

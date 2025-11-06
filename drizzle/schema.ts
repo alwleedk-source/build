@@ -163,3 +163,18 @@ export const mediaLibrary = mysqlTable("mediaLibrary", {
 
 export type Media = typeof mediaLibrary.$inferSelect;
 export type InsertMedia = typeof mediaLibrary.$inferInsert;
+
+// Partners table
+export const partners = mysqlTable("partners", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  logo: varchar("logo", { length: 500 }).notNull(),
+  url: varchar("url", { length: 500 }),
+  isActive: int("isActive").default(1).notNull(), // 0 = inactive, 1 = active
+  order: int("order").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Partner = typeof partners.$inferSelect;
+export type InsertPartner = typeof partners.$inferInsert;

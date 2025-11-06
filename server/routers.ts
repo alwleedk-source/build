@@ -4,7 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
-import { InsertProject, InsertService, InsertBlogPost } from "../drizzle/schema";
+import { InsertProject, InsertService, InsertBlogPost, InsertPartner } from "../drizzle/schema";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -143,6 +143,61 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         await db.updateServicesOrder(input.items);
+        return { success: true };
+      }),
+  }),
+
+  // Partners router
+  partners: router({
+    getAll: publicProcedure.query(async () => {
+      return await db.getAllPartners();
+    }),
+    getActive: publicProcedure.query(async () => {
+      return await db.getActivePartners();
+    }),
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getPartnerById(input.id);
+      }),
+    create: adminProcedure
+      .input(z.object({
+        name: z.string(),
+        logo: z.string(),
+        url: z.string().optional(),
+        isActive: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.createPartner(input as InsertPartner);
+      }),
+    update: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        logo: z.string().optional(),
+        url: z.string().optional(),
+        isActive: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        await db.updatePartner(id, data);
+        return { success: true };
+      }),
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deletePartner(input.id);
+        return { success: true };
+      }),
+    updateOrder: adminProcedure
+      .input(z.object({
+        items: z.array(z.object({
+          id: z.number(),
+          order: z.number(),
+        })),
+      }))
+      .mutation(async ({ input }) => {
+        await db.updatePartnersOrder(input.items);
         return { success: true };
       }),
   }),

@@ -4,7 +4,8 @@ import {
   InsertUser, users,
   projects, InsertProject,
   services, InsertService,
-  blogPosts, InsertBlogPost
+  blogPosts, InsertBlogPost,
+  partners, InsertPartner
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -249,4 +250,53 @@ export async function deleteBlogPost(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.delete(blogPosts).where(eq(blogPosts.id, id));
+}
+
+// ========== Partners ==========
+export async function getAllPartners() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(partners).orderBy(partners.order);
+}
+
+export async function getActivePartners() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(partners).where(eq(partners.isActive, 1)).orderBy(partners.order);
+}
+
+export async function getPartnerById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(partners).where(eq(partners.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createPartner(partner: InsertPartner) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(partners).values(partner);
+  return result;
+}
+
+export async function updatePartner(id: number, partner: Partial<InsertPartner>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(partners).set(partner).where(eq(partners.id, id));
+}
+
+export async function deletePartner(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(partners).where(eq(partners.id, id));
+}
+
+export async function updatePartnersOrder(items: { id: number; order: number }[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Update each partner's order
+  for (const item of items) {
+    await db.update(partners).set({ order: item.order }).where(eq(partners.id, item.id));
+  }
 }

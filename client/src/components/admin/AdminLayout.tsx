@@ -66,6 +66,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       icon: FileText,
       path: "/admin/blog",
     },
+    {
+      title: "Partners",
+      icon: Users,
+      path: "/admin/partners",
+    },
     // Temporarily disabled - pages not created yet
     // {
     //   title: "Testimonials",
@@ -90,7 +95,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     {
       title: "Instellingen",
       icon: Settings,
-      path: "/admin/settings/home",
+      path: "/admin/settings",
     },
   ];
 

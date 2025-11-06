@@ -319,3 +319,36 @@ All core features are implemented, tested, and working perfectly:
 - [x] Add visual indicators during drag (cursor, opacity, GripVertical icon)
 - [x] Auto-save order to database on drop
 - [x] Test drag & drop functionality in browser
+
+
+## 🎯 New Feature: Advanced Settings System
+
+- [x] Create comprehensive settings page with 8 tabs (Algemeen, Homepage, Contact, Social, SEO, Footer, Kleuren, Analytics)
+- [x] Website information settings (title, description, logo)
+- [x] Color scheme settings (primary, secondary colors) with color pickers
+- [x] Contact information settings (email, phone, address)
+- [x] Social media links settings (Facebook, LinkedIn, Instagram, Twitter)
+- [x] SEO settings (meta title, description, keywords)
+- [x] Header settings (logo, navigation)
+- [x] Footer settings (copyright, description, links)
+- [x] Google Analytics code integration
+- [x] Additional tracking codes (Facebook Pixel, Custom Tracking Code)
+- [x] Homepage sections visibility toggles (Hero, Services, Projects, Testimonials, Partners, Contact)
+- [x] Individual save buttons for each field + "Save All" button
+- [x] Settings page accessible at /admin/settings
+
+## 🎯 New Feature: Partners Section
+
+- [x] Add partners table to database (name, logo, url, order, isActive)
+- [x] Create API endpoints for partners (getAll, getActive, create, update, delete, updateOrder)
+- [x] Create Partners admin page with Drag & Drop at /admin/partners
+- [x] Add partners section to homepage (PartnersSection.tsx)
+- [x] Add partners visibility toggle in settings (Homepage tab)
+- [x] Professional design for partners section (grid layout, grayscale to color hover)
+- [x] Logo display with hover effects (grayscale → color, shadow)
+- [x] Link to partner websites (clickable logos)
+- [x] Partners added to Sidebar navigation
+- [x] Drag handle icon (GripVertical) for reordering
+- [x] Active/Inactive status toggle
+- [x] Statistics cards (Total, Active)
+- [x] Tested with Volvo partner successfully
