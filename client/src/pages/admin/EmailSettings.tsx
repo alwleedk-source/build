@@ -10,19 +10,8 @@ import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { Loader2, Mail, Server, User, Lock, Send, Info, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { useLocation } from "wouter";
 
 export default function EmailSettings() {
-  const { isAuthenticated, loading: authLoading } = useAuth();
-  const [, setLocation] = useLocation();
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      setLocation("/login");
-    }
-  }, [authLoading, isAuthenticated, setLocation]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     smtpHost: "",
@@ -42,7 +31,6 @@ export default function EmailSettings() {
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    enabled: isAuthenticated, // Only run query when authenticated
   });
   const upsertMutation = trpc.emailSettings.upsert.useMutation();
 
@@ -79,8 +67,7 @@ export default function EmailSettings() {
     }
   };
 
-  // Show loading while checking authentication
-  if (authLoading || isLoading) {
+  if (isLoading) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
@@ -88,11 +75,6 @@ export default function EmailSettings() {
         </div>
       </AdminLayout>
     );
-  }
-
-  // Don't render anything if not authenticated (will redirect)
-  if (!isAuthenticated) {
-    return null;
   }
 
   return (

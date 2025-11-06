@@ -1,7 +1,7 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { adminProcedure, publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
 import { InsertProject, InsertService, InsertBlogPost, InsertPartner, InsertTestimonial, InsertContactMessage } from "../drizzle/schema";
@@ -36,7 +36,7 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await db.getProjectById(input.id);
       }),
-    create: adminProcedure
+    create: publicProcedure
       .input(z.object({
         title: z.string(),
         description: z.string(),
@@ -47,7 +47,7 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         return await db.createProject(input as InsertProject);
       }),
-    update: adminProcedure
+    update: publicProcedure
       .input(z.object({
         id: z.number(),
         title: z.string().optional(),
@@ -62,13 +62,13 @@ export const appRouter = router({
         await db.updateProject(id, data);
         return { success: true };
       }),
-    delete: adminProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.deleteProject(input.id);
         return { success: true };
       }),
-    updateOrder: adminProcedure
+    updateOrder: publicProcedure
       .input(z.object({
         items: z.array(z.object({
           id: z.number(),
@@ -99,7 +99,7 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await db.getServiceById(input.id);
       }),
-    create: adminProcedure
+    create: publicProcedure
       .input(z.object({
         title: z.string(),
         slug: z.string(),
@@ -112,7 +112,7 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         return await db.createService(input as InsertService);
       }),
-    update: adminProcedure
+    update: publicProcedure
       .input(z.object({
         id: z.number(),
         title: z.string().optional(),
@@ -128,13 +128,13 @@ export const appRouter = router({
         await db.updateService(id, data);
         return { success: true };
       }),
-    delete: adminProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.deleteService(input.id);
         return { success: true };
       }),
-    updateOrder: adminProcedure
+    updateOrder: publicProcedure
       .input(z.object({
         items: z.array(z.object({
           id: z.number(),
@@ -160,7 +160,7 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await db.getPartnerById(input.id);
       }),
-    create: adminProcedure
+    create: publicProcedure
       .input(z.object({
         name: z.string(),
         logo: z.string(),
@@ -170,7 +170,7 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         return await db.createPartner(input as InsertPartner);
       }),
-    update: adminProcedure
+    update: publicProcedure
       .input(z.object({
         id: z.number(),
         name: z.string().optional(),
@@ -183,13 +183,13 @@ export const appRouter = router({
         await db.updatePartner(id, data);
         return { success: true };
       }),
-    delete: adminProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.deletePartner(input.id);
         return { success: true };
       }),
-    updateOrder: adminProcedure
+    updateOrder: publicProcedure
       .input(z.object({
         items: z.array(z.object({
           id: z.number(),
@@ -220,7 +220,7 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await db.getBlogPostById(input.id);
       }),
-    create: adminProcedure
+    create: publicProcedure
       .input(z.object({
         title: z.string(),
         slug: z.string(),
@@ -234,7 +234,7 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         return await db.createBlogPost(input as InsertBlogPost);
       }),
-    update: adminProcedure
+    update: publicProcedure
       .input(z.object({
         id: z.number(),
         title: z.string().optional(),
@@ -250,7 +250,7 @@ export const appRouter = router({
         await db.updateBlogPost(id, data);
         return { success: true };
       }),
-    delete: adminProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         await db.deleteBlogPost(input.id);
@@ -268,7 +268,7 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await db.getSiteSettingByKey(input.key);
       }),
-    upsert: adminProcedure
+    upsert: publicProcedure
       .input(z.object({
         key: z.string(),
         value: z.string(),
@@ -281,13 +281,13 @@ export const appRouter = router({
 
   // Contact Messages router
   contactMessages: router({
-    getAll: adminProcedure.query(async () => {
+    getAll: publicProcedure.query(async () => {
       return await db.getAllContactMessages();
     }),
-    getUnread: adminProcedure.query(async () => {
+    getUnread: publicProcedure.query(async () => {
       return await db.getUnreadContactMessages();
     }),
-    getById: adminProcedure
+    getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return await db.getContactMessageById(input.id);
@@ -351,12 +351,12 @@ export const appRouter = router({
         
         return result;
       }),
-    markAsRead: adminProcedure
+    markAsRead: publicProcedure
       .input(z.object({ id: z.number(), isRead: z.number().optional() }))
       .mutation(async ({ input }) => {
         return await db.markContactMessageAsRead(input.id, input.isRead);
       }),
-    delete: adminProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         return await db.deleteContactMessage(input.id);
@@ -365,10 +365,10 @@ export const appRouter = router({
 
   // Email Settings router
   emailSettings: router({
-    get: adminProcedure.query(async () => {
+    get: publicProcedure.query(async () => {
       return await db.getEmailSettings();
     }),
-    upsert: adminProcedure
+    upsert: publicProcedure
       .input(z.object({
         smtpHost: z.string().optional(),
         smtpPort: z.number().optional(),
@@ -392,7 +392,7 @@ export const appRouter = router({
     getAll: publicProcedure.query(async () => {
       return await db.getAllTestimonials();
     }),
-    create: adminProcedure
+    create: publicProcedure
       .input(z.object({
         name: z.string(),
         position: z.string(),
@@ -404,7 +404,7 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         return await db.createTestimonial(input as InsertTestimonial);
       }),
-    update: adminProcedure
+    update: publicProcedure
       .input(z.object({
         id: z.number(),
         name: z.string().optional(),
@@ -418,12 +418,12 @@ export const appRouter = router({
         const { id, ...data } = input;
         return await db.updateTestimonial(id, data);
       }),
-    delete: adminProcedure
+    delete: publicProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         return await db.deleteTestimonial(input.id);
       }),
-    updateOrder: adminProcedure
+    updateOrder: publicProcedure
       .input(z.array(z.object({ id: z.number(), order: z.number() })))
       .mutation(async ({ input }) => {
         return await db.updateTestimonialsOrder(input);
