@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, and, gte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { 
   InsertUser, users,
@@ -430,6 +430,34 @@ export async function deleteContactMessage(id: number) {
   if (!db) throw new Error("Database not available");
   await db.delete(contactMessages).where(eq(contactMessages.id, id));
   return { success: true };
+}
+
+export async function getRecentMessagesByIp(ipAddress: string, since: Date) {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select()
+    .from(contactMessages)
+    .where(
+      and(
+        eq(contactMessages.ipAddress, ipAddress),
+        gte(contactMessages.createdAt, since)
+      )
+    );
+}
+
+export async function getDuplicateMessage(messageHash: string, since: Date) {
+  const db = await getDb();
+  if (!db) return null;
+  const results = await db.select()
+    .from(contactMessages)
+    .where(
+      and(
+        eq(contactMessages.messageHash, messageHash),
+        gte(contactMessages.createdAt, since)
+      )
+    )
+    .limit(1);
+  return results.length > 0 ? results[0] : null;
 }
 
 

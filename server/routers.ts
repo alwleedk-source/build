@@ -2,6 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import * as db from "./db";
 import { InsertProject, InsertService, InsertBlogPost, InsertPartner, InsertTestimonial, InsertContactMessage } from "../drizzle/schema";
@@ -294,14 +295,52 @@ export const appRouter = router({
       }),
     create: publicProcedure
       .input(z.object({
-        name: z.string(),
-        email: z.string().email(),
+        name: z.string().min(2, "Naam moet minimaal 2 tekens bevatten").max(255, "Naam is te lang"),
+        email: z.string().email("Ongeldig e-mailadres"),
         phone: z.string().optional(),
-        message: z.string(),
+        message: z.string().min(10, "Bericht moet minimaal 10 tekens bevatten").max(5000, "Bericht is te lang"),
       }))
-      .mutation(async ({ input }) => {
-        // Save message to database
-        const result = await db.createContactMessage(input as InsertContactMessage);
+      .mutation(async ({ input, ctx }) => {
+        // Get client IP address
+        const ipAddress = ctx.req?.headers['x-forwarded-for'] || 
+                         ctx.req?.headers['x-real-ip'] || 
+                         ctx.req?.socket?.remoteAddress || 
+                         'unknown';
+        const clientIp = Array.isArray(ipAddress) ? ipAddress[0] : ipAddress.split(',')[0].trim();
+        
+        // Create message hash for duplicate detection
+        const crypto = await import('crypto');
+        const messageContent = `${input.email}:${input.message}`;
+        const messageHash = crypto.createHash('sha256').update(messageContent).digest('hex');
+        
+        // Rate Limiting: Check messages from this IP in the last hour
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+        const recentMessages = await db.getRecentMessagesByIp(clientIp, oneHourAgo);
+        
+        if (recentMessages.length >= 3) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Te veel berichten verzonden. Probeer het over een uur opnieuw.',
+          });
+        }
+        
+        // Duplicate Detection: Check for same message in last 10 minutes
+        const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+        const duplicateMessage = await db.getDuplicateMessage(messageHash, tenMinutesAgo);
+        
+        if (duplicateMessage) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Dit bericht is al verzonden. Wacht 10 minuten voordat u hetzelfde bericht opnieuw verzendt.',
+          });
+        }
+        
+        // Save message to database with IP and hash
+        const result = await db.createContactMessage({
+          ...input,
+          ipAddress: clientIp,
+          messageHash,
+        } as InsertContactMessage);
         
         // Send auto-reply email if enabled
         try {

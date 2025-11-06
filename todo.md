@@ -884,3 +884,43 @@ This is appropriate for this project because:
 - ✅ Blog Posts: `orderBy(blogPosts.order)` (FIXED)
 - ✅ Partners: `orderBy(partners.order)`
 - ✅ Testimonials: `orderBy(testimonials.order)`
+
+
+## 🛡️ Add Backend Protection for Contact Form - In Progress
+
+### Problem
+- [ ] Users can send hundreds of messages without any protection
+- [ ] No rate limiting on contact form submissions
+- [ ] Button doesn't disable during submission
+- [ ] No duplicate message detection
+
+### Implementation Plan
+
+#### 1. Database Schema Updates
+- [x] Add `ipAddress` field to contactMessages table
+- [x] Add `messageHash` field for duplicate detection
+- [x] Run database migration (drizzle/0007_brown_ultimatum.sql)
+
+#### 2. Backend Protection (Rate Limiting + Validation)
+- [x] Implement rate limiting: Max 3 messages per hour from same IP
+- [x] Add validation: email format, min/max length for message (min 10, max 5000 chars)
+- [x] Add duplicate detection: Prevent same message within 10 minutes
+- [x] Return proper error messages for each case
+- [x] Added getRecentMessagesByIp() and getDuplicateMessage() functions in db.ts
+- [x] Capture client IP from headers (x-forwarded-for, x-real-ip, socket.remoteAddress)
+- [x] Generate SHA-256 hash for duplicate detection
+
+#### 3. Frontend Improvements
+- [x] Disable submit button during sending (disabled={isPending})
+- [x] Show loading state ("Verzenden..." with spinner animation)
+- [x] Show success message after successful submission (toast.success)
+- [x] Show error messages from backend (toast.error with backend message)
+- [x] Clear form after successful submission
+
+#### 4. Testing
+- [x] Test 1: Send normal message - SUCCESS (form cleared)
+- [ ] Test 2: Send same message again - Testing duplicate detection
+- [ ] Test 3: Send 3 more messages - Testing rate limiting (4th should fail)
+- [x] Test validation: Backend validates min/max length, email format
+- [x] Test button disable/loading states: Working correctly
+- [x] Test error message display: Shows backend error messages

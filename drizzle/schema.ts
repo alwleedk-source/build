@@ -145,6 +145,8 @@ export const contactMessages = mysqlTable("contactMessages", {
   phone: varchar("phone", { length: 50 }),
   message: text("message").notNull(),
   isRead: int("isRead").default(0).notNull(), // 0 = unread, 1 = read
+  ipAddress: varchar("ipAddress", { length: 45 }), // IPv4 or IPv6
+  messageHash: varchar("messageHash", { length: 64 }), // SHA-256 hash for duplicate detection
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
