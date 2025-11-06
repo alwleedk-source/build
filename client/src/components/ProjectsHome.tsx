@@ -4,7 +4,7 @@ import { useInView } from '@/hooks/useInView';
 
 export default function ProjectsHome() {
   const projectsQuery = trpc.projects.getHomepage.useQuery();
-  const { ref: headerRef, isInView: headerInView } = useInView({ threshold: 0.05 });
+  const { ref: headerRef, isInView: headerInView } = useInView({ threshold: 0.1 });
   const { ref: gridRef, isInView: gridInView } = useInView({ threshold: 0.05 });
 
   if (projectsQuery.isLoading) {
@@ -28,7 +28,7 @@ export default function ProjectsHome() {
           className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ${
             headerInView 
               ? 'opacity-100 translate-y-0' 
-              : 'opacity-50 translate-y-5'
+              : 'opacity-0 translate-y-10'
           }`}
         >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
@@ -50,7 +50,7 @@ export default function ProjectsHome() {
               className={`group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-700 ${
                 gridInView
                   ? 'opacity-100 translate-y-0'
-                  : 'opacity-50 translate-y-5'
+                  : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
@@ -87,7 +87,7 @@ export default function ProjectsHome() {
           className={`text-center mt-12 transition-all duration-1000 delay-700 ${
             gridInView
               ? 'opacity-100 translate-y-0'
-              : 'opacity-50 translate-y-5'
+              : 'opacity-0 translate-y-10'
           }`}
         >
           <Link href="/projecten">

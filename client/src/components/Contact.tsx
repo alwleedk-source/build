@@ -12,8 +12,8 @@ export default function Contact() {
     message: '',
   });
 
-  const { ref: leftRef, isInView: leftInView } = useInView({ threshold: 0.05 });
-  const { ref: rightRef, isInView: rightInView } = useInView({ threshold: 0.05 });
+  const { ref: leftRef, isInView: leftInView } = useInView({ threshold: 0.1 });
+  const { ref: rightRef, isInView: rightInView } = useInView({ threshold: 0.1 });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +39,7 @@ export default function Contact() {
             className={`transition-all duration-1000 ${
               leftInView 
                 ? 'opacity-100 translate-x-0' 
-                : 'opacity-50 -translate-x-5'
+                : 'opacity-0 -translate-x-10'
             }`}
           >
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
@@ -57,7 +57,7 @@ export default function Contact() {
                 className={`flex items-start gap-4 transition-all duration-700 ${
                   leftInView 
                     ? 'opacity-100 translate-x-0' 
-                    : 'opacity-50 -translate-x-5'
+                    : 'opacity-0 -translate-x-10'
                 }`}
                 style={{ transitionDelay: '200ms' }}
               >
@@ -76,7 +76,7 @@ export default function Contact() {
                 className={`flex items-start gap-4 transition-all duration-700 ${
                   leftInView 
                     ? 'opacity-100 translate-x-0' 
-                    : 'opacity-50 -translate-x-5'
+                    : 'opacity-0 -translate-x-10'
                 }`}
                 style={{ transitionDelay: '300ms' }}
               >
@@ -95,7 +95,7 @@ export default function Contact() {
                 className={`flex items-start gap-4 transition-all duration-700 ${
                   leftInView 
                     ? 'opacity-100 translate-x-0' 
-                    : 'opacity-50 -translate-x-5'
+                    : 'opacity-0 -translate-x-10'
                 }`}
                 style={{ transitionDelay: '400ms' }}
               >
@@ -120,7 +120,7 @@ export default function Contact() {
             className={`transition-all duration-1000 ${
               rightInView 
                 ? 'opacity-100 translate-x-0' 
-                : 'opacity-50 translate-x-5'
+                : 'opacity-0 translate-x-10'
             }`}
           >
             <form onSubmit={handleSubmit} className="space-y-6 p-8 rounded-2xl bg-card border border-border">

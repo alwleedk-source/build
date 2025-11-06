@@ -321,3 +321,18 @@ All core features are implemented, tested, and working perfectly:
 - [x] Check component rendering
 - [x] Fix visibility issue
 - [x] Test homepage after fix
+
+
+## 🐛 Bug Fix - Scroll Animations & Services Page Issues (User Reported)
+
+### Scroll Animations Issues
+- [x] Sections appearing with opacity-50 (should be opacity-0)
+- [x] Animations not visible when scrolling
+- [x] Fix useInView hook with rootMargin
+- [x] Restore proper fade-in animations
+
+### Services Page Issue
+- [x] /diensten page not working (404 or error)
+- [x] Check routing configuration
+- [x] Fix ServicesPage component
+- [x] Test all service pages
