@@ -352,14 +352,15 @@ export async function getAllTestimonials() {
 export async function createTestimonial(data: InsertTestimonial) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(testimonials).values(data);
-  return result;
+  await db.insert(testimonials).values(data);
+  return { success: true };
 }
 
 export async function updateTestimonial(id: number, data: Partial<InsertTestimonial>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(testimonials).set(data).where(eq(testimonials.id, id));
+  return { success: true };
 }
 
 export async function deleteTestimonial(id: number) {

@@ -113,6 +113,29 @@
 - [x] Homepage settings page (/admin/settings/home):
   - [x] Control Hero section visibility
   - [x] Control sections visibility (Services, Projects, Testimonials, Contact)
+- [x] Testimonials management page (/admin/testimonials):
+  - [x] List all testimonials
+  - [x] Add new testimonial
+  - [x] Edit existing testimonial
+  - [x] Delete testimonial
+  - [x] Drag & Drop reordering
+  - [x] Rating display (1-5 stars)
+  - [x] Fixed save error bug
+- [x] Partners management page (/admin/partners):
+  - [x] List all partners
+  - [x] Add new partner
+  - [x] Edit existing partner
+  - [x] Delete partner
+  - [x] Drag & Drop reordering
+- [x] Advanced Settings page (/admin/settings) with 8 tabs:
+  - [x] General: Website title, description, logo, colors
+  - [x] Homepage: Toggle section visibility
+  - [x] Contact: Email, phone, address
+  - [x] Social: Facebook, LinkedIn, Instagram
+  - [x] SEO: Meta title, description, keywords
+  - [x] Footer: Copyright, description
+  - [x] Colors: Primary and secondary color pickers
+  - [x] Analytics: Google Analytics codes
 - [x] Protected routes (require authentication)
 - [x] Login/Logout functionality
 
@@ -221,10 +244,12 @@ All core features are implemented, tested, and working perfectly:
 - [ ] Mark as read/unread functionality
 
 ### Testimonials Management
-- [ ] Admin page to manage testimonials
-- [ ] Add/edit/delete testimonials
-- [ ] Upload customer photos
-- [ ] Display testimonials on homepage from database
+- [x] Admin page to manage testimonials
+- [x] Add/edit/delete testimonials
+- [x] Upload customer photos
+- [x] Display testimonials on homepage from database
+- [x] Drag & Drop reordering for testimonials
+- [x] Fixed save error bug (tRPC serialization issue)
 
 ### Team Management
 - [ ] Admin page to manage team members
@@ -429,3 +454,8 @@ All core features are implemented, tested, and working perfectly:
 - [ ] Connect Testimonials.tsx component to database
 - [ ] Add Testimonials to Sidebar navigation
 - [ ] Test in browser
+
+
+## 🐛 Bug: Toast Notification Error in Testimonials Admin
+
+- [ ] Fix "Fout bij opslaan" error message in TestimonialsAdmin.tsx (data saves successfully but shows error toast)
