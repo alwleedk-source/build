@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import ScrollReveal from '@/components/ScrollReveal';
 
 export default function Hero() {
   return (
@@ -10,6 +11,7 @@ export default function Hero() {
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
+          <ScrollReveal>
           <div className="space-y-8">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
@@ -57,8 +59,10 @@ export default function Hero() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
 
           {/* Illustration */}
+          <ScrollReveal delay={0.2}>
           <div className="relative lg:h-[600px] flex items-center justify-center">
             <svg
               viewBox="0 0 600 600"
@@ -111,6 +115,7 @@ export default function Hero() {
               <circle cx="520" cy="300" r="25" fill="currentColor" className="text-primary opacity-10" />
             </svg>
           </div>
+          </ScrollReveal>
         </div>
       </div>
 

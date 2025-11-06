@@ -1,7 +1,8 @@
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import ScrollReveal from '@/components/ScrollReveal';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -30,6 +31,7 @@ export default function Contact() {
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left: Contact Info */}
+          <ScrollReveal>
           <div>
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
               Neem Contact Op
@@ -81,8 +83,10 @@ export default function Contact() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
 
           {/* Right: Contact Form */}
+          <ScrollReveal delay={0.2}>
           <div className="bg-card p-8 rounded-2xl border border-border">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
@@ -169,6 +173,7 @@ export default function Contact() {
               </Button>
             </form>
           </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

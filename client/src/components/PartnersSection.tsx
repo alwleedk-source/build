@@ -1,4 +1,5 @@
 import { trpc } from "@/lib/trpc";
+import ScrollReveal from '@/components/ScrollReveal';
 
 export default function PartnersSection() {
   const partnersQuery = trpc.partners.getActive.useQuery();
@@ -10,6 +11,7 @@ export default function PartnersSection() {
   return (
     <section className="py-20 bg-muted/30">
       <div className="container">
+        <ScrollReveal>
         <div className="text-center mb-12">
           <span className="text-primary font-semibold text-sm uppercase tracking-wider">
             Onze Partners
@@ -21,12 +23,13 @@ export default function PartnersSection() {
             Wij zijn trots op onze samenwerkingen met deze gerenommeerde partners
           </p>
         </div>
+        </ScrollReveal>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-          {partnersQuery.data.map((partner) => (
+          {partnersQuery.data.map((partner, index) => (
+            <ScrollReveal key={partner.id} delay={index * 0.05}>
             <div
-              key={partner.id}
-              className="flex items-center justify-center p-6 bg-white rounded-lg border border-border hover:shadow-lg transition-shadow group"
+              className="flex items-center justify-center p-6 bg-white rounded-lg border border-border hover:shadow-lg hover:scale-105 transition-all group"
             >
               {partner.url ? (
                 <a
@@ -51,6 +54,7 @@ export default function PartnersSection() {
                 />
               )}
             </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

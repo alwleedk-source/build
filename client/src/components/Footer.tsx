@@ -1,10 +1,12 @@
 import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import ScrollReveal from '@/components/ScrollReveal';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-card border-t border-border">
+      <ScrollReveal>
       <div className="container py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
@@ -147,6 +149,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      </ScrollReveal>
     </footer>
   );
 }

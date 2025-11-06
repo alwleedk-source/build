@@ -46,7 +46,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 animate-slide-down ${
         isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
       }`}
     >
@@ -150,6 +150,23 @@ export default function Header() {
           </div>
         )}
       </div>
+      
+      <style>{`
+        @keyframes slide-down {
+          from {
+            transform: translateY(-100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        
+        .animate-slide-down {
+          animation: slide-down 0.6s ease-out;
+        }
+      `}</style>
     </header>
   );
 }
