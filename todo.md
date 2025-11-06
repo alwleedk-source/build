@@ -310,3 +310,14 @@ All core features are implemented, tested, and working perfectly:
 - [x] Test all animations on different screen sizes
 - [x] Ensure smooth performance (60fps)
 - [x] Save checkpoint with new animations
+
+
+## 🐛 Bug Fix - Services and Projects Not Showing (User Reported)
+
+### Issue
+- [x] Services section not visible on homepage
+- [x] Projects section not visible on homepage
+- [x] Investigate scroll animations impact
+- [x] Check component rendering
+- [x] Fix visibility issue
+- [x] Test homepage after fix

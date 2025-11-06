@@ -26,8 +26,8 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
-  const { ref: headerRef, isInView: headerInView } = useInView({ threshold: 0.2 });
-  const { ref: gridRef, isInView: gridInView } = useInView({ threshold: 0.1 });
+  const { ref: headerRef, isInView: headerInView } = useInView({ threshold: 0.05 });
+  const { ref: gridRef, isInView: gridInView } = useInView({ threshold: 0.05 });
 
   return (
     <section id="reviews" className="py-24 bg-background">
@@ -38,7 +38,7 @@ export default function Testimonials() {
           className={`max-w-2xl mx-auto text-center mb-16 transition-all duration-1000 ${
             headerInView 
               ? 'opacity-100 translate-y-0' 
-              : 'opacity-0 translate-y-10'
+              : 'opacity-50 translate-y-5'
           }`}
         >
           <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
@@ -60,7 +60,7 @@ export default function Testimonials() {
               className={`p-8 rounded-2xl bg-card border border-border hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-700 ${
                 gridInView
                   ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-10'
+                  : 'opacity-50 translate-y-5'
               }`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
@@ -69,10 +69,7 @@ export default function Testimonials() {
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
                   <Star 
                     key={i} 
-                    className={`w-5 h-5 fill-primary text-primary transition-all duration-500 ${
-                      gridInView ? 'scale-100' : 'scale-0'
-                    }`}
-                    style={{ transitionDelay: `${index * 150 + i * 50}ms` }}
+                    className="w-5 h-5 fill-primary text-primary transition-all duration-300"
                   />
                 ))}
               </div>
