@@ -27,7 +27,11 @@ export default function EmailSettings() {
     notificationEmail: "",
   });
 
-  const { data: emailSettings, isLoading } = trpc.emailSettings.get.useQuery();
+  const { data: emailSettings, isLoading } = trpc.emailSettings.get.useQuery(undefined, {
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
   const upsertMutation = trpc.emailSettings.upsert.useMutation();
 
   useEffect(() => {
