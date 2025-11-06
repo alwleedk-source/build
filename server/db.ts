@@ -7,7 +7,8 @@ import {
   blogPosts, InsertBlogPost,
   partners, InsertPartner,
   testimonials, InsertTestimonial,
-  siteSettings
+  siteSettings,
+  contactMessages, InsertContactMessage
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -382,4 +383,49 @@ export async function updateTestimonialsOrder(updates: { id: number; order: numb
       .set({ order: update.order })
       .where(eq(testimonials.id, update.id));
   }
+}
+
+
+// ========== Contact Messages Functions ==========
+
+export async function getAllContactMessages() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+}
+
+export async function getUnreadContactMessages() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(contactMessages)
+    .where(eq(contactMessages.isRead, 0))
+    .orderBy(desc(contactMessages.createdAt));
+}
+
+export async function getContactMessageById(id: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(contactMessages).where(eq(contactMessages.id, id));
+  return result[0] || null;
+}
+
+export async function createContactMessage(data: InsertContactMessage) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(contactMessages).values(data);
+  return { success: true };
+}
+
+export async function markContactMessageAsRead(id: number, isRead: number = 1) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(contactMessages).set({ isRead }).where(eq(contactMessages.id, id));
+  return { success: true };
+}
+
+export async function deleteContactMessage(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(contactMessages).where(eq(contactMessages.id, id));
+  return { success: true };
 }

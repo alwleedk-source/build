@@ -506,3 +506,27 @@ Modified all create/update functions to return `{ success: true }` instead of ra
 - [x] Testimonials page missing sidebar navigation (appears standalone)
 - [x] Added AdminLayout wrapper like other admin pages
 - [x] Sidebar now appears correctly with all navigation links
+
+
+## 📧 Contact Messages System - COMPLETED ✅
+
+### Backend Implementation
+- [x] Add database functions for contact messages (getAllContactMessages, createContactMessage, markAsRead, deleteContactMessage)
+- [x] Add tRPC routes for contact messages
+- [x] Update Contact.tsx to save messages to database
+
+### Admin Interface
+- [x] Create ContactMessages admin page (/admin/messages)
+- [x] Display all messages with read/unread status
+- [x] Add message detail view
+- [x] Add delete functionality
+- [x] Add mark as read/unread functionality
+- [x] Add to admin sidebar navigation
+- [x] Automatic mark as read when viewing message details
+- [x] Statistics cards (Total, Unread, Read)
+- [x] "Nieuw" badge for unread messages
+- [x] Clickable email and phone links
+
+### Settings (Optional - Not Implemented)
+- [ ] Add contact information settings (email, phone, address)
+- [ ] Make contact info dynamic from database

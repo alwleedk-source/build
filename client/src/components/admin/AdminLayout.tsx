@@ -76,16 +76,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       icon: Star,
       path: "/admin/testimonials",
     },
+    {
+      title: "Berichten",
+      icon: MessageSquare,
+      path: "/admin/messages",
+    },
     // Temporarily disabled - pages not created yet
     // {
     //   title: "Team",
     //   icon: Users,
     //   path: "/admin/team",
-    // },
-    // {
-    //   title: "Berichten",
-    //   icon: MessageSquare,
-    //   path: "/admin/messages",
     // },
     // {
     //   title: "Media",

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import ScrollReveal from '@/components/ScrollReveal';
+import { trpc } from '@/lib/trpc';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -12,11 +13,24 @@ export default function Contact() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const createMessageMutation = trpc.contactMessages.create.useMutation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real application, this would send the form data to a server
-    toast.success('Bedankt voor uw bericht! We nemen spoedig contact met u op.');
-    setFormData({ name: '', email: '', phone: '', message: '' });
+    
+    try {
+      await createMessageMutation.mutateAsync({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || undefined,
+        message: formData.message,
+      });
+      
+      toast.success('Bedankt voor uw bericht! We nemen spoedig contact met u op.');
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      toast.error('Er is een fout opgetreden. Probeer het later opnieuw.');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

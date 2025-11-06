@@ -4,7 +4,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
-import { InsertProject, InsertService, InsertBlogPost, InsertPartner, InsertTestimonial } from "../drizzle/schema";
+import { InsertProject, InsertService, InsertBlogPost, InsertPartner, InsertTestimonial, InsertContactMessage } from "../drizzle/schema";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -276,6 +276,41 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         return await db.upsertSiteSetting(input);
+      }),
+  }),
+
+  // Contact Messages router
+  contactMessages: router({
+    getAll: adminProcedure.query(async () => {
+      return await db.getAllContactMessages();
+    }),
+    getUnread: adminProcedure.query(async () => {
+      return await db.getUnreadContactMessages();
+    }),
+    getById: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getContactMessageById(input.id);
+      }),
+    create: publicProcedure
+      .input(z.object({
+        name: z.string(),
+        email: z.string().email(),
+        phone: z.string().optional(),
+        message: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.createContactMessage(input as InsertContactMessage);
+      }),
+    markAsRead: adminProcedure
+      .input(z.object({ id: z.number(), isRead: z.number().optional() }))
+      .mutation(async ({ input }) => {
+        return await db.markContactMessageAsRead(input.id, input.isRead);
+      }),
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        return await db.deleteContactMessage(input.id);
       }),
   }),
 
