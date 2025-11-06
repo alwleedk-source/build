@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, GripVertical, Star } from 'lucide-react';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -263,7 +264,8 @@ export default function TestimonialsAdmin() {
   };
 
   return (
-    <div className="p-8">
+    <AdminLayout>
+      <div className="space-y-6">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">Testimonials</h1>
@@ -464,6 +466,7 @@ export default function TestimonialsAdmin() {
           </form>
         </DialogContent>
       </Dialog>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
