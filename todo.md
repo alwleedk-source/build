@@ -388,3 +388,12 @@ All core features are implemented, tested, and working perfectly:
 - [x] Use simple translate-y only (removed fade-in to ensure visibility)
 - [x] Remove scale and rotate effects from scroll animations
 - [x] Match animation style with other sections
+
+
+## 🐛 Bug Fix - Nested Anchor Tags in AdminLayout (User Reported)
+
+### Issue
+- [x] Error: `<a>` cannot contain a nested `<a>` in AdminLayout.tsx line 115-116
+- [x] Link component wrapping another `<a>` tag
+- [x] Remove nested anchor tag
+- [x] Test admin page after fix
