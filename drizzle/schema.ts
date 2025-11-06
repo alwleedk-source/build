@@ -178,3 +178,21 @@ export const partners = mysqlTable("partners", {
 
 export type Partner = typeof partners.$inferSelect;
 export type InsertPartner = typeof partners.$inferInsert;
+
+// Email Settings table
+export const emailSettings = mysqlTable("emailSettings", {
+  id: int("id").autoincrement().primaryKey(),
+  smtpHost: varchar("smtpHost", { length: 255 }),
+  smtpPort: int("smtpPort"),
+  smtpUser: varchar("smtpUser", { length: 320 }),
+  smtpPassword: varchar("smtpPassword", { length: 500 }),
+  fromEmail: varchar("fromEmail", { length: 320 }),
+  fromName: varchar("fromName", { length: 255 }),
+  autoReplyEnabled: int("autoReplyEnabled").default(0).notNull(), // 0 = disabled, 1 = enabled
+  autoReplySubject: varchar("autoReplySubject", { length: 255 }).default("Bedankt voor uw bericht").notNull(),
+  autoReplyMessage: text("autoReplyMessage"),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type EmailSettings = typeof emailSettings.$inferSelect;
+export type InsertEmailSettings = typeof emailSettings.$inferInsert;

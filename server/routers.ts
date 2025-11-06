@@ -300,7 +300,32 @@ export const appRouter = router({
         message: z.string(),
       }))
       .mutation(async ({ input }) => {
-        return await db.createContactMessage(input as InsertContactMessage);
+        // Save message to database
+        const result = await db.createContactMessage(input as InsertContactMessage);
+        
+        // Send auto-reply email if enabled
+        try {
+          const emailSettings = await db.getEmailSettings();
+          if (emailSettings && emailSettings.autoReplyEnabled === 1) {
+            const { sendEmail, generateAutoReplyEmail } = await import('./email');
+            const { html, text } = generateAutoReplyEmail(
+              input.name,
+              emailSettings.autoReplyMessage?.replace('{naam}', input.name)
+            );
+            
+            await sendEmail(emailSettings, {
+              to: input.email,
+              subject: emailSettings.autoReplySubject || 'Bedankt voor uw bericht',
+              html,
+              text,
+            });
+          }
+        } catch (emailError) {
+          console.error('Error sending auto-reply email:', emailError);
+          // Don't fail the request if email fails
+        }
+        
+        return result;
       }),
     markAsRead: adminProcedure
       .input(z.object({ id: z.number(), isRead: z.number().optional() }))
@@ -311,6 +336,28 @@ export const appRouter = router({
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
         return await db.deleteContactMessage(input.id);
+      }),
+  }),
+
+  // Email Settings router
+  emailSettings: router({
+    get: adminProcedure.query(async () => {
+      return await db.getEmailSettings();
+    }),
+    upsert: adminProcedure
+      .input(z.object({
+        smtpHost: z.string().optional(),
+        smtpPort: z.number().optional(),
+        smtpUser: z.string().optional(),
+        smtpPassword: z.string().optional(),
+        fromEmail: z.string().email().optional(),
+        fromName: z.string().optional(),
+        autoReplyEnabled: z.number().optional(),
+        autoReplySubject: z.string().optional(),
+        autoReplyMessage: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.upsertEmailSettings(input as any);
       }),
   }),
 

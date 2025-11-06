@@ -22,6 +22,7 @@ import BlogPostForm from "@/pages/admin/BlogPostForm";
 import Partners from "@/pages/admin/Partners";
 import TestimonialsAdmin from "@/pages/admin/TestimonialsAdmin";
 import ContactMessages from "@/pages/admin/ContactMessages";
+import EmailSettings from "@/pages/admin/EmailSettings";
 import HomeSettings from "@/pages/admin/HomeSettings";
 import SettingsAdmin from "@/pages/admin/SettingsAdmin";
 import Login from "./pages/Login";
@@ -48,6 +49,7 @@ function Router() {
           <Route path="/admin/partners" component={Partners} />
           <Route path="/admin/testimonials" component={TestimonialsAdmin} />
           <Route path="/admin/messages" component={ContactMessages} />
+          <Route path="/admin/settings/email" component={EmailSettings} />
           <Route path="/admin/settings/home" component={HomeSettings} />
           <Route path="/admin/settings" component={SettingsAdmin} />
       <Route path="/login" component={Login} />

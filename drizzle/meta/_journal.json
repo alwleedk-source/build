@@ -29,6 +29,13 @@
       "when": 1762426839178,
       "tag": "0003_furry_reavers",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1762442514083,
+      "tag": "0004_last_jackpot",
+      "breakpoints": true
     }
   ]
 }

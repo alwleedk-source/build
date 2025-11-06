@@ -8,7 +8,8 @@ import {
   partners, InsertPartner,
   testimonials, InsertTestimonial,
   siteSettings,
-  contactMessages, InsertContactMessage
+  contactMessages, InsertContactMessage,
+  emailSettings, InsertEmailSettings
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -427,5 +428,32 @@ export async function deleteContactMessage(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.delete(contactMessages).where(eq(contactMessages.id, id));
+  return { success: true };
+}
+
+
+// ========== Email Settings Functions ==========
+
+export async function getEmailSettings() {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(emailSettings);
+  return result[0] || null;
+}
+
+export async function upsertEmailSettings(data: InsertEmailSettings) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const existing = await getEmailSettings();
+  
+  if (existing) {
+    await db.update(emailSettings)
+      .set(data)
+      .where(eq(emailSettings.id, existing.id));
+  } else {
+    await db.insert(emailSettings).values(data);
+  }
+  
   return { success: true };
 }

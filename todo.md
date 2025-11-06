@@ -530,3 +530,36 @@ Modified all create/update functions to return `{ success: true }` instead of ra
 ### Settings (Optional - Not Implemented)
 - [ ] Add contact information settings (email, phone, address)
 - [ ] Make contact info dynamic from database
+
+
+## 📧 Email Auto-Reply Feature - COMPLETED ✅
+
+### Backend Implementation
+- [x] Install nodemailer package
+- [x] Create email service module with SMTP configuration (server/email.ts)
+- [x] Add email template for automatic reply (generateAutoReplyEmail function)
+- [x] Integrate email sending with contact form submission (routers.ts)
+- [x] Error handling for failed email sends (doesn't break contact form)
+
+### Settings & Configuration
+- [x] Add SMTP settings to database schema (emailSettings table)
+- [x] Add Email Settings page in Admin (/admin/settings/email)
+- [x] SMTP credentials fields (host, port, username, password, from email, from name)
+- [x] Toggle to enable/disable auto-reply
+- [x] Customizable email subject and message
+- [x] Support for {naam} placeholder in email template
+- [x] HTML email template with BuildCraft branding
+
+### Features
+- [x] Professional HTML email template
+- [x] Plain text fallback for email clients
+- [x] Automatic name replacement in email body
+- [x] Default message if custom message not provided
+- [x] TLS/SSL support (port 587/465)
+- [x] Email only sent if auto-reply is enabled
+- [x] Graceful error handling (contact form still works if email fails)
+
+### Testing Notes
+- System tested with test SMTP credentials
+- Email sending integrated with contact form
+- Ready for production use with real SMTP credentials (Gmail, SendGrid, Mailgun, etc.)
