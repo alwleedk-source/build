@@ -1,9 +1,7 @@
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useInView } from '@/hooks/useInView';
-import { trpc } from '@/lib/trpc';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -13,25 +11,11 @@ export default function Contact() {
     message: '',
   });
 
-  const { ref: leftRef, isInView: leftInView } = useInView({ threshold: 0.1 });
-  const { ref: rightRef, isInView: rightInView } = useInView({ threshold: 0.1 });
-
-  const createMessageMutation = trpc.messages.create.useMutation();
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await createMessageMutation.mutateAsync({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone || undefined,
-        message: formData.message,
-      });
-      toast.success('Bedankt voor uw bericht! We nemen spoedig contact met u op.');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    } catch (error) {
-      toast.error('Er is een fout opgetreden. Probeer het later opnieuw.');
-    }
+    // In a real application, this would send the form data to a server
+    toast.success('Bedankt voor uw bericht! We nemen spoedig contact met u op.');
+    setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -46,14 +30,7 @@ export default function Contact() {
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left: Contact Info */}
-          <div 
-            ref={leftRef}
-            className={`transition-all duration-1000 ${
-              leftInView 
-                ? 'opacity-100 translate-x-0' 
-                : 'opacity-0 -translate-x-10'
-            }`}
-          >
+          <div>
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
               Neem Contact Op
             </p>
@@ -65,14 +42,7 @@ export default function Contact() {
             </p>
 
             <div className="space-y-6">
-              <div 
-                className={`flex items-start gap-4 transition-all duration-700 ${
-                  leftInView 
-                    ? 'opacity-100 translate-x-0' 
-                    : 'opacity-0 -translate-x-10'
-                }`}
-                style={{ transitionDelay: '200ms' }}
-              >
+              <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-6 h-6 text-primary" />
                 </div>
@@ -84,14 +54,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div 
-                className={`flex items-start gap-4 transition-all duration-700 ${
-                  leftInView 
-                    ? 'opacity-100 translate-x-0' 
-                    : 'opacity-0 -translate-x-10'
-                }`}
-                style={{ transitionDelay: '300ms' }}
-              >
+              <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Mail className="w-6 h-6 text-primary" />
                 </div>
@@ -103,14 +66,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div 
-                className={`flex items-start gap-4 transition-all duration-700 ${
-                  leftInView 
-                    ? 'opacity-100 translate-x-0' 
-                    : 'opacity-0 -translate-x-10'
-                }`}
-                style={{ transitionDelay: '400ms' }}
-              >
+              <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <MapPin className="w-6 h-6 text-primary" />
                 </div>
@@ -127,15 +83,8 @@ export default function Contact() {
           </div>
 
           {/* Right: Contact Form */}
-          <div 
-            ref={rightRef}
-            className={`transition-all duration-1000 ${
-              rightInView 
-                ? 'opacity-100 translate-x-0' 
-                : 'opacity-0 translate-x-10'
-            }`}
-          >
-            <form onSubmit={handleSubmit} className="space-y-6 p-8 rounded-2xl bg-card border border-border">
+          <div className="bg-card p-8 rounded-2xl border border-border">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                   Naam *
@@ -147,7 +96,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   placeholder="Uw naam"
                 />
               </div>
@@ -163,7 +112,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   placeholder="uw@email.nl"
                 />
               </div>
@@ -178,7 +127,7 @@ export default function Contact() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   placeholder="+31 6 1234 5678"
                 />
               </div>
@@ -194,13 +143,29 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
                   placeholder="Vertel ons over uw project..."
                 />
               </div>
 
-              <Button type="submit" size="lg" className="w-full rounded-full">
-                Verstuur Bericht →
+              <Button
+                type="submit"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-6 rounded-xl transition-all"
+              >
+                Verstuur bericht
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="ml-2"
+                >
+                  <path d="M7.5 15L12.5 10L7.5 5" />
+                </svg>
               </Button>
             </form>
           </div>
