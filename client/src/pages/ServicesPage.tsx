@@ -4,6 +4,16 @@ import { trpc } from '@/lib/trpc';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
+// Icon mapping object
+const iconMap: Record<string, any> = {
+  Factory,
+  Building2,
+  Settings,
+  Paintbrush,
+  Wrench,
+  Hammer,
+};
+
 export default function ServicesPage() {
   const servicesQuery = trpc.services.getAll.useQuery();
 
@@ -45,7 +55,7 @@ export default function ServicesPage() {
           {/* Services List */}
           <div className="space-y-12">
             {services.map((service: any, index: number) => {
-              const Icon = service.icon || Building2;
+              const Icon = iconMap[service.icon] || Building2;
               return (
                 <div
                   key={service.id}

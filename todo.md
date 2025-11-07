@@ -1035,3 +1035,10 @@ Add email sending functionality using Resend for:
 - [x] Fixed it by removing nested <a> tag and moving className to Link
 - [x] Removed duplicate code that was left after edit
 - [x] Console is now clean
+
+
+## 🐛 Fix Icon Rendering in /diensten - COMPLETED ✅
+
+- [x] Created icon mapping object (iconMap) with all icon components
+- [x] Updated ServicesPage to use iconMap[service.icon] instead of service.icon directly
+- [x] Icons now render correctly as React components
