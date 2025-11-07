@@ -1027,3 +1027,11 @@ Add email sending functionality using Resend for:
 - [x] Fixed nested `<a>` tags in ServicesPage.tsx (removed inner <a>, kept Link with className)
 - [x] Added missing icon imports from lucide-react (Factory, Settings, Paintbrush, Wrench, Hammer)
 - [x] All console errors resolved
+
+
+## 🐛 Fix Remaining Nested Anchor Tag in /diensten - COMPLETED ✅
+
+- [x] Found remaining nested `<a>` tag in ServicesPage.tsx (line 120-136)
+- [x] Fixed it by removing nested <a> tag and moving className to Link
+- [x] Removed duplicate code that was left after edit
+- [x] Console is now clean

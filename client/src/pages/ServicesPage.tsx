@@ -117,22 +117,17 @@ export default function ServicesPage() {
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
               Neem contact met ons op voor meer informatie of een vrijblijvende offerte. Wij helpen u graag verder.
             </p>
-            <Link href="/#contact">
-              <a className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl transition-all">
-                Neem contact op
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M7.5 15L12.5 10L7.5 5" />
-                </svg>
-              </a>
+                <Link href="/#contact" className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl transition-all">
+              Neem contact op
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 20 20"
+              >
+                <path d="M7.5 15L12.5 10L7.5 5" />
+              </svg>
             </Link>
           </div>
         </div>
