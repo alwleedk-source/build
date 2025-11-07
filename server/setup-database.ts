@@ -32,7 +32,7 @@ async function setupDatabase() {
       ORDER BY table_name;
     `);
     
-    const existingTables = tablesResult.rows.map((row: any) => row.table_name);
+    const existingTables = (tablesResult.rows || []).map((row: any) => row.table_name);
     console.log(`   Found ${existingTables.length} tables:`, existingTables.join(', ') || 'none');
 
     // Step 2: Create ENUMs if they don't exist
@@ -257,7 +257,7 @@ async function setupDatabase() {
       ORDER BY table_name;
     `);
     
-    const finalTables = finalTablesResult.rows.map((row: any) => row.table_name);
+    const finalTables = (finalTablesResult.rows || []).map((row: any) => row.table_name);
     console.log(`   ✅ Total tables: ${finalTables.length}`);
     console.log(`   Tables: ${finalTables.join(', ')}`);
 
