@@ -26,10 +26,12 @@ import ContactMessages from "@/pages/admin/ContactMessages";
 import EmailSettings from "@/pages/admin/EmailSettings";
 import HomeSettings from "@/pages/admin/HomeSettings";
 import SettingsAdmin from "@/pages/admin/SettingsAdmin";
+import AdminManagement from "@/pages/admin/AdminManagement";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Header from "./components/Header";
+import AuthGuard from "./components/AuthGuard";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -42,19 +44,48 @@ function Router() {
       <Route path="/diensten/:slug" component={ServiceDetail} />
       <Route path="/blog" component={BlogPage} />
       <Route path="/blog/:slug" component={BlogPost} />
-      <Route path="/admin" component={Dashboard} />
-      <Route path="/admin/projects" component={Projects} />
-      <Route path="/admin/projects/:id" component={ProjectForm} />
-      <Route path="/admin/services" component={Services} />
-      <Route path="/admin/services/:id" component={ServiceForm} />
-      <Route path="/admin/blog" component={BlogPosts} />
-          <Route path="/admin/blog/:id" component={BlogPostForm} />
-          <Route path="/admin/partners" component={Partners} />
-          <Route path="/admin/testimonials" component={TestimonialsAdmin} />
-          <Route path="/admin/messages" component={ContactMessages} />
-          <Route path="/admin/settings/email" component={EmailSettings} />
-          <Route path="/admin/settings/home" component={HomeSettings} />
-          <Route path="/admin/settings" component={SettingsAdmin} />
+      <Route path="/admin">
+        {() => <AuthGuard><Dashboard /></AuthGuard>}
+      </Route>
+      <Route path="/admin/projects">
+        {() => <AuthGuard><Projects /></AuthGuard>}
+      </Route>
+      <Route path="/admin/projects/:id">
+        {() => <AuthGuard><ProjectForm /></AuthGuard>}
+      </Route>
+      <Route path="/admin/services">
+        {() => <AuthGuard><Services /></AuthGuard>}
+      </Route>
+      <Route path="/admin/services/:id">
+        {() => <AuthGuard><ServiceForm /></AuthGuard>}
+      </Route>
+      <Route path="/admin/blog">
+        {() => <AuthGuard><BlogPosts /></AuthGuard>}
+      </Route>
+      <Route path="/admin/blog/:id">
+        {() => <AuthGuard><BlogPostForm /></AuthGuard>}
+      </Route>
+      <Route path="/admin/partners">
+        {() => <AuthGuard><Partners /></AuthGuard>}
+      </Route>
+      <Route path="/admin/testimonials">
+        {() => <AuthGuard><TestimonialsAdmin /></AuthGuard>}
+      </Route>
+      <Route path="/admin/messages">
+        {() => <AuthGuard><ContactMessages /></AuthGuard>}
+      </Route>
+      <Route path="/admin/settings/email">
+        {() => <AuthGuard><EmailSettings /></AuthGuard>}
+      </Route>
+      <Route path="/admin/settings/home">
+        {() => <AuthGuard><HomeSettings /></AuthGuard>}
+      </Route>
+      <Route path="/admin/settings">
+        {() => <AuthGuard><SettingsAdmin /></AuthGuard>}
+      </Route>
+      <Route path="/admin/admins">
+        {() => <AuthGuard><AdminManagement /></AuthGuard>}
+      </Route>
       <Route path="/login" component={Login} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
