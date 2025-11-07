@@ -40,9 +40,6 @@ RESEND_API_KEY=re_UPiidPck_E68S37XW9Fb5as9W8sgCdQ7C
 JWT_SECRET=m3ykK6Yx8Jk4LkiZr3CRpk
 
 # App Configuration
-VITE_APP_TITLE=BuildCraft - Professional Construction Services
-VITE_APP_LOGO=https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310519663204237360/sZgxUbRadMHCpdLE.png
-VITE_APP_ID=RvJDY4Kv7DP2d6KMfMpU4s
 BASE_URL=https://${{RAILWAY_PUBLIC_DOMAIN}}
 
 # Node Environment

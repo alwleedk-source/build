@@ -1198,3 +1198,13 @@ Add email sending functionality using Resend for:
 - [x] Create seed script for PostgreSQL
 - [x] Create Railway deployment guide
 - [ ] Push to GitHub
+
+## 🧹 Remove Manus References (URGENT)
+
+- [x] Remove VITE_APP_LOGO environment variable dependency
+- [x] Remove VITE_APP_ID and other Manus-related env vars
+- [x] Use BuildCraft logo or simple placeholder (/logo.png)
+- [x] Remove analytics (umami)
+- [x] Clean up all Manus references from code
+- [x] Create database-schema.sql for easy setup
+- [ ] Push to GitHub
