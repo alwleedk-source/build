@@ -1042,3 +1042,90 @@ Add email sending functionality using Resend for:
 - [x] Created icon mapping object (iconMap) with all icon components
 - [x] Updated ServicesPage to use iconMap[service.icon] instead of service.icon directly
 - [x] Icons now render correctly as React components
+
+
+## 📁 Cloudflare R2 Media Upload System - In Progress
+
+### Phase 1: Setup R2 Credentials & Install Packages
+- [ ] Request R2 credentials from user (Account ID, Access Key, Secret Key, Bucket Name, Public URL)
+- [ ] Install @aws-sdk/client-s3 and @aws-sdk/s3-request-presigner
+- [ ] Add R2 credentials to environment variables
+
+### Phase 2: Create Upload Service & Backend API
+- [ ] Create server/r2.ts with S3Client configuration
+- [ ] Create upload API endpoint (presigned URL generation)
+- [ ] Create delete API endpoint
+- [ ] Add file validation (size, type)
+
+### Phase 3: Add Image Uploader UI in Admin
+- [ ] Create ImageUploader component with drag & drop
+- [ ] Add preview before upload
+- [ ] Add progress indicator
+- [ ] Add error handling
+
+### Phase 4: Update Admin Pages to Use R2
+- [ ] Update Projects admin to use ImageUploader
+- [ ] Update Services admin to use ImageUploader
+- [ ] Update Blog admin to use ImageUploader
+- [ ] Update Partners admin to use ImageUploader
+
+### Phase 5: Testing & Deployment Preparation
+- [ ] Test image upload from Admin
+- [ ] Test image display on public pages
+- [ ] Verify images load from R2 public URL
+- [ ] Document environment variables for production deployment
+- [ ] Save checkpoint
+
+## 🚀 Cloudflare R2 Integration (In Progress)
+
+### Backend Setup
+- [x] Installed AWS SDK packages (@aws-sdk/client-s3, @aws-sdk/s3-request-presigner)
+- [x] Created server/r2.ts with S3Client configuration
+- [x] Implemented generateUploadUrl() for presigned URLs
+- [x] Implemented deleteFile() for file deletion
+- [x] Added file type validation (images and videos only)
+- [x] Added generateFileKey() with random suffixes for security
+- [x] Added extractKeyFromUrl() helper
+- [x] Created upload router in server/routers.ts:
+  - [x] generateUploadUrl mutation (with folder organization)
+  - [x] deleteFile mutation
+
+### Frontend Components
+- [x] Created ImageUploader component (client/src/components/admin/ImageUploader.tsx):
+  - [x] Drag & drop interface
+  - [x] Image preview
+  - [x] File size validation (max 5MB)
+  - [x] Upload progress indicator
+  - [x] Remove image functionality
+  - [x] Professional UI with hover effects
+- [x] Integrated ImageUploader into admin pages:
+  - [x] ProjectForm.tsx - Project images
+  - [x] BlogPostForm.tsx - Blog post images
+  - [x] Partners.tsx - Partner logos
+
+### Testing & Deployment
+- [ ] Test image upload in Projects admin
+- [ ] Test image upload in Blog admin
+- [ ] Test image upload in Partners admin
+- [ ] Verify images display correctly on public pages
+- [ ] Test file deletion when updating images
+- [ ] Document R2 setup for domain migration
+- [ ] Save checkpoint with R2 integration complete
+
+### Environment Variables (Already Configured)
+- [x] R2_ACCOUNT_ID
+- [x] R2_ACCESS_KEY_ID
+- [x] R2_SECRET_ACCESS_KEY
+- [x] R2_BUCKET_NAME
+- [x] R2_PUBLIC_URL
+
+### Features
+- ✅ Direct upload to Cloudflare R2 (no server intermediary)
+- ✅ Presigned URLs for secure uploads
+- ✅ File organization by folder (projects, services, blog, partners, testimonials, general)
+- ✅ Random suffixes to prevent enumeration attacks
+- ✅ File type validation (JPEG, PNG, WebP, GIF, MP4, WebM)
+- ✅ File size validation (max 5MB)
+- ✅ Professional drag & drop UI
+- ✅ Image preview before upload
+- ✅ Error handling with user-friendly messages

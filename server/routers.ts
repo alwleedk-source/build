@@ -491,6 +491,53 @@ export const appRouter = router({
         return await db.updateTestimonialsOrder(input);
       }),
   }),
+
+  // Upload router (Cloudflare R2)
+  upload: router({
+    generateUploadUrl: publicProcedure
+      .input(z.object({
+        filename: z.string(),
+        contentType: z.string(),
+        folder: z.enum(['projects', 'services', 'blog', 'partners', 'testimonials', 'general']),
+      }))
+      .mutation(async ({ input }) => {
+        const { generateUploadUrl, generateFileKey, isValidFileType } = await import('./r2');
+        
+        // Validate file type
+        if (!isValidFileType(input.contentType)) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid file type. Only images (JPEG, PNG, WebP, GIF) and videos (MP4, WebM) are allowed.',
+          });
+        }
+
+        // Generate unique key
+        const key = generateFileKey(input.folder, input.filename);
+
+        // Generate presigned URL
+        const result = await generateUploadUrl(key, input.contentType);
+        return result;
+      }),
+    
+    deleteFile: publicProcedure
+      .input(z.object({
+        url: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { deleteFile, extractKeyFromUrl } = await import('./r2');
+        
+        const key = extractKeyFromUrl(input.url);
+        if (!key) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid file URL',
+          });
+        }
+
+        await deleteFile(key);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

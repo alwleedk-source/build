@@ -17,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Save } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 const categories = [
   "Nieuwbouw",
@@ -224,26 +225,17 @@ export default function BlogPostForm() {
               </p>
             </div>
 
-            {/* Image URL */}
+            {/* Image Upload */}
             <div className="space-y-2">
-              <Label htmlFor="image">Afbeelding URL *</Label>
-              <Input
-                id="image"
-                type="url"
-                value={formData.image}
-                onChange={(e) =>
-                  setFormData({ ...formData, image: e.target.value })
-                }
-                placeholder="https://example.com/image.jpg"
-                required
+              <ImageUploader
+                currentImage={formData.image}
+                onImageUploaded={(url) => setFormData({ ...formData, image: url })}
+                folder="blog"
+                label="Blog Afbeelding *"
               />
-              {formData.image && (
-                <img
-                  src={formData.image}
-                  alt="Preview"
-                  className="w-full h-48 object-cover rounded-lg mt-2"
-                />
-              )}
+              <p className="text-sm text-muted-foreground">
+                Upload een afbeelding (max 5MB). Ondersteunde formaten: JPEG, PNG, WebP, GIF
+              </p>
             </div>
 
             {/* Published */}

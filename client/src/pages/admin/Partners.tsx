@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ImageUploader from "@/components/admin/ImageUploader";
 import {
   DndContext,
   closestCenter,
@@ -386,22 +387,15 @@ export default function Partners() {
               />
             </div>
             <div>
-              <Label htmlFor="logo">Logo URL *</Label>
-              <Input
-                id="logo"
-                value={formData.logo}
-                onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-                placeholder="https://example.com/logo.png"
+              <ImageUploader
+                currentImage={formData.logo}
+                onImageUploaded={(url) => setFormData({ ...formData, logo: url })}
+                folder="partners"
+                label="Partner Logo *"
               />
-              {formData.logo && (
-                <div className="mt-2">
-                  <img
-                    src={formData.logo}
-                    alt="Preview"
-                    className="w-32 h-32 object-contain bg-white rounded-lg border border-border p-2"
-                  />
-                </div>
-              )}
+              <p className="text-sm text-muted-foreground mt-1">
+                Upload een logo (max 5MB). Ondersteunde formaten: JPEG, PNG, WebP, GIF
+              </p>
             </div>
             <div>
               <Label htmlFor="url">Website URL</Label>
