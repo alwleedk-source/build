@@ -27,6 +27,8 @@ import EmailSettings from "@/pages/admin/EmailSettings";
 import HomeSettings from "@/pages/admin/HomeSettings";
 import SettingsAdmin from "@/pages/admin/SettingsAdmin";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Header from "./components/Header";
 
 function Router() {
@@ -54,6 +56,8 @@ function Router() {
           <Route path="/admin/settings/home" component={HomeSettings} />
           <Route path="/admin/settings" component={SettingsAdmin} />
       <Route path="/login" component={Login} />
+      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route path="/reset-password" component={ResetPassword} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

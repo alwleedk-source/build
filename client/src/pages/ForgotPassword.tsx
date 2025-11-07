@@ -5,23 +5,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Lock, Mail } from "lucide-react";
+import { Loader2, Mail, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { APP_LOGO, APP_TITLE } from "@/const";
 
-export default function Login() {
+export default function ForgotPassword() {
   const [, setLocation] = useLocation();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const loginMutation = trpc.admin.login.useMutation({
+  const forgotPasswordMutation = trpc.admin.forgotPassword.useMutation({
     onSuccess: () => {
-      setLocation("/admin");
+      setSuccess(true);
+      setIsLoading(false);
     },
     onError: (error) => {
-      setError(error.message || "فشل تسجيل الدخول");
+      setError(error.message || "فشل إرسال البريد الإلكتروني");
       setIsLoading(false);
     },
   });
@@ -31,14 +32,58 @@ export default function Login() {
     setError("");
     setIsLoading(true);
 
-    if (!email || !password) {
-      setError("يرجى إدخال البريد الإلكتروني وكلمة المرور");
+    if (!email) {
+      setError("يرجى إدخال البريد الإلكتروني");
       setIsLoading(false);
       return;
     }
 
-    loginMutation.mutate({ email, password });
+    forgotPasswordMutation.mutate({ email });
   };
+
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+        <Card className="w-full max-w-md shadow-xl">
+          <CardHeader className="space-y-4 text-center">
+            <div className="flex justify-center">
+              <div className="h-16 w-16 rounded-full bg-green-100 flex items-center justify-center">
+                <CheckCircle2 className="h-8 w-8 text-green-600" />
+              </div>
+            </div>
+            <div>
+              <CardTitle className="text-2xl font-bold text-green-600">تم الإرسال بنجاح!</CardTitle>
+              <CardDescription>
+                تحقق من بريدك الإلكتروني
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Alert className="bg-green-50 border-green-200">
+              <AlertDescription className="text-green-800">
+                تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.
+                <br />
+                <br />
+                يرجى التحقق من صندوق الوارد (وصندوق الرسائل غير المرغوب فيها).
+                <br />
+                <br />
+                <strong>ملاحظة:</strong> الرابط صالح لمدة ساعة واحدة فقط.
+              </AlertDescription>
+            </Alert>
+
+            <Button
+              onClick={() => setLocation("/login")}
+              className="w-full"
+              variant="outline"
+            >
+              <ArrowLeft className="ml-2 h-4 w-4" />
+              العودة لتسجيل الدخول
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4">
@@ -49,14 +94,14 @@ export default function Login() {
               <img src={APP_LOGO} alt={APP_TITLE} className="h-16 w-auto" />
             ) : (
               <div className="h-16 w-16 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#C5A028] flex items-center justify-center">
-                <Lock className="h-8 w-8 text-white" />
+                <Mail className="h-8 w-8 text-white" />
               </div>
             )}
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold">تسجيل الدخول</CardTitle>
+            <CardTitle className="text-2xl font-bold">نسيت كلمة المرور؟</CardTitle>
             <CardDescription>
-              لوحة تحكم {APP_TITLE}
+              أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
             </CardDescription>
           </div>
         </CardHeader>
@@ -85,34 +130,6 @@ export default function Login() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">كلمة المرور</Label>
-              <div className="relative">
-                <Lock className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                  className="pr-10"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={() => setLocation("/forgot-password")}
-                className="text-sm text-[#D4AF37] hover:text-[#C5A028] hover:underline"
-                disabled={isLoading}
-              >
-                نسيت كلمة المرور؟
-              </button>
-            </div>
-
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-[#D4AF37] to-[#C5A028] hover:from-[#C5A028] hover:to-[#B69121]"
@@ -121,32 +138,24 @@ export default function Login() {
               {isLoading ? (
                 <>
                   <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                  جاري تسجيل الدخول...
+                  جاري الإرسال...
                 </>
               ) : (
-                "تسجيل الدخول"
+                "إرسال رابط إعادة التعيين"
               )}
             </Button>
-          </form>
 
-          <div className="mt-6 p-4 bg-muted rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">
-              <strong>بيانات تسجيل الدخول الافتراضية:</strong>
-              <br />
-              البريد: <code className="text-primary">waleed.qodami@gmail.com</code>
-              <br />
-              كلمة المرور: <code className="text-primary">3505490qwE@@</code>
-            </p>
-          </div>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setLocation("/")}
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            <Button
+              type="button"
+              onClick={() => setLocation("/login")}
+              className="w-full"
+              variant="outline"
+              disabled={isLoading}
             >
-              ← العودة للصفحة الرئيسية
-            </button>
-          </div>
+              <ArrowLeft className="ml-2 h-4 w-4" />
+              العودة لتسجيل الدخول
+            </Button>
+          </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
             <p>© {new Date().getFullYear()} {APP_TITLE}</p>
