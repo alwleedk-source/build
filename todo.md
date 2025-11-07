@@ -1208,3 +1208,10 @@ Add email sending functionality using Resend for:
 - [x] Clean up all Manus references from code
 - [x] Create database-schema.sql for easy setup
 - [ ] Push to GitHub
+
+## 🐛 Fix siteSettings API Error (CRITICAL)
+
+- [x] Fix db.getAllSiteSettings() - function doesn't exist
+- [x] Fix db.getSiteSettingByKey() - function doesn't exist
+- [x] Update routers.ts to use correct function names (getSiteSettings, updateSiteSettings)
+- [ ] Test and push to GitHub

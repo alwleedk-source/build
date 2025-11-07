@@ -262,21 +262,22 @@ export const appRouter = router({
   // Site Settings router
   siteSettings: router({
     getAll: publicProcedure.query(async () => {
-      return await db.getAllSiteSettings();
+      return await db.getSiteSettings();
     }),
-    getByKey: publicProcedure
-      .input(z.object({ key: z.string() }))
-      .query(async ({ input }) => {
-        return await db.getSiteSettingByKey(input.key);
-      }),
-    upsert: publicProcedure
+    update: publicProcedure
       .input(z.object({
-        key: z.string(),
-        value: z.string(),
-        type: z.enum(["text", "boolean", "number", "json"]).optional(),
+        siteName: z.string().optional(),
+        siteDescription: z.string().optional(),
+        contactEmail: z.string().optional(),
+        contactPhone: z.string().optional(),
+        address: z.string().optional(),
+        socialFacebook: z.string().optional(),
+        socialTwitter: z.string().optional(),
+        socialInstagram: z.string().optional(),
+        socialLinkedin: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        return await db.upsertSiteSetting(input);
+        return await db.updateSiteSettings(input);
       }),
   }),
 
