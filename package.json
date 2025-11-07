@@ -12,7 +12,8 @@
     "test": "vitest run",
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "db:seed": "tsx server/seed-admin.ts",
-    "db:setup": "tsx server/setup-database.ts"
+    "db:setup": "tsx server/setup-database.ts",
+    "fix-password": "tsx server/fix-admin-password.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.925.0",
