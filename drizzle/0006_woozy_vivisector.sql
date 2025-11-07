@@ -1,1 +1,0 @@
-ALTER TABLE `blogPosts` ADD `order` int DEFAULT 0 NOT NULL;

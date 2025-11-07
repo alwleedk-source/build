@@ -1189,3 +1189,12 @@ Add email sending functionality using Resend for:
 - [ ] Convert Admin Management page to Dutch
 - [ ] Test authentication flow after fixes
 - [ ] Push to GitHub
+
+## 🔄 Convert to PostgreSQL (URGENT)
+
+- [x] Update package.json to use drizzle-orm/postgres-js
+- [x] Update server/db.ts to use PostgreSQL connection
+- [x] Update drizzle.config.ts for PostgreSQL
+- [x] Create seed script for PostgreSQL
+- [x] Create Railway deployment guide
+- [ ] Push to GitHub
