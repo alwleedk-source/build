@@ -95,7 +95,7 @@ async function setupDatabase() {
     
     if (!existingTables.includes('admins')) {
       await db.execute(sql`
-        CREATE TABLE "admins" (
+        CREATE TABLE IF NOT EXISTS "admins" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "email" varchar(320) NOT NULL UNIQUE,
           "passwordHash" varchar(255) NOT NULL,
@@ -118,7 +118,7 @@ async function setupDatabase() {
     // Users table
     if (!existingTables.includes('users')) {
       await db.execute(sql`
-        CREATE TABLE "users" (
+        CREATE TABLE IF NOT EXISTS "users" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "openId" varchar(64) NOT NULL UNIQUE,
           "name" text,
@@ -136,7 +136,7 @@ async function setupDatabase() {
     // siteSettings table
     if (!existingTables.includes('siteSettings')) {
       await db.execute(sql`
-        CREATE TABLE "siteSettings" (
+        CREATE TABLE IF NOT EXISTS "siteSettings" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "key" varchar(255) NOT NULL UNIQUE,
           "value" text NOT NULL,
@@ -163,7 +163,7 @@ async function setupDatabase() {
     // Projects table
     if (!existingTables.includes('projects')) {
       await db.execute(sql`
-        CREATE TABLE "projects" (
+        CREATE TABLE IF NOT EXISTS "projects" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "title" varchar(255) NOT NULL,
           "description" text NOT NULL,
@@ -182,7 +182,7 @@ async function setupDatabase() {
     // Services table
     if (!existingTables.includes('services')) {
       await db.execute(sql`
-        CREATE TABLE "services" (
+        CREATE TABLE IF NOT EXISTS "services" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "title" varchar(255) NOT NULL,
           "slug" varchar(255) NOT NULL UNIQUE,
@@ -202,7 +202,7 @@ async function setupDatabase() {
     // contactMessages table
     if (!existingTables.includes('contactMessages')) {
       await db.execute(sql`
-        CREATE TABLE "contactMessages" (
+        CREATE TABLE IF NOT EXISTS "contactMessages" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "name" varchar(255) NOT NULL,
           "email" varchar(320) NOT NULL,
