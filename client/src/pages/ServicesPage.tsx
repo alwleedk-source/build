@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { ArrowLeft, Check, Building2 } from 'lucide-react';
+import { ArrowLeft, Check, Building2, Factory, Settings, Paintbrush, Wrench, Hammer } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -24,11 +24,9 @@ export default function ServicesPage() {
       <main className="pt-32 pb-24">
         <div className="container">
           {/* Back Button */}
-          <Link href="/">
-            <a className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8">
-              <ArrowLeft className="w-5 h-5" />
-              Terug naar home
-            </a>
+          <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8">
+            <ArrowLeft className="w-5 h-5" />
+            Terug naar home
           </Link>
 
           {/* Page Header */}
