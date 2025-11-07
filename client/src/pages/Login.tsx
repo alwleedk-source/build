@@ -21,7 +21,7 @@ export default function Login() {
       setLocation("/admin");
     },
     onError: (error) => {
-      setError(error.message || "فشل تسجيل الدخول");
+      setError(error.message || "Inloggen mislukt");
       setIsLoading(false);
     },
   });
@@ -32,7 +32,7 @@ export default function Login() {
     setIsLoading(true);
 
     if (!email || !password) {
-      setError("يرجى إدخال البريد الإلكتروني وكلمة المرور");
+      setError("Vul e-mailadres en wachtwoord in");
       setIsLoading(false);
       return;
     }
@@ -54,9 +54,9 @@ export default function Login() {
             )}
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold">تسجيل الدخول</CardTitle>
+            <CardTitle className="text-2xl font-bold">Inloggen</CardTitle>
             <CardDescription>
-              لوحة تحكم {APP_TITLE}
+              {APP_TITLE} Dashboard
             </CardDescription>
           </div>
         </CardHeader>
@@ -69,9 +69,9 @@ export default function Login() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">البريد الإلكتروني</Label>
+              <Label htmlFor="email">E-mailadres</Label>
               <div className="relative">
-                <Mail className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <Input
                   id="email"
                   type="email"
@@ -79,16 +79,16 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
-                  className="pr-10"
+                  className="pl-10"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">كلمة المرور</Label>
+              <Label htmlFor="password">Wachtwoord</Label>
               <div className="relative">
-                <Lock className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <Input
                   id="password"
                   type="password"
@@ -96,7 +96,7 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
-                  className="pr-10"
+                  className="pl-10"
                   required
                 />
               </div>
@@ -109,7 +109,7 @@ export default function Login() {
                 className="text-sm text-[#D4AF37] hover:text-[#C5A028] hover:underline"
                 disabled={isLoading}
               >
-                نسيت كلمة المرور؟
+                Wachtwoord vergeten?
               </button>
             </div>
 
@@ -120,22 +120,22 @@ export default function Login() {
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                  جاري تسجيل الدخول...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Inloggen...
                 </>
               ) : (
-                "تسجيل الدخول"
+                "Inloggen"
               )}
             </Button>
           </form>
 
           <div className="mt-6 p-4 bg-muted rounded-lg text-center">
             <p className="text-sm text-muted-foreground">
-              <strong>بيانات تسجيل الدخول الافتراضية:</strong>
+              <strong>Standaard inloggegevens:</strong>
               <br />
-              البريد: <code className="text-primary">waleed.qodami@gmail.com</code>
+              E-mail: <code className="text-primary">waleed.qodami@gmail.com</code>
               <br />
-              كلمة المرور: <code className="text-primary">3505490qwE@@</code>
+              Wachtwoord: <code className="text-primary">3505490qwE@@</code>
             </p>
           </div>
 
@@ -144,13 +144,13 @@ export default function Login() {
               onClick={() => setLocation("/")}
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              ← العودة للصفحة الرئيسية
+              ← Terug naar home
             </button>
           </div>
 
           <div className="mt-6 text-center text-sm text-gray-500">
             <p>© {new Date().getFullYear()} {APP_TITLE}</p>
-            <p className="mt-1">جميع الحقوق محفوظة</p>
+            <p className="mt-1">Alle rechten voorbehouden</p>
           </div>
         </CardContent>
       </Card>

@@ -22,7 +22,7 @@ export default function ForgotPassword() {
       setIsLoading(false);
     },
     onError: (error) => {
-      setError(error.message || "فشل إرسال البريد الإلكتروني");
+      setError(error.message || "Verzenden van e-mail mislukt");
       setIsLoading(false);
     },
   });
@@ -33,7 +33,7 @@ export default function ForgotPassword() {
     setIsLoading(true);
 
     if (!email) {
-      setError("يرجى إدخال البريد الإلكتروني");
+      setError("Vul e-mailadres in");
       setIsLoading(false);
       return;
     }
@@ -52,22 +52,22 @@ export default function ForgotPassword() {
               </div>
             </div>
             <div>
-              <CardTitle className="text-2xl font-bold text-green-600">تم الإرسال بنجاح!</CardTitle>
+              <CardTitle className="text-2xl font-bold text-green-600">Succesvol verzonden!</CardTitle>
               <CardDescription>
-                تحقق من بريدك الإلكتروني
+                Controleer uw e-mail
               </CardDescription>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <Alert className="bg-green-50 border-green-200">
               <AlertDescription className="text-green-800">
-                تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.
+                Een link om uw wachtwoord opnieuw in te stellen is naar uw e-mailadres verzonden.
                 <br />
                 <br />
-                يرجى التحقق من صندوق الوارد (وصندوق الرسائل غير المرغوب فيها).
+                Controleer uw inbox (en spam map).
                 <br />
                 <br />
-                <strong>ملاحظة:</strong> الرابط صالح لمدة ساعة واحدة فقط.
+                <strong>Let op:</strong> De link is slechts 1 uur geldig.
               </AlertDescription>
             </Alert>
 
@@ -76,8 +76,8 @@ export default function ForgotPassword() {
               className="w-full"
               variant="outline"
             >
-              <ArrowLeft className="ml-2 h-4 w-4" />
-              العودة لتسجيل الدخول
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Terug naar inloggen
             </Button>
           </CardContent>
         </Card>
@@ -99,9 +99,9 @@ export default function ForgotPassword() {
             )}
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold">نسيت كلمة المرور؟</CardTitle>
+            <CardTitle className="text-2xl font-bold">Wachtwoord vergeten?</CardTitle>
             <CardDescription>
-              أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
+              Voer uw e-mailadres in en we sturen u een link om uw wachtwoord opnieuw in te stellen
             </CardDescription>
           </div>
         </CardHeader>
@@ -114,9 +114,9 @@ export default function ForgotPassword() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">البريد الإلكتروني</Label>
+              <Label htmlFor="email">E-mailadres</Label>
               <div className="relative">
-                <Mail className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <Input
                   id="email"
                   type="email"
@@ -124,7 +124,7 @@ export default function ForgotPassword() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
-                  className="pr-10"
+                  className="pl-10"
                   required
                 />
               </div>
@@ -137,11 +137,11 @@ export default function ForgotPassword() {
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                  جاري الإرسال...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Verzenden...
                 </>
               ) : (
-                "إرسال رابط إعادة التعيين"
+                "Reset link verzenden"
               )}
             </Button>
 
@@ -152,14 +152,14 @@ export default function ForgotPassword() {
               variant="outline"
               disabled={isLoading}
             >
-              <ArrowLeft className="ml-2 h-4 w-4" />
-              العودة لتسجيل الدخول
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Terug naar inloggen
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
             <p>© {new Date().getFullYear()} {APP_TITLE}</p>
-            <p className="mt-1">جميع الحقوق محفوظة</p>
+            <p className="mt-1">Alle rechten voorbehouden</p>
           </div>
         </CardContent>
       </Card>

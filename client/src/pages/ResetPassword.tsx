@@ -22,7 +22,7 @@ export default function ResetPassword() {
 
   useEffect(() => {
     if (!token) {
-      setError("رابط إعادة تعيين كلمة المرور غير صالح");
+      setError("Ongeldige wachtwoord reset link");
     }
   }, [token]);
 
@@ -36,7 +36,7 @@ export default function ResetPassword() {
       }, 3000);
     },
     onError: (error) => {
-      setError(error.message || "فشل إعادة تعيين كلمة المرور");
+      setError(error.message || "Wachtwoord resetten mislukt");
       setIsLoading(false);
     },
   });
@@ -46,17 +46,17 @@ export default function ResetPassword() {
     setError("");
 
     if (!token) {
-      setError("رابط إعادة تعيين كلمة المرور غير صالح");
+      setError("Ongeldige wachtwoord reset link");
       return;
     }
 
     if (newPassword.length < 8) {
-      setError("كلمة المرور يجب أن تكون 8 أحرف على الأقل");
+      setError("Wachtwoord moet minimaal 8 tekens zijn");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("كلمات المرور غير متطابقة");
+      setError("Wachtwoorden komen niet overeen");
       return;
     }
 
@@ -75,19 +75,19 @@ export default function ResetPassword() {
               </div>
             </div>
             <div>
-              <CardTitle className="text-2xl font-bold text-green-600">تم التغيير بنجاح!</CardTitle>
+              <CardTitle className="text-2xl font-bold text-green-600">Succesvol gewijzigd!</CardTitle>
               <CardDescription>
-                تم إعادة تعيين كلمة المرور الخاصة بك
+                Uw wachtwoord is opnieuw ingesteld
               </CardDescription>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <Alert className="bg-green-50 border-green-200">
               <AlertDescription className="text-green-800 text-center">
-                تم إعادة تعيين كلمة المرور بنجاح!
+                Uw wachtwoord is succesvol opnieuw ingesteld!
                 <br />
                 <br />
-                سيتم توجيهك لصفحة تسجيل الدخول خلال 3 ثوانٍ...
+                U wordt over 3 seconden doorgestuurd naar de inlogpagina...
               </AlertDescription>
             </Alert>
 
@@ -95,7 +95,7 @@ export default function ResetPassword() {
               onClick={() => setLocation("/login")}
               className="w-full bg-gradient-to-r from-[#D4AF37] to-[#C5A028]"
             >
-              تسجيل الدخول الآن
+              Nu inloggen
             </Button>
           </CardContent>
         </Card>
@@ -117,9 +117,9 @@ export default function ResetPassword() {
             )}
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold">إعادة تعيين كلمة المرور</CardTitle>
+            <CardTitle className="text-2xl font-bold">Wachtwoord opnieuw instellen</CardTitle>
             <CardDescription>
-              أدخل كلمة المرور الجديدة
+              Voer uw nieuwe wachtwoord in
             </CardDescription>
           </div>
         </CardHeader>
@@ -132,9 +132,9 @@ export default function ResetPassword() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="newPassword">كلمة المرور الجديدة</Label>
+              <Label htmlFor="newPassword">Nieuw wachtwoord</Label>
               <div className="relative">
-                <Lock className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <Input
                   id="newPassword"
                   type="password"
@@ -142,20 +142,20 @@ export default function ResetPassword() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   disabled={isLoading || !token}
-                  className="pr-10"
+                  className="pl-10"
                   required
                   minLength={8}
                 />
               </div>
               <p className="text-xs text-gray-500">
-                يجب أن تكون كلمة المرور 8 أحرف على الأقل
+                Wachtwoord moet minimaal 8 tekens zijn
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">تأكيد كلمة المرور</Label>
+              <Label htmlFor="confirmPassword">Bevestig wachtwoord</Label>
               <div className="relative">
-                <Lock className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -163,7 +163,7 @@ export default function ResetPassword() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={isLoading || !token}
-                  className="pr-10"
+                  className="pl-10"
                   required
                   minLength={8}
                 />
@@ -177,11 +177,11 @@ export default function ResetPassword() {
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                  جاري التغيير...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Wijzigen...
                 </>
               ) : (
-                "إعادة تعيين كلمة المرور"
+                "Wachtwoord opnieuw instellen"
               )}
             </Button>
 
@@ -192,13 +192,13 @@ export default function ResetPassword() {
               variant="outline"
               disabled={isLoading}
             >
-              العودة لتسجيل الدخول
+              Terug naar inloggen
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
             <p>© {new Date().getFullYear()} {APP_TITLE}</p>
-            <p className="mt-1">جميع الحقوق محفوظة</p>
+            <p className="mt-1">Alle rechten voorbehouden</p>
           </div>
         </CardContent>
       </Card>
