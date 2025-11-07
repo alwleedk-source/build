@@ -44,11 +44,8 @@ export async function createAdmin(data: {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  const result = await db.insert(admins).values(insertData);
-  const adminId = Number(result[0].insertId);
-  
-  const admin = await db.select().from(admins).where(eq(admins.id, adminId)).limit(1);
-  return admin[0];
+  const result = await db.insert(admins).values(insertData).returning();
+  return result[0];
 }
 
 /**
