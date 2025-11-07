@@ -262,7 +262,8 @@ async function setupDatabase() {
     console.log(`   Tables: ${finalTables.join(', ')}`);
 
     const adminCount = await db.execute(sql`SELECT COUNT(*) as count FROM "admins";`);
-    console.log(`   ✅ Admin users: ${adminCount.rows[0].count}`);
+    const count = adminCount.rows?.[0]?.count || adminCount[0]?.count || 0;
+    console.log(`   ✅ Admin users: ${count}`);
 
     console.log('\n🎉 Database setup completed successfully!');
     console.log('\n📝 Login credentials:');
