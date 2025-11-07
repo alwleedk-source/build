@@ -538,6 +538,171 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // Admin authentication and management router
+  admin: router({
+    // Login with email/password
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string().min(6),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { authenticateAdmin } = await import('./auth');
+        const admin = await authenticateAdmin(input.email, input.password);
+        
+        if (!admin) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'بيانات تسجيل الدخول غير صحيحة',
+          });
+        }
+
+        // Create session token
+        const { sdk } = await import('./_core/sdk');
+        const sessionToken = await sdk.createSessionToken(`admin_${admin.id}`, {
+          name: admin.name,
+          expiresInMs: 30 * 24 * 60 * 60 * 1000, // 30 days
+        });
+
+        // Set cookie
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, sessionToken, { 
+          ...cookieOptions, 
+          maxAge: 30 * 24 * 60 * 60 * 1000 
+        });
+
+        return {
+          success: true,
+          admin: {
+            id: admin.id,
+            email: admin.email,
+            name: admin.name,
+            role: admin.role,
+          },
+        };
+      }),
+
+    // Request password reset
+    forgotPassword: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+      }))
+      .mutation(async ({ input }) => {
+        const { getAdminByEmail, createPasswordResetToken } = await import('./auth');
+        const { sendPasswordResetEmail } = await import('./email');
+        
+        const admin = await getAdminByEmail(input.email);
+        
+        // Always return success to prevent email enumeration
+        if (!admin) {
+          return { success: true };
+        }
+
+        const token = await createPasswordResetToken(admin.id);
+        await sendPasswordResetEmail(admin.email, admin.name, token);
+        
+        return { success: true };
+      }),
+
+    // Reset password with token
+    resetPassword: publicProcedure
+      .input(z.object({
+        token: z.string(),
+        newPassword: z.string().min(8),
+      }))
+      .mutation(async ({ input }) => {
+        const { verifyPasswordResetToken, updateAdminPassword } = await import('./auth');
+        
+        const adminId = await verifyPasswordResetToken(input.token);
+        
+        if (!adminId) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'رابط إعادة تعيين كلمة المرور غير صالح أو منتهي الصلاحية',
+          });
+        }
+
+        await updateAdminPassword(adminId, input.newPassword);
+        
+        return { success: true };
+      }),
+
+    // Get all admins (protected)
+    getAll: publicProcedure.query(async () => {
+      const { getAllAdmins } = await import('./auth');
+      return await getAllAdmins();
+    }),
+
+    // Create new admin (protected)
+    create: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string().min(8),
+        name: z.string().min(2),
+        role: z.enum(['admin', 'super_admin']).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { createAdmin, getAdminByEmail } = await import('./auth');
+        
+        // Check if email already exists
+        const existing = await getAdminByEmail(input.email);
+        if (existing) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'البريد الإلكتروني مستخدم بالفعل',
+          });
+        }
+
+        const admin = await createAdmin(input);
+        
+        return {
+          id: admin.id,
+          email: admin.email,
+          name: admin.name,
+          role: admin.role,
+        };
+      }),
+
+    // Update admin (protected)
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().min(2).optional(),
+        email: z.string().email().optional(),
+        role: z.enum(['admin', 'super_admin']).optional(),
+        isActive: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { updateAdmin } = await import('./auth');
+        const { id, ...data } = input;
+        await updateAdmin(id, data);
+        return { success: true };
+      }),
+
+    // Change password (protected)
+    changePassword: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        newPassword: z.string().min(8),
+      }))
+      .mutation(async ({ input }) => {
+        const { updateAdminPassword } = await import('./auth');
+        await updateAdminPassword(input.id, input.newPassword);
+        return { success: true };
+      }),
+
+    // Delete admin (protected)
+    delete: publicProcedure
+      .input(z.object({
+        id: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        const { deleteAdmin } = await import('./auth');
+        await deleteAdmin(input.id);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

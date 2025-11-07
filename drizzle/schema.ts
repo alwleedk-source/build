@@ -203,3 +203,32 @@ export const emailSettings = mysqlTable("emailSettings", {
 
 export type EmailSettings = typeof emailSettings.$inferSelect;
 export type InsertEmailSettings = typeof emailSettings.$inferInsert;
+
+// Admins table - for email/password authentication
+export const admins = mysqlTable("admins", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  passwordHash: varchar("passwordHash", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  role: mysqlEnum("role", ["admin", "super_admin"]).default("admin").notNull(),
+  isActive: int("isActive").default(1).notNull(), // 0 = inactive, 1 = active
+  lastLoginAt: timestamp("lastLoginAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Admin = typeof admins.$inferSelect;
+export type InsertAdmin = typeof admins.$inferInsert;
+
+// Password reset tokens table
+export const passwordResetTokens = mysqlTable("passwordResetTokens", {
+  id: int("id").autoincrement().primaryKey(),
+  adminId: int("adminId").notNull(),
+  token: varchar("token", { length: 255 }).notNull().unique(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  used: int("used").default(0).notNull(), // 0 = not used, 1 = used
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+export type InsertPasswordResetToken = typeof passwordResetTokens.$inferInsert;

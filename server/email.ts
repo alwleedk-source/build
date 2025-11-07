@@ -293,3 +293,123 @@ ${adminUrl}/admin/messages
 
   return { html, text };
 }
+
+/**
+ * Send password reset email
+ */
+export async function sendPasswordResetEmail(
+  email: string,
+  name: string,
+  token: string
+): Promise<{ success: boolean; error?: string }> {
+  const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+  const resetLink = `${baseUrl}/reset-password?token=${token}`;
+
+  const html = `
+    <!DOCTYPE html>
+    <html dir="rtl" lang="ar">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #f5f5f5;
+          margin: 0;
+          padding: 20px;
+        }
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: white;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          overflow: hidden;
+        }
+        .header {
+          background: linear-gradient(135deg, #D4AF37 0%, #C5A028 100%);
+          color: white;
+          padding: 30px;
+          text-align: center;
+        }
+        .header h1 {
+          margin: 0;
+          font-size: 24px;
+        }
+        .content {
+          padding: 40px 30px;
+        }
+        .content p {
+          color: #333;
+          line-height: 1.6;
+          margin-bottom: 20px;
+        }
+        .button {
+          display: inline-block;
+          background-color: #D4AF37;
+          color: white !important;
+          text-decoration: none;
+          padding: 14px 30px;
+          border-radius: 6px;
+          font-weight: bold;
+          margin: 20px 0;
+        }
+        .button:hover {
+          background-color: #C5A028;
+        }
+        .footer {
+          background-color: #f9f9f9;
+          padding: 20px 30px;
+          text-align: center;
+          color: #666;
+          font-size: 12px;
+        }
+        .warning {
+          background-color: #fff3cd;
+          border-right: 4px solid #ffc107;
+          padding: 15px;
+          margin: 20px 0;
+          border-radius: 4px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🔐 إعادة تعيين كلمة المرور</h1>
+        </div>
+        <div class="content">
+          <p>مرحباً <strong>${name}</strong>،</p>
+          <p>تلقينا طلباً لإعادة تعيين كلمة المرور الخاصة بحسابك في لوحة تحكم BuildCraft.</p>
+          <p>انقر على الزر أدناه لإعادة تعيين كلمة المرور الخاصة بك:</p>
+          <div style="text-align: center;">
+            <a href="${resetLink}" class="button">إعادة تعيين كلمة المرور</a>
+          </div>
+          <p>أو انسخ الرابط التالي والصقه في متصفحك:</p>
+          <p style="word-break: break-all; background-color: #f5f5f5; padding: 10px; border-radius: 4px; font-size: 12px;">
+            ${resetLink}
+          </p>
+          <div class="warning">
+            <strong>⚠️ تنبيه أمني:</strong>
+            <ul style="margin: 10px 0; padding-right: 20px;">
+              <li>هذا الرابط صالح لمدة ساعة واحدة فقط</li>
+              <li>إذا لم تطلب إعادة تعيين كلمة المرور، يرجى تجاهل هذا البريد الإلكتروني</li>
+              <li>لا تشارك هذا الرابط مع أي شخص</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer">
+          <p>© ${new Date().getFullYear()} BuildCraft. جميع الحقوق محفوظة.</p>
+          <p>هذا بريد إلكتروني تلقائي، يرجى عدم الرد عليه.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: email,
+    subject: '🔐 إعادة تعيين كلمة المرور - BuildCraft',
+    html,
+  });
+}

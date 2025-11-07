@@ -1129,3 +1129,44 @@ Add email sending functionality using Resend for:
 - ✅ Professional drag & drop UI
 - ✅ Image preview before upload
 - ✅ Error handling with user-friendly messages
+
+## 🚂 Railway Deployment Preparation
+
+- [ ] Create railway.json configuration file
+- [ ] Create Dockerfile for production build
+- [ ] Add .dockerignore file
+- [ ] Update package.json with build scripts
+- [ ] Create README.md with deployment instructions
+- [ ] Add environment variables documentation
+- [ ] Test production build locally
+- [ ] Push to GitHub repository (https://github.com/alwleedk-source/build.git)
+- [ ] Verify Railway compatibility
+
+## 🔧 Railway Deployment Fixes
+
+- [ ] Fix Dockerfile to include vite in production
+- [ ] Update build script to properly bundle server
+- [ ] Remove OAuth dependency on Manus API
+- [ ] Replace with simple username/password auth
+- [ ] Remove OAUTH_SERVER_URL, VITE_OAUTH_PORTAL_URL, VITE_APP_ID, OWNER_OPEN_ID, OWNER_NAME
+- [ ] Test deployment on Railway
+- [ ] Update environment variables documentation
+
+## 🔐 Advanced Authentication System
+
+- [ ] Update database schema with admins table
+- [ ] Add passwordResetTokens table
+- [ ] Install bcrypt for password hashing
+- [ ] Create admin API endpoints (CRUD)
+- [ ] Create login API with email/password
+- [ ] Create forgot password API with Resend
+- [ ] Create reset password API
+- [ ] Create new Login page with email/password
+- [ ] Create Forgot Password page
+- [ ] Create Reset Password page
+- [ ] Create Admin Management page in dashboard
+- [ ] Add rate limiting for auth endpoints
+- [ ] Add CSRF protection
+- [ ] Create seed script for initial admin (waleed.qodami@gmail.com)
+- [ ] Test complete authentication flow
+- [ ] Update documentation
