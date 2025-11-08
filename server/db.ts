@@ -21,7 +21,13 @@ let _client: ReturnType<typeof postgres> | null = null;
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _client = postgres(process.env.DATABASE_URL, { prepare: false });
+      _client = postgres(process.env.DATABASE_URL, { 
+        prepare: false,
+        ssl: 'require',
+        connection: {
+          application_name: 'buildcraft'
+        }
+      });
       _db = drizzle(_client);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
