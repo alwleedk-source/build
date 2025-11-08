@@ -51,6 +51,26 @@ export function useGetLocalizedContent() {
 }
 
 /**
+ * Get localized content without hooks (for use in components)
+ */
+export function getLocalizedContent<T extends Record<string, any>>(
+  item: T,
+  field: keyof T,
+  language: string
+): string {
+  // If English is selected and English field exists, use it
+  if (language === 'en') {
+    const enField = `${String(field)}En` as keyof T;
+    if (item[enField]) {
+      return String(item[enField]);
+    }
+  }
+  
+  // Fallback to Dutch (default)
+  return String(item[field] || '');
+}
+
+/**
  * Get localized features array (parsed from JSON)
  */
 export function useLocalizedFeatures(item: { features: string; featuresEn?: string }): string[] {
