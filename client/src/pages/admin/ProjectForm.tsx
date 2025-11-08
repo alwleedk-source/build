@@ -81,6 +81,7 @@ export default function ProjectForm() {
 
     const data = {
       ...formData,
+      image: formData.image || '',
       featured: formData.featured ? 1 : 0,
       showOnHomepage: formData.showOnHomepage ? 1 : 0,
     };
@@ -201,7 +202,7 @@ export default function ProjectForm() {
                 currentImage={formData.image}
                 onImageUploaded={(url) => setFormData({ ...formData, image: url })}
                 folder="projects"
-                label="Project Afbeelding *"
+                label="Project Afbeelding"
               />
               <p className="text-sm text-muted-foreground">
                 Upload een afbeelding (max 5MB). Ondersteunde formaten: JPEG, PNG, WebP, GIF
