@@ -8,11 +8,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Lock, Mail } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { APP_LOGO, APP_TITLE } from "@/const";
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // Build timestamp: 2025-11-08T05:23:00Z - Force cache-busting rebuild v2
 console.log('🔥 Login component loaded - NEW VERSION v2 - 2025-11-08T05:23:00Z');
 
 export default function Login() {
+  const { t } = useTranslation();
   const [, setLocation] = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,10 +66,13 @@ export default function Login() {
             )}
           </div>
           <div>
-            <CardTitle className="text-2xl font-bold">Inloggen</CardTitle>
+            <CardTitle className="text-2xl font-bold">{t('login.title')}</CardTitle>
             <CardDescription>
-              {APP_TITLE} Dashboard
+              {APP_TITLE} {t('login.subtitle')}
             </CardDescription>
+            <div className="mt-2">
+              <LanguageSwitcher />
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -78,7 +84,7 @@ export default function Login() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">E-mailadres</Label>
+              <Label htmlFor="email">{t('login.email')}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <Input
@@ -95,7 +101,7 @@ export default function Login() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Wachtwoord</Label>
+              <Label htmlFor="password">{t('login.password')}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <Input
@@ -118,7 +124,7 @@ export default function Login() {
                 className="text-sm text-[#D4AF37] hover:text-[#C5A028] hover:underline"
                 disabled={isLoading}
               >
-                Wachtwoord vergeten?
+                {t('login.forgotPassword')}
               </button>
             </div>
 
@@ -130,17 +136,17 @@ export default function Login() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Inloggen...
+                  {t('login.submitting')}
                 </>
               ) : (
-                "Inloggen"
+                t('login.submit')
               )}
             </Button>
           </form>
 
           <div className="mt-6 p-4 bg-muted rounded-lg text-center">
             <p className="text-sm text-muted-foreground">
-              <strong>Standaard inloggegevens:</strong>
+              <strong>{t('login.defaultCredentials')}:</strong>
               <br />
               E-mail: <code className="text-primary">waleed.qodami@gmail.com</code>
               <br />
@@ -153,7 +159,7 @@ export default function Login() {
               onClick={() => setLocation("/")}
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              ← Terug naar home
+              ← {t('login.backToHome')}
             </button>
           </div>
 

@@ -32,7 +32,9 @@ export const categoryEnum = pgEnum("category", ["Residentieel", "Commercieel", "
 export const projects = pgTable("projects", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   title: varchar("title", { length: 255 }).notNull(),
+  titleEn: varchar("titleEn", { length: 255 }),
   description: text("description").notNull(),
+  descriptionEn: text("descriptionEn"),
   category: categoryEnum("category").notNull(),
   image: varchar("image", { length: 500 }).notNull(),
   featured: integer("featured").default(0).notNull(), // 0 = false, 1 = true
@@ -49,11 +51,15 @@ export type InsertProject = typeof projects.$inferInsert;
 export const services = pgTable("services", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   title: varchar("title", { length: 255 }).notNull(),
+  titleEn: varchar("titleEn", { length: 255 }),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   description: text("description").notNull(),
+  descriptionEn: text("descriptionEn"),
   longDescription: text("longDescription").notNull(),
+  longDescriptionEn: text("longDescriptionEn"),
   icon: varchar("icon", { length: 50 }).notNull(), // Icon name from lucide-react
   features: text("features").notNull(), // JSON array of features
+  featuresEn: text("featuresEn"), // JSON array of features in English
   showOnHomepage: integer("showOnHomepage").default(0).notNull(), // 0 = false, 1 = true
   order: integer("order").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -67,11 +73,15 @@ export type InsertService = typeof services.$inferInsert;
 export const blogPosts = pgTable("blogPosts", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   title: varchar("title", { length: 255 }).notNull(),
+  titleEn: varchar("titleEn", { length: 255 }),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   excerpt: text("excerpt").notNull(),
+  excerptEn: text("excerptEn"),
   content: text("content").notNull(),
+  contentEn: text("contentEn"),
   image: varchar("image", { length: 500 }).notNull(),
   category: varchar("category", { length: 100 }).notNull(),
+  categoryEn: varchar("categoryEn", { length: 100 }),
   authorId: integer("authorId").notNull(),
   published: integer("published").default(0).notNull(), // 0 = draft, 1 = published
   order: integer("order").default(0).notNull(),

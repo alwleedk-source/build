@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "about": "About Us",
+    "blog": "Blog",
+    "contact": "Contact",
+    "contactCta": "Get In Touch"
+  },
+  "footer": {
+    "allRightsReserved": "All rights reserved",
+    "quickLinks": "Quick Links",
+    "services": "Services",
+    "contact": "Contact",
+    "followUs": "Follow Us"
+  },
+  "home": {
+    "hero": {
+      "title": "Build Your Dreams with BuildCraft",
+      "subtitle": "Professional construction services for residential and commercial projects",
+      "cta": "View Our Projects",
+      "contact": "Get In Touch"
+    },
+    "services": {
+      "title": "Our Services",
+      "subtitle": "Comprehensive construction solutions for every project"
+    },
+    "projects": {
+      "title": "Featured Projects",
+      "subtitle": "Explore our portfolio of completed projects",
+      "viewAll": "View All Projects"
+    },
+    "testimonials": {
+      "title": "What Our Clients Say",
+      "subtitle": "Real feedback from satisfied customers"
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Contact us today for a free quote",
+      "button": "Get In Touch"
+    }
+  },
+  "projects": {
+    "title": "Our Projects",
+    "subtitle": "View our portfolio of completed projects",
+    "filter": {
+      "all": "All",
+      "residential": "Residential",
+      "commercial": "Commercial",
+      "industrial": "Industrial"
+    }
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Professional construction services tailored to your needs",
+    "learnMore": "Learn More"
+  },
+  "about": {
+    "title": "About BuildCraft",
+    "subtitle": "Your trusted partner in construction",
+    "mission": "Our Mission",
+    "vision": "Our Vision",
+    "values": "Our Values"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Latest news and insights",
+    "readMore": "Read More",
+    "backToBlog": "Back to Blog"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "We'd love to hear from you",
+    "form": {
+      "name": "Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "An error occurred. Please try again."
+    },
+    "info": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Business Hours"
+    }
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Dashboard",
+    "email": "Email Address",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "submit": "Login",
+    "submitting": "Logging in...",
+    "backToHome": "Back to home",
+    "defaultCredentials": "Default credentials"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "services": "Services",
+    "blog": "Blog",
+    "partners": "Partners",
+    "testimonials": "Testimonials",
+    "messages": "Messages",
+    "settings": "Settings",
+    "logout": "Logout",
+    "welcome": "Welcome back! Here's an overview of your website.",
+    "quickActions": "Quick Actions",
+    "recentActivity": "Recent Activity",
+    "stats": {
+      "totalProjects": "Total Projects",
+      "services": "Services",
+      "blogPosts": "Blog Posts",
+      "messages": "Messages"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "viewMore": "View More",
+    "viewLess": "View Less"
+  }
+}

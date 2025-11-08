@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Diensten",
+    "projects": "Projecten",
+    "about": "Over Ons",
+    "blog": "Blog",
+    "contact": "Contact",
+    "contactCta": "Neem Contact Op"
+  },
+  "footer": {
+    "allRightsReserved": "Alle rechten voorbehouden",
+    "quickLinks": "Snelle Links",
+    "services": "Diensten",
+    "contact": "Contact",
+    "followUs": "Volg Ons"
+  },
+  "home": {
+    "hero": {
+      "title": "Bouw uw dromen met BuildCraft",
+      "subtitle": "Professionele bouwdiensten voor residentiële en commerciële projecten",
+      "cta": "Bekijk Onze Projecten",
+      "contact": "Neem Contact Op"
+    },
+    "services": {
+      "title": "Onze Diensten",
+      "subtitle": "Uitgebreide bouwoplossingen voor elk project"
+    },
+    "projects": {
+      "title": "Uitgelichte Projecten",
+      "subtitle": "Ontdek ons portfolio van voltooide projecten",
+      "viewAll": "Bekijk Alle Projecten"
+    },
+    "testimonials": {
+      "title": "Wat Onze Klanten Zeggen",
+      "subtitle": "Echte feedback van tevreden klanten"
+    },
+    "cta": {
+      "title": "Klaar om te beginnen?",
+      "subtitle": "Neem vandaag nog contact met ons op voor een vrijblijvende offerte",
+      "button": "Neem Contact Op"
+    }
+  },
+  "projects": {
+    "title": "Onze Projecten",
+    "subtitle": "Bekijk ons portfolio van voltooide projecten",
+    "filter": {
+      "all": "Alle",
+      "residential": "Residentieel",
+      "commercial": "Commercieel",
+      "industrial": "Industrieel"
+    }
+  },
+  "services": {
+    "title": "Onze Diensten",
+    "subtitle": "Professionele bouwdiensten op maat",
+    "learnMore": "Meer Informatie"
+  },
+  "about": {
+    "title": "Over BuildCraft",
+    "subtitle": "Uw vertrouwde partner in de bouw",
+    "mission": "Onze Missie",
+    "vision": "Onze Visie",
+    "values": "Onze Waarden"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Laatste nieuws en inzichten",
+    "readMore": "Lees Meer",
+    "backToBlog": "Terug naar Blog"
+  },
+  "contact": {
+    "title": "Neem Contact Op",
+    "subtitle": "We horen graag van u",
+    "form": {
+      "name": "Naam",
+      "email": "E-mailadres",
+      "phone": "Telefoonnummer",
+      "message": "Bericht",
+      "send": "Verstuur Bericht",
+      "sending": "Verzenden...",
+      "success": "Bericht succesvol verzonden!",
+      "error": "Er is een fout opgetreden. Probeer het opnieuw."
+    },
+    "info": {
+      "address": "Adres",
+      "phone": "Telefoon",
+      "email": "E-mail",
+      "hours": "Openingstijden"
+    }
+  },
+  "login": {
+    "title": "Inloggen",
+    "subtitle": "Dashboard",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "submit": "Inloggen",
+    "submitting": "Inloggen...",
+    "backToHome": "Terug naar home",
+    "defaultCredentials": "Standaard inloggegevens"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "projects": "Projecten",
+    "services": "Diensten",
+    "blog": "Blog",
+    "partners": "Partners",
+    "testimonials": "Testimonials",
+    "messages": "Berichten",
+    "settings": "Instellingen",
+    "logout": "Uitloggen",
+    "welcome": "Welkom terug! Hier is een overzicht van uw website.",
+    "quickActions": "Snelle Acties",
+    "recentActivity": "Recente Activiteit",
+    "stats": {
+      "totalProjects": "Totaal Projecten",
+      "services": "Diensten",
+      "blogPosts": "Blog Posts",
+      "messages": "Berichten"
+    }
+  },
+  "common": {
+    "loading": "Laden...",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "add": "Toevoegen",
+    "search": "Zoeken",
+    "filter": "Filteren",
+    "viewMore": "Meer Bekijken",
+    "viewLess": "Minder Bekijken"
+  }
+}

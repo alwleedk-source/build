@@ -166,7 +166,9 @@ async function setupDatabase() {
         CREATE TABLE IF NOT EXISTS "projects" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "title" varchar(255) NOT NULL,
+          "titleEn" varchar(255),
           "description" text NOT NULL,
+          "descriptionEn" text,
           "category" category NOT NULL,
           "image" varchar(500) NOT NULL,
           "featured" integer DEFAULT 0 NOT NULL,
@@ -177,6 +179,13 @@ async function setupDatabase() {
         );
       `);
       console.log('   ✅ projects table created');
+    } else {
+      // Add English columns if they don't exist
+      await db.execute(sql`
+        ALTER TABLE "projects" ADD COLUMN IF NOT EXISTS "titleEn" varchar(255);
+        ALTER TABLE "projects" ADD COLUMN IF NOT EXISTS "descriptionEn" text;
+      `);
+      console.log('   ✅ projects table updated with English fields');
     }
 
     // Services table
@@ -185,11 +194,15 @@ async function setupDatabase() {
         CREATE TABLE IF NOT EXISTS "services" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "title" varchar(255) NOT NULL,
+          "titleEn" varchar(255),
           "slug" varchar(255) NOT NULL UNIQUE,
           "description" text NOT NULL,
+          "descriptionEn" text,
           "longDescription" text NOT NULL,
+          "longDescriptionEn" text,
           "icon" varchar(50) NOT NULL,
           "features" text NOT NULL,
+          "featuresEn" text,
           "showOnHomepage" integer DEFAULT 0 NOT NULL,
           "order" integer DEFAULT 0 NOT NULL,
           "createdAt" timestamp DEFAULT now() NOT NULL,
@@ -197,6 +210,15 @@ async function setupDatabase() {
         );
       `);
       console.log('   ✅ services table created');
+    } else {
+      // Add English columns if they don't exist
+      await db.execute(sql`
+        ALTER TABLE "services" ADD COLUMN IF NOT EXISTS "titleEn" varchar(255);
+        ALTER TABLE "services" ADD COLUMN IF NOT EXISTS "descriptionEn" text;
+        ALTER TABLE "services" ADD COLUMN IF NOT EXISTS "longDescriptionEn" text;
+        ALTER TABLE "services" ADD COLUMN IF NOT EXISTS "featuresEn" text;
+      `);
+      console.log('   ✅ services table updated with English fields');
     }
 
     // contactMessages table

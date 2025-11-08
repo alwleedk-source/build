@@ -3,9 +3,12 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { APP_LOGO, APP_TITLE } from '@/const';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
   const { settings } = useSiteSettings();
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,12 +41,12 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/diensten', label: 'Diensten' },
-    { href: '/projecten', label: 'Projecten' },
-    { href: '/over-ons', label: 'Over Ons' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/#contact', label: 'Contact' },
+    { href: '/', label: t('nav.home') },
+    { href: '/diensten', label: t('nav.services') },
+    { href: '/projecten', label: t('nav.projects') },
+    { href: '/over-ons', label: t('nav.about') },
+    { href: '/blog', label: t('nav.blog') },
+    { href: '/#contact', label: t('nav.contact') },
   ];
 
   return (
@@ -76,8 +79,9 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* CTA Button */}
+          {/* Language Switcher & CTA Button */}
           <div className="hidden md:flex items-center gap-4">
+            <LanguageSwitcher />
             {isLoggedIn ? (
               <>
                 <Button asChild variant="outline" className="rounded-full">
@@ -88,13 +92,13 @@ export default function Header() {
                   variant="destructive"
                   className="rounded-full"
                 >
-                  Uitloggen
+                  {t('admin.logout')}
                 </Button>
               </>
             ) : (
               <Button asChild className="rounded-full">
                 <a href="#contact">
-                  Neem Contact Op
+                  {t('nav.contactCta')}
                   <svg
                     width="16"
                     height="16"
@@ -143,11 +147,14 @@ export default function Header() {
                   {link.label}
                 </a>
               ))}
-              <Button asChild className="rounded-full mt-2">
-                <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
-                  Neem Contact Op
-                </a>
-              </Button>
+              <div className="flex flex-col gap-2 mt-2">
+                <LanguageSwitcher />
+                <Button asChild className="rounded-full">
+                  <a href="#contact" onClick={() => setIsMobileMenuOpen(false)}>
+                    {t('nav.contactCta')}
+                  </a>
+                </Button>
+              </div>
             </nav>
           </div>
         )}
