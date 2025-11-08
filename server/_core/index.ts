@@ -40,6 +40,10 @@ async function startServer() {
   const localUploadRouter = (await import('../local-upload')).default;
   app.use('/api', localUploadRouter);
 
+  // Debug routes
+  const debugRouter = (await import('../routes/debug')).default;
+  app.use('/api/debug', debugRouter);
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {

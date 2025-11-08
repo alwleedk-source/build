@@ -14,6 +14,7 @@ import {
   X,
   Home,
   Star,
+  Bug,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -96,6 +97,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       title: "Instellingen",
       icon: Settings,
       path: "/admin/settings",
+    },
+    {
+      title: "🔍 Debug",
+      icon: Bug,
+      path: "/admin/debug",
     },
   ];
 

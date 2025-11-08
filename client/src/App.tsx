@@ -28,6 +28,7 @@ import HomeSettings from "@/pages/admin/HomeSettings";
 import HeroSettings from "@/pages/admin/HeroSettings";
 import FooterSettings from "@/pages/admin/FooterSettings";
 import AboutUsSettings from "@/pages/admin/AboutUsSettings";
+import DebugDashboard from "@/pages/admin/DebugDashboard";
 import SettingsAdmin from "@/pages/admin/SettingsAdmin";
 import AdminManagement from "@/pages/admin/AdminManagement";
 import Login from "./pages/Login";
@@ -94,6 +95,9 @@ function Router() {
       </Route>
       <Route path="/admin/settings">
         {() => <AuthGuard><SettingsAdmin /></AuthGuard>}
+      </Route>
+      <Route path="/admin/debug">
+        {() => <AuthGuard><DebugDashboard /></AuthGuard>}
       </Route>
       <Route path="/admin/admins">
         {() => <AuthGuard><AdminManagement /></AuthGuard>}
