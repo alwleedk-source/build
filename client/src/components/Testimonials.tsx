@@ -3,7 +3,7 @@ import ScrollReveal from '@/components/ScrollReveal';
 import { trpc } from '@/lib/trpc';
 
 export default function Testimonials() {
-  const { data: testimonials = [] } = trpc.testimonials.getAll.useQuery();
+  const { data: testimonials = [] } = trpc.testimonials.getFeatured.useQuery();
 
   if (testimonials.length === 0) {
     return null;

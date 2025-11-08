@@ -158,6 +158,9 @@ export const appRouter = router({
     getAll: publicProcedure.query(async () => {
       return await db.getAllPartners();
     }),
+    getFeatured: publicProcedure.query(async () => {
+      return await db.getFeaturedPartners();
+    }),
     getActive: publicProcedure.query(async () => {
       return await db.getActivePartners();
     }),
@@ -459,6 +462,9 @@ export const appRouter = router({
   testimonials: router({
     getAll: publicProcedure.query(async () => {
       return await db.getAllTestimonials();
+    }),
+    getFeatured: publicProcedure.query(async () => {
+      return await db.getFeaturedTestimonials();
     }),
     create: publicProcedure
       .input(z.object({

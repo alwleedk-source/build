@@ -2,7 +2,7 @@ import { trpc } from "@/lib/trpc";
 import ScrollReveal from '@/components/ScrollReveal';
 
 export default function PartnersSection() {
-  const partnersQuery = trpc.partners.getActive.useQuery();
+  const partnersQuery = trpc.partners.getFeatured.useQuery();
 
   if (!partnersQuery.data || partnersQuery.data.length === 0) {
     return null;
