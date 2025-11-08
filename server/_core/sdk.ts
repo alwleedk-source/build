@@ -2,7 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { ForbiddenError } from "@shared/_core/errors";
 import type { Request } from "express";
 import { SignJWT, jwtVerify } from "jose";
-import type { User } from "../../drizzle/schema";
+import type { Admin } from "../../drizzle/schema";
 import * as db from "../db";
 import { ENV } from "./env";
 
@@ -48,7 +48,7 @@ class SDKServer {
   /**
    * Get current user from request (checks session cookie)
    */
-  async getCurrentUser(req: Request): Promise<User | null> {
+  async getCurrentUser(req: Request): Promise<Admin | null> {
     const cookieHeader = req.headers.cookie;
     if (!cookieHeader) {
       console.log("[Auth] Missing cookie header");
@@ -65,8 +65,20 @@ class SDKServer {
 
     try {
       const payload = await this.verifySessionToken(sessionToken);
-      const user = await db.getUserByOpenId(payload.openId);
-      return user;
+      console.log("[Auth] Session payload:", payload);
+      
+      // Extract admin ID from openId (format: admin_123)
+      if (payload.openId.startsWith('admin_')) {
+        const adminId = parseInt(payload.openId.replace('admin_', ''));
+        console.log("[Auth] Looking up admin ID:", adminId);
+        const { getAdminById } = await import('../auth');
+        const admin = await getAdminById(adminId);
+        console.log("[Auth] Admin found:", admin ? { id: admin.id, email: admin.email } : null);
+        return admin;
+      }
+      
+      console.log("[Auth] Invalid openId format:", payload.openId);
+      return null;
     } catch (error) {
       console.error("[Auth] Invalid session token:", error);
       return null;
@@ -76,7 +88,7 @@ class SDKServer {
   /**
    * Require authentication - throws ForbiddenError if not authenticated
    */
-  async requireAuth(req: Request): Promise<User> {
+  async requireAuth(req: Request): Promise<Admin> {
     const user = await this.getCurrentUser(req);
     if (!user) {
       throw new ForbiddenError("Authentication required");
@@ -87,7 +99,7 @@ class SDKServer {
   /**
    * Check if user is owner (admin)
    */
-  isOwner(user: User | null): boolean {
+  isOwner(user: Admin | null): boolean {
     if (!user) return false;
     // Simple admin check - you can customize this
     // For now, any authenticated user is considered admin
@@ -97,12 +109,19 @@ class SDKServer {
   /**
    * Require owner (admin) access
    */
-  async requireOwner(req: Request): Promise<User> {
+  async requireOwner(req: Request): Promise<Admin> {
     const user = await this.requireAuth(req);
     if (!this.isOwner(user)) {
       throw new ForbiddenError("Admin access required");
     }
     return user;
+  }
+
+  /**
+   * Authenticate request and return admin if valid
+   */
+  async authenticateRequest(req: Request): Promise<Admin | null> {
+    return await this.getCurrentUser(req);
   }
 }
 
