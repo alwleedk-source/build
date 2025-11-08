@@ -21,8 +21,10 @@ export default function Login() {
     onSuccess: (data) => {
       console.log("✅ Login successful!", data);
       setIsLoading(false);
-      // Force navigation to admin dashboard
-      window.location.href = "/admin";
+      // Use redirectUrl from response or fallback to /admin
+      const redirectTo = data.redirectUrl || "/admin";
+      console.log("🔄 Redirecting to:", redirectTo);
+      window.location.href = redirectTo;
     },
     onError: (error) => {
       console.error("❌ Login failed:", error);

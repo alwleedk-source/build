@@ -575,6 +575,7 @@ export const appRouter = router({
 
         return {
           success: true,
+          redirectUrl: '/admin',  // Force redirect to admin dashboard
           admin: {
             id: admin.id,
             email: admin.email,
