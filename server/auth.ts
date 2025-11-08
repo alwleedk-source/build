@@ -93,32 +93,56 @@ export async function getAllAdmins(): Promise<Admin[]> {
  * Authenticate admin with email and password
  */
 export async function authenticateAdmin(email: string, password: string): Promise<Admin | null> {
-  const admin = await getAdminByEmail(email);
+  console.log('[Auth] 🔐 Starting authentication...');
+  console.log('[Auth] Email:', email);
   
-  if (!admin) {
+  try {
+    console.log('[Auth] 📧 Looking up admin by email...');
+    const admin = await getAdminByEmail(email);
+    
+    if (!admin) {
+      console.log('[Auth] ❌ Admin not found in database');
+      return null;
+    }
+    
+    console.log('[Auth] ✅ Admin found:', { id: admin.id, email: admin.email, role: admin.role, isActive: admin.isActive });
+
+    if (admin.isActive === 0) {
+      console.log('[Auth] ❌ Admin account is deactivated');
+      return null; // Admin is deactivated
+    }
+
+    console.log('[Auth] 🔑 Verifying password...');
+    const isValid = await verifyPassword(password, admin.passwordHash);
+    
+    if (!isValid) {
+      console.log('[Auth] ❌ Password verification failed');
+      return null;
+    }
+    
+    console.log('[Auth] ✅ Password verified successfully');
+
+    // Update last login time
+    console.log('[Auth] 📝 Updating last login time...');
+    const dbForUpdate = await getDb();
+    if (dbForUpdate) {
+      await dbForUpdate
+        .update(admins)
+        .set({ lastLoginAt: new Date() })
+        .where(eq(admins.id, admin.id));
+      console.log('[Auth] ✅ Last login time updated');
+    }
+    
+    console.log('[Auth] 🎉 Authentication successful!');
+    return admin;
+    
+  } catch (error) {
+    console.error('[Auth] ❌ Authentication error!');
+    console.error('[Auth] Error type:', error?.constructor?.name);
+    console.error('[Auth] Error message:', error?.message);
+    console.error('[Auth] Full error:', error);
     return null;
   }
-
-  if (admin.isActive === 0) {
-    return null; // Admin is deactivated
-  }
-
-  const isValid = await verifyPassword(password, admin.passwordHash);
-  
-  if (!isValid) {
-    return null;
-  }
-
-  // Update last login time
-  const dbForUpdate = await getDb();
-  if (dbForUpdate) {
-    await dbForUpdate
-      .update(admins)
-      .set({ lastLoginAt: new Date() })
-      .where(eq(admins.id, admin.id));
-  }
-
-  return admin;
 }
 
 /**
