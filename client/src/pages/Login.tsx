@@ -9,7 +9,9 @@ import { Loader2, Lock, Mail } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { APP_LOGO, APP_TITLE } from "@/const";
 
-// Build timestamp: 2025-11-07T19:37:00Z - Force rebuild
+// Build timestamp: 2025-11-08T05:23:00Z - Force cache-busting rebuild v2
+console.log('🔥 Login component loaded - NEW VERSION v2 - 2025-11-08T05:23:00Z');
+
 export default function Login() {
   const [, setLocation] = useLocation();
   const [email, setEmail] = useState("");
