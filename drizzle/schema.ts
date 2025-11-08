@@ -97,8 +97,11 @@ export const testimonials = pgTable("testimonials", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   name: varchar("name", { length: 255 }).notNull(),
   position: varchar("position", { length: 255 }).notNull(),
+  positionEn: varchar("positionEn", { length: 255 }),
   company: varchar("company", { length: 255 }),
+  companyEn: varchar("companyEn", { length: 255 }),
   content: text("content").notNull(),
+  contentEn: text("contentEn"),
   rating: integer("rating").default(5).notNull(), // 1-5 stars
   image: varchar("image", { length: 500 }),
   order: integer("order").default(0).notNull(),
