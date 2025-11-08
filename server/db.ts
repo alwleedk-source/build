@@ -21,12 +21,16 @@ let _client: ReturnType<typeof postgres> | null = null;
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
+      // Railway internal postgres doesn't need SSL
+      const isRailwayInternal = process.env.DATABASE_URL.includes('railway.internal');
       _client = postgres(process.env.DATABASE_URL, { 
         prepare: false,
-        ssl: 'require',
-        connection: {
-          application_name: 'buildcraft'
-        }
+        ...(isRailwayInternal ? {} : {
+          ssl: 'require',
+          connection: {
+            application_name: 'buildcraft'
+          }
+        })
       });
       _db = drizzle(_client);
     } catch (error) {
