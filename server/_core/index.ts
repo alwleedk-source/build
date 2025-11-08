@@ -40,6 +40,19 @@ async function startServer() {
   const localUploadRouter = (await import('../local-upload')).default;
   app.use('/api', localUploadRouter);
 
+  // Sitemap
+  app.get('/sitemap.xml', async (req, res) => {
+    try {
+      const { generateSitemap } = await import('../sitemap');
+      const sitemap = await generateSitemap();
+      res.header('Content-Type', 'application/xml');
+      res.send(sitemap);
+    } catch (error) {
+      console.error('Sitemap generation error:', error);
+      res.status(500).send('Error generating sitemap');
+    }
+  });
+
   // Traditional form-based login with server-side redirect
   app.post("/api/auth/login-redirect", async (req, res) => {
     try {
