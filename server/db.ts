@@ -23,6 +23,13 @@ export async function getDb() {
     try {
       // Railway internal postgres doesn't need SSL
       const isRailwayInternal = process.env.DATABASE_URL.includes('railway.internal');
+      const dbUrlMasked = process.env.DATABASE_URL.replace(/:\/\/([^:]+):([^@]+)@/, '://$1:****@');
+      
+      console.log('[Database] Attempting to connect...');
+      console.log('[Database] URL (masked):', dbUrlMasked);
+      console.log('[Database] Is Railway Internal:', isRailwayInternal);
+      console.log('[Database] SSL Config:', isRailwayInternal ? 'disabled' : 'enabled');
+      
       _client = postgres(process.env.DATABASE_URL, { 
         prepare: false,
         ...(isRailwayInternal ? {} : {
@@ -33,8 +40,17 @@ export async function getDb() {
         })
       });
       _db = drizzle(_client);
+      
+      // Test connection
+      await _client`SELECT 1`;
+      console.log('[Database] ✅ Connection successful!');
+      
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
+      console.error('[Database] ❌ Failed to connect!');
+      console.error('[Database] Error type:', error?.constructor?.name);
+      console.error('[Database] Error message:', error?.message);
+      console.error('[Database] Error code:', (error as any)?.code);
+      console.error('[Database] Full error:', error);
       _db = null;
       _client = null;
     }
