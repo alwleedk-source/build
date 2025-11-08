@@ -100,7 +100,7 @@ export default function ServiceForm() {
 
   return (
     <AdminLayout>
-      <div className="max-w-3xl space-y-6">
+      <div className="max-w-4xl space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4">
           <Button
@@ -123,23 +123,38 @@ export default function ServiceForm() {
         {/* Form */}
         <Card className="p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Title */}
-            <div className="space-y-2">
-              <Label htmlFor="title">Titel *</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => {
-                  const title = e.target.value;
-                  setFormData({
-                    ...formData,
-                    title,
-                    slug: generateSlug(title),
-                  });
-                }}
-                placeholder="Bijv. Nieuwbouw"
-                required
-              />
+            {/* Title - Dutch & English */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="title">Titel (Nederlands) *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => {
+                    const title = e.target.value;
+                    setFormData({
+                      ...formData,
+                      title,
+                      slug: generateSlug(title),
+                    });
+                  }}
+                  placeholder="Bijv. Nieuwbouw"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="titleEn">Title (English) *</Label>
+                <Input
+                  id="titleEn"
+                  value={formData.titleEn}
+                  onChange={(e) =>
+                    setFormData({ ...formData, titleEn: e.target.value })
+                  }
+                  placeholder="E.g. New Construction"
+                  required
+                />
+              </div>
             </div>
 
             {/* Slug */}
@@ -174,62 +189,108 @@ export default function ServiceForm() {
               />
             </div>
 
-            {/* Description */}
-            <div className="space-y-2">
-              <Label htmlFor="description">Korte Beschrijving *</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-                placeholder="Korte beschrijving voor de homepage..."
-                rows={3}
-                required
-              />
+            {/* Short Description - Dutch & English */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="description">Korte Beschrijving (Nederlands) *</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                  placeholder="Korte beschrijving voor de homepage..."
+                  rows={3}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="descriptionEn">Short Description (English) *</Label>
+                <Textarea
+                  id="descriptionEn"
+                  value={formData.descriptionEn}
+                  onChange={(e) =>
+                    setFormData({ ...formData, descriptionEn: e.target.value })
+                  }
+                  placeholder="Short description for homepage..."
+                  rows={3}
+                  required
+                />
+              </div>
             </div>
 
-            {/* Long Description */}
-            <div className="space-y-2">
-              <Label htmlFor="longDescription">Lange Beschrijving</Label>
-              <Textarea
-                id="longDescription"
-                value={formData.longDescription}
-                onChange={(e) =>
-                  setFormData({ ...formData, longDescription: e.target.value })
-                }
-                placeholder="Uitgebreide beschrijving voor de detailpagina..."
-                rows={6}
-              />
+            {/* Long Description - Dutch & English */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="longDescription">Lange Beschrijving (Nederlands)</Label>
+                <Textarea
+                  id="longDescription"
+                  value={formData.longDescription}
+                  onChange={(e) =>
+                    setFormData({ ...formData, longDescription: e.target.value })
+                  }
+                  placeholder="Uitgebreide beschrijving voor de detailpagina..."
+                  rows={5}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="longDescriptionEn">Long Description (English)</Label>
+                <Textarea
+                  id="longDescriptionEn"
+                  value={formData.longDescriptionEn}
+                  onChange={(e) =>
+                    setFormData({ ...formData, longDescriptionEn: e.target.value })
+                  }
+                  placeholder="Detailed description for detail page..."
+                  rows={5}
+                />
+              </div>
             </div>
 
-            {/* Features */}
-            <div className="space-y-2">
-              <Label htmlFor="features">Features (JSON format)</Label>
-              <Textarea
-                id="features"
-                value={formData.features}
-                onChange={(e) =>
-                  setFormData({ ...formData, features: e.target.value })
-                }
-                placeholder='["Feature 1", "Feature 2", "Feature 3"]'
-                rows={4}
-              />
-              <p className="text-sm text-muted-foreground">
-                Voer een JSON array in met features
-              </p>
+            {/* Features - Dutch & English */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="features">Features (Nederlands, JSON format)</Label>
+                <Textarea
+                  id="features"
+                  value={formData.features}
+                  onChange={(e) =>
+                    setFormData({ ...formData, features: e.target.value })
+                  }
+                  placeholder='["Feature 1", "Feature 2", "Feature 3"]'
+                  rows={3}
+                />
+                <p className="text-sm text-muted-foreground">
+                  Voer een JSON array in met features
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="featuresEn">Features (English, JSON format)</Label>
+                <Textarea
+                  id="featuresEn"
+                  value={formData.featuresEn}
+                  onChange={(e) =>
+                    setFormData({ ...formData, featuresEn: e.target.value })
+                  }
+                  placeholder='["Feature 1", "Feature 2", "Feature 3"]'
+                  rows={3}
+                />
+                <p className="text-sm text-muted-foreground">
+                  Enter a JSON array with features
+                </p>
+              </div>
             </div>
 
             {/* Show on Homepage */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <Checkbox
                 id="showOnHomepage"
                 checked={formData.showOnHomepage}
                 onCheckedChange={(checked) =>
-                  setFormData({
-                    ...formData,
-                    showOnHomepage: checked as boolean,
-                  })
+                  setFormData({ ...formData, showOnHomepage: !!checked })
                 }
               />
               <Label htmlFor="showOnHomepage" className="cursor-pointer">
@@ -237,11 +298,11 @@ export default function ServiceForm() {
               </Label>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit Buttons */}
             <div className="flex gap-4">
-              <Button type="submit" disabled={isLoading} className="gap-2">
-                <Save className="w-4 h-4" />
-                {isLoading ? "Bezig..." : isEdit ? "Bijwerken" : "Aanmaken"}
+              <Button type="submit" disabled={isLoading}>
+                <Save className="w-4 h-4 mr-2" />
+                {isLoading ? "Opslaan..." : isEdit ? "Bijwerken" : "Aanmaken"}
               </Button>
               <Button
                 type="button"
