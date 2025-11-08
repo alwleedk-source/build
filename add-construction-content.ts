@@ -2,12 +2,7 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './drizzle/schema';
 
-const databaseUrl = process.env.DATABASE_URL;
-
-if (!databaseUrl) {
-  console.error('❌ DATABASE_URL is not set');
-  process.exit(1);
-}
+const databaseUrl = 'postgresql://postgres:oyxKbUhdabHyXSzkRwINQAXnAenybElr@trolley.proxy.rlwy.net:36394/railway';
 
 const client = postgres(databaseUrl);
 const db = drizzle(client, { schema });

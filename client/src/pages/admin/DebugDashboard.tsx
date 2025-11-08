@@ -227,41 +227,57 @@ export default function DebugDashboard() {
         )}
 
         {/* Schema Tab */}
-        {activeTab === 'schema' && schema && (
+        {activeTab === 'schema' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-xl font-semibold mb-4">Database Schema Overview</h3>
-              <p className="text-gray-600 mb-4">Total Tables: <span className="font-bold text-primary-600">{schema.tables}</span></p>
-            </div>
-            
-            {Object.entries(schema.schema).map(([tableName, tableInfo]: [string, any]) => (
-              <div key={tableName} className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-lg font-semibold mb-4 text-gray-900">{tableName}</h3>
-                <p className="text-sm text-gray-600 mb-4">Columns: {tableInfo.columnCount}</p>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Column</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nullable</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Default</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {tableInfo.columns.map((col: any, idx: number) => (
-                        <tr key={idx}>
-                          <td className="px-4 py-2 text-sm font-medium text-gray-900">{col.column_name}</td>
-                          <td className="px-4 py-2 text-sm text-gray-600">{col.data_type}</td>
-                          <td className="px-4 py-2 text-sm text-gray-600">{col.is_nullable}</td>
-                          <td className="px-4 py-2 text-sm text-gray-600">{col.column_default || '-'}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+            {!schema || !schema.schema ? (
+              <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-8 text-center">
+                <span className="text-4xl mb-4 block">⚠️</span>
+                <h3 className="text-xl font-bold text-yellow-800 mb-2">Schema Data Not Available</h3>
+                <p className="text-yellow-600">Unable to load database schema information.</p>
+                <button 
+                  onClick={loadDebugData}
+                  className="mt-4 px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+                >
+                  Retry
+                </button>
               </div>
-            ))}
+            ) : (
+              <>
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <h3 className="text-xl font-semibold mb-4">Database Schema Overview</h3>
+                  <p className="text-gray-600 mb-4">Total Tables: <span className="font-bold text-primary-600">{schema.tables}</span></p>
+                </div>
+                
+                {schema.schema && Object.entries(schema.schema).map(([tableName, tableInfo]: [string, any]) => (
+                  <div key={tableName} className="bg-white rounded-lg shadow-md p-6">
+                    <h3 className="text-lg font-semibold mb-4 text-gray-900">{tableName}</h3>
+                    <p className="text-sm text-gray-600 mb-4">Columns: {tableInfo.columnCount}</p>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Column</th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nullable</th>
+                            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Default</th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                          {tableInfo.columns && tableInfo.columns.map((col: any, idx: number) => (
+                            <tr key={idx}>
+                              <td className="px-4 py-2 text-sm font-medium text-gray-900">{col.column_name}</td>
+                              <td className="px-4 py-2 text-sm text-gray-600">{col.data_type}</td>
+                              <td className="px-4 py-2 text-sm text-gray-600">{col.is_nullable}</td>
+                              <td className="px-4 py-2 text-sm text-gray-600">{col.column_default || '-'}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         )}
       </div>
