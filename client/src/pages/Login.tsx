@@ -17,10 +17,14 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const loginMutation = trpc.admin.login.useMutation({
-    onSuccess: () => {
-      setLocation("/admin");
+    onSuccess: (data) => {
+      console.log("✅ Login successful!", data);
+      setIsLoading(false);
+      // Force navigation to admin dashboard
+      window.location.href = "/admin";
     },
     onError: (error) => {
+      console.error("❌ Login failed:", error);
       setError(error.message || "Inloggen mislukt");
       setIsLoading(false);
     },
