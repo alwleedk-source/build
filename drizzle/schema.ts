@@ -283,3 +283,67 @@ export const aboutUs = pgTable("aboutUs", {
 
 export type AboutUs = typeof aboutUs.$inferSelect;
 export type InsertAboutUs = typeof aboutUs.$inferInsert;
+
+// Hero Section Styles Enum
+export const heroStyleEnum = pgEnum("hero_style", ["classic", "split", "minimal", "fullBackground", "videoBackground"]);
+
+// Hero Section table - for dynamic Hero Section content
+export const heroSection = pgTable("heroSection", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  style: heroStyleEnum("style").default("classic").notNull(),
+  title: varchar("title", { length: 500 }).notNull(),
+  titleEn: varchar("titleEn", { length: 500 }),
+  subtitle: varchar("subtitle", { length: 500 }),
+  subtitleEn: varchar("subtitleEn", { length: 500 }),
+  description: text("description"),
+  descriptionEn: text("descriptionEn"),
+  backgroundImage: varchar("backgroundImage", { length: 500 }),
+  videoUrl: varchar("videoUrl", { length: 500 }), // For video background style
+  overlayOpacity: integer("overlayOpacity").default(50), // 0-100
+  textAlignment: varchar("textAlignment", { length: 20 }).default("center"), // left, center, right
+  primaryButtonText: varchar("primaryButtonText", { length: 100 }),
+  primaryButtonTextEn: varchar("primaryButtonTextEn", { length: 100 }),
+  primaryButtonLink: varchar("primaryButtonLink", { length: 500 }),
+  secondaryButtonText: varchar("secondaryButtonText", { length: 100 }),
+  secondaryButtonTextEn: varchar("secondaryButtonTextEn", { length: 100 }),
+  secondaryButtonLink: varchar("secondaryButtonLink", { length: 500 }),
+  showStats: integer("showStats").default(1).notNull(), // 0 = hidden, 1 = visible
+  stat1Value: integer("stat1Value").default(0),
+  stat1Label: varchar("stat1Label", { length: 100 }),
+  stat1LabelEn: varchar("stat1LabelEn", { length: 100 }),
+  stat2Value: integer("stat2Value").default(0),
+  stat2Label: varchar("stat2Label", { length: 100 }),
+  stat2LabelEn: varchar("stat2LabelEn", { length: 100 }),
+  stat3Value: integer("stat3Value").default(0),
+  stat3Label: varchar("stat3Label", { length: 100 }),
+  stat3LabelEn: varchar("stat3LabelEn", { length: 100 }),
+  stat4Value: integer("stat4Value").default(0),
+  stat4Label: varchar("stat4Label", { length: 100 }),
+  stat4LabelEn: varchar("stat4LabelEn", { length: 100 }),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export type HeroSection = typeof heroSection.$inferSelect;
+export type InsertHeroSection = typeof heroSection.$inferInsert;
+
+// Footer Settings table - for dynamic Footer content
+export const footerSettings = pgTable("footerSettings", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  companyName: varchar("companyName", { length: 255 }).notNull(),
+  companyDescription: text("companyDescription"),
+  companyDescriptionEn: text("companyDescriptionEn"),
+  address: text("address"),
+  phone: varchar("phone", { length: 50 }),
+  email: varchar("email", { length: 320 }),
+  facebookUrl: varchar("facebookUrl", { length: 500 }),
+  twitterUrl: varchar("twitterUrl", { length: 500 }),
+  linkedinUrl: varchar("linkedinUrl", { length: 500 }),
+  instagramUrl: varchar("instagramUrl", { length: 500 }),
+  youtubeUrl: varchar("youtubeUrl", { length: 500 }),
+  copyrightText: varchar("copyrightText", { length: 255 }),
+  copyrightTextEn: varchar("copyrightTextEn", { length: 255 }),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export type FooterSettings = typeof footerSettings.$inferSelect;
+export type InsertFooterSettings = typeof footerSettings.$inferInsert;

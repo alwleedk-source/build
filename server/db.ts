@@ -11,7 +11,9 @@ import {
   siteSettings,
   contactMessages, InsertContactMessage,
   emailSettings, InsertEmailSettings,
-  aboutUs, InsertAboutUs
+  aboutUs, InsertAboutUs,
+  heroSection, InsertHeroSection,
+  footerSettings, InsertFooterSettings
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -454,6 +456,52 @@ export async function updateAboutUs(id: number, data: Partial<InsertAboutUs>) {
     .update(aboutUs)
     .set({ ...data, updatedAt: new Date() })
     .where(eq(aboutUs.id, id))
+    .returning();
+  return result[0];
+}
+
+// Hero Section functions
+export async function getHeroSection() {
+  const dbInstance = await getDb();
+  const result = await dbInstance.select().from(heroSection).limit(1);
+  return result[0] || null;
+}
+
+export async function createHeroSection(data: InsertHeroSection) {
+  const dbInstance = await getDb();
+  const result = await dbInstance.insert(heroSection).values(data).returning();
+  return result[0];
+}
+
+export async function updateHeroSection(id: number, data: Partial<InsertHeroSection>) {
+  const dbInstance = await getDb();
+  const result = await dbInstance
+    .update(heroSection)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(heroSection.id, id))
+    .returning();
+  return result[0];
+}
+
+// Footer Settings functions
+export async function getFooterSettings() {
+  const dbInstance = await getDb();
+  const result = await dbInstance.select().from(footerSettings).limit(1);
+  return result[0] || null;
+}
+
+export async function createFooterSettings(data: InsertFooterSettings) {
+  const dbInstance = await getDb();
+  const result = await dbInstance.insert(footerSettings).values(data).returning();
+  return result[0];
+}
+
+export async function updateFooterSettings(id: number, data: Partial<InsertFooterSettings>) {
+  const dbInstance = await getDb();
+  const result = await dbInstance
+    .update(footerSettings)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(footerSettings.id, id))
     .returning();
   return result[0];
 }

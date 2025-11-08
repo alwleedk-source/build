@@ -824,6 +824,152 @@ export const appRouter = router({
         return await db.updateAboutUs(id, data);
       }),
   }),
+
+  // Hero Section router
+  heroSection: router({
+    // Get hero section
+    get: publicProcedure
+      .query(async () => {
+        const db = await import('./db');
+        return await db.getHeroSection();
+      }),
+
+    // Create hero section
+    create: publicProcedure
+      .input(z.object({
+        style: z.enum(["classic", "split", "minimal", "fullBackground", "videoBackground"]).optional(),
+        title: z.string(),
+        titleEn: z.string().optional(),
+        subtitle: z.string().optional(),
+        subtitleEn: z.string().optional(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        backgroundImage: z.string().optional(),
+        videoUrl: z.string().optional(),
+        overlayOpacity: z.number().optional(),
+        textAlignment: z.string().optional(),
+        primaryButtonText: z.string().optional(),
+        primaryButtonTextEn: z.string().optional(),
+        primaryButtonLink: z.string().optional(),
+        secondaryButtonText: z.string().optional(),
+        secondaryButtonTextEn: z.string().optional(),
+        secondaryButtonLink: z.string().optional(),
+        showStats: z.number().optional(),
+        stat1Value: z.number().optional(),
+        stat1Label: z.string().optional(),
+        stat1LabelEn: z.string().optional(),
+        stat2Value: z.number().optional(),
+        stat2Label: z.string().optional(),
+        stat2LabelEn: z.string().optional(),
+        stat3Value: z.number().optional(),
+        stat3Label: z.string().optional(),
+        stat3LabelEn: z.string().optional(),
+        stat4Value: z.number().optional(),
+        stat4Label: z.string().optional(),
+        stat4LabelEn: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        return await db.createHeroSection(input);
+      }),
+
+    // Update hero section
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        style: z.enum(["classic", "split", "minimal", "fullBackground", "videoBackground"]).optional(),
+        title: z.string().optional(),
+        titleEn: z.string().optional(),
+        subtitle: z.string().optional(),
+        subtitleEn: z.string().optional(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        backgroundImage: z.string().optional(),
+        videoUrl: z.string().optional(),
+        overlayOpacity: z.number().optional(),
+        textAlignment: z.string().optional(),
+        primaryButtonText: z.string().optional(),
+        primaryButtonTextEn: z.string().optional(),
+        primaryButtonLink: z.string().optional(),
+        secondaryButtonText: z.string().optional(),
+        secondaryButtonTextEn: z.string().optional(),
+        secondaryButtonLink: z.string().optional(),
+        showStats: z.number().optional(),
+        stat1Value: z.number().optional(),
+        stat1Label: z.string().optional(),
+        stat1LabelEn: z.string().optional(),
+        stat2Value: z.number().optional(),
+        stat2Label: z.string().optional(),
+        stat2LabelEn: z.string().optional(),
+        stat3Value: z.number().optional(),
+        stat3Label: z.string().optional(),
+        stat3LabelEn: z.string().optional(),
+        stat4Value: z.number().optional(),
+        stat4Label: z.string().optional(),
+        stat4LabelEn: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        const { id, ...data } = input;
+        return await db.updateHeroSection(id, data);
+      }),
+  }),
+
+  // Footer Settings router
+  footerSettings: router({
+    // Get footer settings
+    get: publicProcedure
+      .query(async () => {
+        const db = await import('./db');
+        return await db.getFooterSettings();
+      }),
+
+    // Create footer settings
+    create: publicProcedure
+      .input(z.object({
+        companyName: z.string(),
+        companyDescription: z.string().optional(),
+        companyDescriptionEn: z.string().optional(),
+        address: z.string().optional(),
+        phone: z.string().optional(),
+        email: z.string().optional(),
+        facebookUrl: z.string().optional(),
+        twitterUrl: z.string().optional(),
+        linkedinUrl: z.string().optional(),
+        instagramUrl: z.string().optional(),
+        youtubeUrl: z.string().optional(),
+        copyrightText: z.string().optional(),
+        copyrightTextEn: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        return await db.createFooterSettings(input);
+      }),
+
+    // Update footer settings
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        companyName: z.string().optional(),
+        companyDescription: z.string().optional(),
+        companyDescriptionEn: z.string().optional(),
+        address: z.string().optional(),
+        phone: z.string().optional(),
+        email: z.string().optional(),
+        facebookUrl: z.string().optional(),
+        twitterUrl: z.string().optional(),
+        linkedinUrl: z.string().optional(),
+        instagramUrl: z.string().optional(),
+        youtubeUrl: z.string().optional(),
+        copyrightText: z.string().optional(),
+        copyrightTextEn: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        const { id, ...data } = input;
+        return await db.updateFooterSettings(id, data);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
