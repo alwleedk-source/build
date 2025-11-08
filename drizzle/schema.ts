@@ -254,3 +254,29 @@ export const passwordResetTokens = pgTable("passwordResetTokens", {
 
 export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
 export type InsertPasswordResetToken = typeof passwordResetTokens.$inferInsert;
+
+// About Us table - for dynamic About Us content
+export const aboutUs = pgTable("aboutUs", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  title: varchar("title", { length: 255 }).notNull(),
+  titleEn: varchar("titleEn", { length: 255 }),
+  subtitle: varchar("subtitle", { length: 500 }),
+  subtitleEn: varchar("subtitleEn", { length: 500 }),
+  description: text("description").notNull(),
+  descriptionEn: text("descriptionEn"),
+  mission: text("mission"),
+  missionEn: text("missionEn"),
+  vision: text("vision"),
+  visionEn: text("visionEn"),
+  values: text("values"), // JSON array
+  valuesEn: text("valuesEn"), // JSON array
+  yearsExperience: integer("yearsExperience").default(0),
+  projectsCompleted: integer("projectsCompleted").default(0),
+  happyClients: integer("happyClients").default(0),
+  teamMembers: integer("teamMembers").default(0),
+  image: varchar("image", { length: 500 }),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export type AboutUs = typeof aboutUs.$inferSelect;
+export type InsertAboutUs = typeof aboutUs.$inferInsert;

@@ -761,6 +761,69 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // About Us router
+  aboutUs: router({
+    // Get about us
+    get: publicProcedure.query(async () => {
+      const db = await import('./db');
+      return await db.getAboutUs();
+    }),
+
+    // Create about us
+    create: publicProcedure
+      .input(z.object({
+        title: z.string(),
+        titleEn: z.string().optional(),
+        subtitle: z.string().optional(),
+        subtitleEn: z.string().optional(),
+        description: z.string(),
+        descriptionEn: z.string().optional(),
+        mission: z.string().optional(),
+        missionEn: z.string().optional(),
+        vision: z.string().optional(),
+        visionEn: z.string().optional(),
+        values: z.string().optional(),
+        valuesEn: z.string().optional(),
+        yearsExperience: z.number().optional(),
+        projectsCompleted: z.number().optional(),
+        happyClients: z.number().optional(),
+        teamMembers: z.number().optional(),
+        image: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        return await db.createAboutUs(input);
+      }),
+
+    // Update about us
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        titleEn: z.string().optional(),
+        subtitle: z.string().optional(),
+        subtitleEn: z.string().optional(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        mission: z.string().optional(),
+        missionEn: z.string().optional(),
+        vision: z.string().optional(),
+        visionEn: z.string().optional(),
+        values: z.string().optional(),
+        valuesEn: z.string().optional(),
+        yearsExperience: z.number().optional(),
+        projectsCompleted: z.number().optional(),
+        happyClients: z.number().optional(),
+        teamMembers: z.number().optional(),
+        image: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        const { id, ...data } = input;
+        return await db.updateAboutUs(id, data);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

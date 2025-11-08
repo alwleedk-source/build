@@ -1,4 +1,4 @@
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { 
@@ -10,7 +10,8 @@ import {
   testimonials, InsertTestimonial,
   siteSettings,
   contactMessages, InsertContactMessage,
-  emailSettings, InsertEmailSettings
+  emailSettings, InsertEmailSettings,
+  aboutUs, InsertAboutUs
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -429,4 +430,30 @@ export async function updateHomeSettings(data: Record<string, string>) {
   }
   
   return { success: true };
+}
+
+// About Us functions
+export async function getAboutUs() {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(aboutUs).limit(1);
+  return result[0] || null;
+}
+
+export async function createAboutUs(data: InsertAboutUs) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(aboutUs).values(data).returning();
+  return result[0];
+}
+
+export async function updateAboutUs(id: number, data: Partial<InsertAboutUs>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db
+    .update(aboutUs)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(aboutUs.id, id))
+    .returning();
+  return result[0];
 }
