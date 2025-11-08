@@ -19,11 +19,15 @@ export default function ServiceForm() {
 
   const [formData, setFormData] = useState({
     title: "",
+    titleEn: "",
     slug: "",
     description: "",
+    descriptionEn: "",
     longDescription: "",
+    longDescriptionEn: "",
     icon: "🏗️",
     features: "",
+    featuresEn: "",
     showOnHomepage: false,
   });
 
@@ -56,11 +60,15 @@ export default function ServiceForm() {
     if (serviceQuery.data) {
       setFormData({
         title: serviceQuery.data.title,
+        titleEn: serviceQuery.data.titleEn || "",
         slug: serviceQuery.data.slug,
         description: serviceQuery.data.description,
+        descriptionEn: serviceQuery.data.descriptionEn || "",
         longDescription: serviceQuery.data.longDescription || "",
+        longDescriptionEn: serviceQuery.data.longDescriptionEn || "",
         icon: serviceQuery.data.icon,
         features: serviceQuery.data.features || "",
+        featuresEn: serviceQuery.data.featuresEn || "",
         showOnHomepage: serviceQuery.data.showOnHomepage === 1,
       });
     }

@@ -27,7 +27,9 @@ export default function ProjectForm() {
 
   const [formData, setFormData] = useState({
     title: "",
+    titleEn: "",
     description: "",
+    descriptionEn: "",
     category: "Residentieel" as "Residentieel" | "Commercieel" | "Industrieel",
     image: "",
     featured: false,
@@ -63,7 +65,9 @@ export default function ProjectForm() {
     if (projectQuery.data) {
       setFormData({
         title: projectQuery.data.title,
+        titleEn: projectQuery.data.titleEn || "",
         description: projectQuery.data.description,
+        descriptionEn: projectQuery.data.descriptionEn || "",
         category: projectQuery.data.category,
         image: projectQuery.data.image,
         featured: projectQuery.data.featured === 1,
@@ -129,6 +133,19 @@ export default function ProjectForm() {
               />
             </div>
 
+            {/* Title English */}
+            <div className="space-y-2">
+              <Label htmlFor="titleEn">Title (English)</Label>
+              <Input
+                id="titleEn"
+                value={formData.titleEn}
+                onChange={(e) =>
+                  setFormData({ ...formData, titleEn: e.target.value })
+                }
+                placeholder="E.g. Modern Villa Amsterdam"
+              />
+            </div>
+
             {/* Description */}
             <div className="space-y-2">
               <Label htmlFor="description">Beschrijving *</Label>
@@ -141,6 +158,20 @@ export default function ProjectForm() {
                 placeholder="Beschrijf het project..."
                 rows={4}
                 required
+              />
+            </div>
+
+            {/* Description English */}
+            <div className="space-y-2">
+              <Label htmlFor="descriptionEn">Description (English)</Label>
+              <Textarea
+                id="descriptionEn"
+                value={formData.descriptionEn}
+                onChange={(e) =>
+                  setFormData({ ...formData, descriptionEn: e.target.value })
+                }
+                placeholder="Describe the project..."
+                rows={4}
               />
             </div>
 
