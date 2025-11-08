@@ -6,27 +6,20 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Loader2, Save, Upload } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 export default function AboutUsSettings() {
-  const { toast } = useToast();
+
   const utils = trpc.useUtils();
   
   const { data: aboutData, isLoading } = trpc.aboutUs.get.useQuery();
   const updateMutation = trpc.aboutUs.update.useMutation({
     onSuccess: () => {
-      toast({
-        title: 'Success',
-        description: 'About Us settings have been updated successfully',
-      });
+      toast.success('About Us settings have been updated successfully');
       utils.aboutUs.get.invalidate();
     },
     onError: (error) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to update About Us settings',
-        variant: 'destructive',
-      });
+      toast.error(error.message || 'Failed to update About Us settings');
     },
   });
 
