@@ -17,7 +17,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Save } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
-import ImageUploader from "@/components/admin/ImageUploader";
+import ImageUploaderLocal from "@/components/admin/ImageUploaderLocal";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 const categories = [
   "Nieuwbouw",
@@ -209,25 +210,20 @@ export default function BlogPostForm() {
 
             {/* Content */}
             <div className="space-y-2">
-              <Label htmlFor="content">Inhoud *</Label>
-              <Textarea
-                id="content"
+              <RichTextEditor
                 value={formData.content}
-                onChange={(e) =>
-                  setFormData({ ...formData, content: e.target.value })
-                }
+                onChange={(value) => setFormData({ ...formData, content: value })}
+                label="Inhoud *"
                 placeholder="Volledige inhoud van het artikel..."
-                rows={12}
-                required
               />
               <p className="text-sm text-muted-foreground">
-                Tip: Gebruik Markdown formatting voor betere opmaak
+                Gebruik de editor toolbar voor rijke tekstopmaak
               </p>
             </div>
 
             {/* Image Upload */}
             <div className="space-y-2">
-              <ImageUploader
+              <ImageUploaderLocal
                 currentImage={formData.image}
                 onImageUploaded={(url) => setFormData({ ...formData, image: url })}
                 folder="blog"
