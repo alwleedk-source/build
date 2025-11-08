@@ -1,8 +1,22 @@
-import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Twitter, Youtube } from 'lucide-react';
 import ScrollReveal from '@/components/ScrollReveal';
+import { trpc } from '@/lib/trpc';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
+  
+  const { data: footerData } = trpc.footerSettings.get.useQuery();
+
+  // Default values
+  const companyName = footerData?.companyName || 'BuildCraft';
+  const companyDescription = (currentLang === 'en' ? footerData?.companyDescriptionEn : footerData?.companyDescription) || 'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden in Nederland.';
+  const address = footerData?.address || 'Bouwstraat 123\n1234 AB Amsterdam';
+  const phone = footerData?.phone || '+31 6 1234 5678';
+  const email = footerData?.email || 'info@buildcraft.nl';
+  const copyrightText = (currentLang === 'en' ? footerData?.copyrightTextEn : footerData?.copyrightText) || `© ${currentYear} BuildCraft. Alle rechten voorbehouden.`;
 
   return (
     <footer className="bg-card border-t border-border relative overflow-hidden">
@@ -14,35 +28,61 @@ export default function Footer() {
           {/* Company Info */}
           <ScrollReveal delay={0}>
           <div>
-            <h3 className="text-2xl font-bold text-foreground mb-4">BuildCraft</h3>
+            <h3 className="text-2xl font-bold text-foreground mb-4">{companyName}</h3>
             <p className="text-muted-foreground mb-6">
-              Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden in Nederland.
+              {companyDescription}
             </p>
             <div className="flex gap-3">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
+              {footerData?.facebookUrl && (
+                <a
+                  href={footerData.facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+              )}
+              {footerData?.instagramUrl && (
+                <a
+                  href={footerData.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+              )}
+              {footerData?.linkedinUrl && (
+                <a
+                  href={footerData.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              )}
+              {footerData?.twitterUrl && (
+                <a
+                  href={footerData.twitterUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg"
+                >
+                  <Twitter className="w-5 h-5" />
+                </a>
+              )}
+              {footerData?.youtubeUrl && (
+                <a
+                  href={footerData.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg"
+                >
+                  <Youtube className="w-5 h-5" />
+                </a>
+              )}
             </div>
           </div>
           </ScrollReveal>
@@ -50,31 +90,33 @@ export default function Footer() {
           {/* Quick Links */}
           <ScrollReveal delay={0.1}>
           <div>
-            <h4 className="font-semibold text-foreground mb-4 text-lg">Snelle Links</h4>
+            <h4 className="font-semibold text-foreground mb-4 text-lg">
+              {currentLang === 'en' ? 'Quick Links' : 'Snelle Links'}
+            </h4>
             <ul className="space-y-3">
               <li>
                 <a href="#home" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Home
+                  → {currentLang === 'en' ? 'Home' : 'Home'}
                 </a>
               </li>
               <li>
                 <a href="#diensten" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Diensten
+                  → {currentLang === 'en' ? 'Services' : 'Diensten'}
                 </a>
               </li>
               <li>
                 <a href="#projecten" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Projecten
+                  → {currentLang === 'en' ? 'Projects' : 'Projecten'}
                 </a>
               </li>
               <li>
                 <a href="#reviews" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Reviews
+                  → {currentLang === 'en' ? 'Reviews' : 'Reviews'}
                 </a>
               </li>
               <li>
                 <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Contact
+                  → {currentLang === 'en' ? 'Contact' : 'Contact'}
                 </a>
               </li>
             </ul>
@@ -84,26 +126,28 @@ export default function Footer() {
           {/* Services */}
           <ScrollReveal delay={0.2}>
           <div>
-            <h4 className="font-semibold text-foreground mb-4 text-lg">Diensten</h4>
+            <h4 className="font-semibold text-foreground mb-4 text-lg">
+              {currentLang === 'en' ? 'Services' : 'Diensten'}
+            </h4>
             <ul className="space-y-3">
               <li>
                 <a href="#diensten" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Nieuwbouw
+                  → {currentLang === 'en' ? 'New Construction' : 'Nieuwbouw'}
                 </a>
               </li>
               <li>
                 <a href="#diensten" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Renovatie
+                  → {currentLang === 'en' ? 'Renovation' : 'Renovatie'}
                 </a>
               </li>
               <li>
                 <a href="#diensten" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Afwerking
+                  → {currentLang === 'en' ? 'Finishing' : 'Afwerking'}
                 </a>
               </li>
               <li>
                 <a href="#diensten" className="text-muted-foreground hover:text-primary transition-colors hover:translate-x-1 inline-block">
-                  → Onderhoud
+                  → {currentLang === 'en' ? 'Maintenance' : 'Onderhoud'}
                 </a>
               </li>
             </ul>
@@ -113,27 +157,34 @@ export default function Footer() {
           {/* Contact Info */}
           <ScrollReveal delay={0.3}>
           <div>
-            <h4 className="font-semibold text-foreground mb-4 text-lg">Contact</h4>
+            <h4 className="font-semibold text-foreground mb-4 text-lg">
+              {currentLang === 'en' ? 'Contact' : 'Contact'}
+            </h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <a href="tel:+31612345678" className="text-muted-foreground hover:text-primary transition-colors">
-                  +31 6 1234 5678
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <a href="mailto:info@buildcraft.nl" className="text-muted-foreground hover:text-primary transition-colors">
-                  info@buildcraft.nl
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <span className="text-muted-foreground">
-                  Bouwstraat 123<br />
-                  1234 AB Amsterdam
-                </span>
-              </li>
+              {phone && (
+                <li className="flex items-start gap-3">
+                  <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <a href={`tel:${phone}`} className="text-muted-foreground hover:text-primary transition-colors">
+                    {phone}
+                  </a>
+                </li>
+              )}
+              {email && (
+                <li className="flex items-start gap-3">
+                  <Mail className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <a href={`mailto:${email}`} className="text-muted-foreground hover:text-primary transition-colors">
+                    {email}
+                  </a>
+                </li>
+              )}
+              {address && (
+                <li className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground whitespace-pre-line">
+                    {address}
+                  </span>
+                </li>
+              )}
             </ul>
           </div>
           </ScrollReveal>
@@ -144,17 +195,17 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-muted-foreground text-sm">
-              © {currentYear} BuildCraft. Alle rechten voorbehouden.
+              {copyrightText}
             </p>
             <div className="flex gap-6 text-sm">
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                Privacy Beleid
+                {currentLang === 'en' ? 'Privacy Policy' : 'Privacy Beleid'}
               </a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                Algemene Voorwaarden
+                {currentLang === 'en' ? 'Terms & Conditions' : 'Algemene Voorwaarden'}
               </a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                Cookie Beleid
+                {currentLang === 'en' ? 'Cookie Policy' : 'Cookie Beleid'}
               </a>
             </div>
           </div>

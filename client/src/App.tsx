@@ -25,6 +25,9 @@ import TestimonialsAdmin from "@/pages/admin/TestimonialsAdmin";
 import ContactMessages from "@/pages/admin/ContactMessages";
 import EmailSettings from "@/pages/admin/EmailSettings";
 import HomeSettings from "@/pages/admin/HomeSettings";
+import HeroSettings from "@/pages/admin/HeroSettings";
+import FooterSettings from "@/pages/admin/FooterSettings";
+import AboutUsSettings from "@/pages/admin/AboutUsSettings";
 import SettingsAdmin from "@/pages/admin/SettingsAdmin";
 import AdminManagement from "@/pages/admin/AdminManagement";
 import Login from "./pages/Login";
@@ -79,6 +82,15 @@ function Router() {
       </Route>
       <Route path="/admin/settings/home">
         {() => <AuthGuard><HomeSettings /></AuthGuard>}
+      </Route>
+      <Route path="/admin/settings/hero">
+        {() => <AuthGuard><HeroSettings /></AuthGuard>}
+      </Route>
+      <Route path="/admin/settings/footer">
+        {() => <AuthGuard><FooterSettings /></AuthGuard>}
+      </Route>
+      <Route path="/admin/settings/about">
+        {() => <AuthGuard><AboutUsSettings /></AuthGuard>}
       </Route>
       <Route path="/admin/settings">
         {() => <AuthGuard><SettingsAdmin /></AuthGuard>}
