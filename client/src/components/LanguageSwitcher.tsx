@@ -1,48 +1,29 @@
 import { useTranslation } from 'react-i18next';
 import { Globe } from 'lucide-react';
-import { Button } from './ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu';
-
-const languages = [
-  { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-];
 
 export default function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
-
-  const changeLanguage = (langCode: string) => {
-    i18n.changeLanguage(langCode);
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'nl' ? 'en' : 'nl';
+    i18n.changeLanguage(newLang);
+    localStorage.setItem('language', newLang);
   };
 
+  const currentLang = i18n.language === 'en' ? 'EN' : 'NL';
+  const nextLang = i18n.language === 'en' ? 'NL' : 'EN';
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
-          <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{currentLanguage.flag} {currentLanguage.name}</span>
-          <span className="sm:hidden">{currentLanguage.flag}</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {languages.map((language) => (
-          <DropdownMenuItem
-            key={language.code}
-            onClick={() => changeLanguage(language.code)}
-            className={i18n.language === language.code ? 'bg-accent' : ''}
-          >
-            <span className="mr-2">{language.flag}</span>
-            {language.name}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <button
+      onClick={toggleLanguage}
+      className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-border hover:bg-accent transition-colors group"
+      aria-label={`Switch to ${nextLang}`}
+      title={`Switch to ${nextLang}`}
+    >
+      <Globe className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+      <span className="font-semibold text-sm">{currentLang}</span>
+      <span className="text-muted-foreground text-xs">→</span>
+      <span className="font-medium text-sm text-muted-foreground group-hover:text-foreground transition-colors">{nextLang}</span>
+    </button>
   );
 }
