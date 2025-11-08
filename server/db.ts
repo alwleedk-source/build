@@ -1,4 +1,4 @@
-import { eq, and, desc, sql } from "drizzle-orm";
+import { eq, and, desc, asc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { 
@@ -160,6 +160,12 @@ export async function getAllServices() {
   const db = await getDb();
   if (!db) return [];
   return await db.select().from(services).orderBy(desc(services.createdAt));
+}
+
+export async function getHomepageServices() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(services).where(eq(services.showOnHomepage, 1)).orderBy(asc(services.order));
 }
 
 export async function getServiceById(id: number) {
