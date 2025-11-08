@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { db } from '../db';
+import { getDb } from '../db';
 import { sql } from 'drizzle-orm';
 import * as schema from '../../drizzle/schema';
 
@@ -8,6 +8,7 @@ const router = Router();
 // Comprehensive system health check
 router.get('/health', async (req, res) => {
   try {
+    const db = await getDb();
     const health = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
@@ -134,6 +135,7 @@ router.get('/health', async (req, res) => {
 // Database schema check
 router.get('/schema', async (req, res) => {
   try {
+    const db = await getDb();
     const schemaInfo: any = {};
 
     // Get all tables
@@ -181,6 +183,7 @@ router.get('/schema', async (req, res) => {
 // Content statistics
 router.get('/stats', async (req, res) => {
   try {
+    const db = await getDb();
     const stats = {
       users: {
         total: await db.select({ count: sql<number>`count(*)` }).from(schema.users).then(r => Number(r[0].count)),
@@ -225,6 +228,7 @@ router.get('/stats', async (req, res) => {
 // Check for common issues
 router.get('/issues', async (req, res) => {
   try {
+    const db = await getDb();
     const issues = [];
 
     // Check for empty content
