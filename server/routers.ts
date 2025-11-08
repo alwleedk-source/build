@@ -710,6 +710,57 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // Home Settings router
+  homeSettings: router({
+    // Get home settings
+    get: publicProcedure.query(async () => {
+      const db = await import('./db');
+      const settings = await db.getHomeSettings();
+      return settings || {
+        heroTitle: 'Bouw uw dromen',
+        heroTitleEn: 'Build your dreams',
+        heroSubtitle: 'met BuildCraft',
+        heroSubtitleEn: 'with BuildCraft',
+        heroDescription: 'Professionele bouw- en onderhoudsdiensten voor uw gebouwen. Van nieuwbouw tot renovatie, wij maken het mogelijk.',
+        heroDescriptionEn: 'Professional construction and maintenance services for your buildings. From new construction to renovation, we make it possible.',
+        stat1Value: '15+',
+        stat1Label: 'Jaar ervaring',
+        stat1LabelEn: 'Years of experience',
+        stat2Value: '500+',
+        stat2Label: 'Projecten',
+        stat2LabelEn: 'Projects',
+        stat3Value: '98%',
+        stat3Label: 'Tevredenheid',
+        stat3LabelEn: 'Satisfaction',
+      };
+    }),
+
+    // Update home settings
+    update: publicProcedure
+      .input(z.object({
+        heroTitle: z.string(),
+        heroTitleEn: z.string(),
+        heroSubtitle: z.string(),
+        heroSubtitleEn: z.string(),
+        heroDescription: z.string(),
+        heroDescriptionEn: z.string(),
+        stat1Value: z.string(),
+        stat1Label: z.string(),
+        stat1LabelEn: z.string(),
+        stat2Value: z.string(),
+        stat2Label: z.string(),
+        stat2LabelEn: z.string(),
+        stat3Value: z.string(),
+        stat3Label: z.string(),
+        stat3LabelEn: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        await db.updateHomeSettings(input);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

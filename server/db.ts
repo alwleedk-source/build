@@ -385,3 +385,48 @@ export async function updateEmailSettings(settings: Partial<InsertEmailSettings>
     return result[0];
   }
 }
+
+// Home Settings
+export async function getHomeSettings() {
+  const db = await getDb();
+  if (!db) return null;
+  
+  // Get all home settings from siteSettings table
+  const settings = await db.select().from(siteSettings).where(
+    sql`${siteSettings.key} LIKE 'home_%'`
+  );
+  
+  // Convert to object
+  const result: any = {};
+  settings.forEach(setting => {
+    const key = setting.key.replace('home_', '');
+    result[key] = setting.value;
+  });
+  
+  return Object.keys(result).length > 0 ? result : null;
+}
+
+export async function updateHomeSettings(data: Record<string, string>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Update or insert each setting
+  for (const [key, value] of Object.entries(data)) {
+    const settingKey = `home_${key}`;
+    const existing = await db.select().from(siteSettings).where(eq(siteSettings.key, settingKey)).limit(1);
+    
+    if (existing.length > 0) {
+      await db.update(siteSettings)
+        .set({ value, updatedAt: new Date() })
+        .where(eq(siteSettings.key, settingKey));
+    } else {
+      await db.insert(siteSettings).values({
+        key: settingKey,
+        value,
+        type: 'text',
+      });
+    }
+  }
+  
+  return { success: true };
+}
