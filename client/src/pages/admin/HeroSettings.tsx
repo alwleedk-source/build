@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 import { trpc } from '@/lib/trpc';
+import AdminLayout from '@/components/admin/AdminLayout';
 
 export default function HeroSettings() {
+  return (
+    <AdminLayout>
+      <HeroSettingsContent />
+    </AdminLayout>
+  );
+}
+
+function HeroSettingsContent() {
   const [formData, setFormData] = useState({
     style: 'classic' as 'classic' | 'split' | 'minimal' | 'fullBackground' | 'videoBackground',
     title: '',

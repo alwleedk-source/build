@@ -13,6 +13,7 @@
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "db:seed": "tsx server/seed-admin.ts",
     "db:setup": "tsx server/setup-database.ts",
+    "db:migrate": "tsx server/run-migrations.ts",
     "fix-password": "tsx server/fix-admin-password.ts",
     "drop-tables": "tsx server/drop-all-tables.ts",
     "check-tables": "tsx server/check-tables.ts"

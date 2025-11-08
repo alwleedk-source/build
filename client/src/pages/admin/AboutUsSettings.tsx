@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { trpc } from '@/lib/trpc';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +10,14 @@ import { Loader2, Save, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function AboutUsSettings() {
+  return (
+    <AdminLayout>
+      <AboutUsSettingsContent />
+    </AdminLayout>
+  );
+}
+
+function AboutUsSettingsContent() {
 
   const utils = trpc.useUtils();
   

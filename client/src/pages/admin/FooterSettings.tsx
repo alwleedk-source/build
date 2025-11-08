@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 import { trpc } from '@/lib/trpc';
+import AdminLayout from '@/components/admin/AdminLayout';
 
 export default function FooterSettings() {
+  return (
+    <AdminLayout>
+      <FooterSettingsContent />
+    </AdminLayout>
+  );
+}
+
+function FooterSettingsContent() {
   const [formData, setFormData] = useState({
     companyName: '',
     companyDescription: '',
