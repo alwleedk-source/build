@@ -17,7 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Save } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
-import ImageUploader from "@/components/admin/ImageUploader";
+import ImageUploaderLocal from "@/components/admin/ImageUploaderLocal";
 
 export default function ProjectForm() {
   const [, setLocation] = useLocation();
@@ -198,7 +198,7 @@ export default function ProjectForm() {
 
             {/* Image Upload */}
             <div className="space-y-2">
-              <ImageUploader
+              <ImageUploaderLocal
                 currentImage={formData.image}
                 onImageUploaded={(url) => setFormData({ ...formData, image: url })}
                 folder="projects"

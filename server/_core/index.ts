@@ -36,6 +36,10 @@ async function startServer() {
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
+  // Local file upload
+  const localUploadRouter = (await import('../local-upload')).default;
+  app.use('/api', localUploadRouter);
+
   // Traditional form-based login with server-side redirect
   app.post("/api/auth/login-redirect", async (req, res) => {
     try {
