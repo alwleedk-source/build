@@ -40,10 +40,13 @@ export const appRouter = router({
     create: publicProcedure
       .input(z.object({
         title: z.string(),
+        titleEn: z.string().optional(),
         description: z.string(),
+        descriptionEn: z.string().optional(),
         category: z.enum(["Residentieel", "Commercieel", "Industrieel"]),
-        image: z.string(),
+        image: z.string().optional(),
         featured: z.number().optional(),
+        showOnHomepage: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
         return await db.createProject(input as InsertProject);
@@ -52,7 +55,9 @@ export const appRouter = router({
       .input(z.object({
         id: z.number(),
         title: z.string().optional(),
+        titleEn: z.string().optional(),
         description: z.string().optional(),
+        descriptionEn: z.string().optional(),
         category: z.enum(["Residentieel", "Commercieel", "Industrieel"]).optional(),
         image: z.string().optional(),
         featured: z.number().optional(),
