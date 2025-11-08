@@ -35,6 +35,45 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+
+  // Traditional form-based login with server-side redirect
+  app.post("/api/auth/login-redirect", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).send('<html><body><script>alert("Email and password are required"); window.location.href="/login";</script></body></html>');
+      }
+
+      const { authenticateAdmin } = await import('../auth');
+      const admin = await authenticateAdmin(email, password);
+      
+      if (!admin) {
+        return res.status(401).send('<html><body><script>alert("بيانات تسجيل الدخول غير صحيحة"); window.location.href="/login";</script></body></html>');
+      }
+
+      // Create session token
+      const { sdk } = await import('./sdk');
+      const sessionToken = await sdk.createSessionToken(`admin_${admin.id}`, {
+        name: admin.name,
+        expiresInMs: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
+
+      // Set cookie
+      const { getSessionCookieOptions, COOKIE_NAME } = await import('./cookies');
+      const cookieOptions = getSessionCookieOptions(req);
+      res.cookie(COOKIE_NAME, sessionToken, { 
+        ...cookieOptions, 
+        maxAge: 30 * 24 * 60 * 60 * 1000 
+      });
+
+      // Server-side redirect
+      res.redirect(302, '/admin');
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(500).send('<html><body><script>alert("حدث خطأ أثناء تسجيل الدخول"); window.location.href="/login";</script></body></html>');
+    }
+  });
   // tRPC API
   app.use(
     "/api/trpc",
