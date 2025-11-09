@@ -11,9 +11,10 @@ export async function addTimestampsEndpoint(req: any, res: any) {
       ADD COLUMN IF NOT EXISTS updatedat TIMESTAMP DEFAULT NOW() NOT NULL
     `;
 
-    // Add createdAt and updatedAt to partners
+    // Add missing columns to partners
     await sql`
       ALTER TABLE partners 
+      ADD COLUMN IF NOT EXISTS url VARCHAR(500),
       ADD COLUMN IF NOT EXISTS createdat TIMESTAMP DEFAULT NOW() NOT NULL,
       ADD COLUMN IF NOT EXISTS updatedat TIMESTAMP DEFAULT NOW() NOT NULL
     `;
