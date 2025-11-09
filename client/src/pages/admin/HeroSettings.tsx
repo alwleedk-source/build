@@ -98,10 +98,14 @@ function HeroSettingsContent() {
         await updateMutation.mutateAsync({
           id: existingId,
           ...formData,
+          showStats: Number(formData.showStats), // Ensure it's a number
         });
         alert('Hero Section bijgewerkt!');
       } else {
-        const result = await createMutation.mutateAsync(formData);
+        const result = await createMutation.mutateAsync({
+          ...formData,
+          showStats: Number(formData.showStats), // Ensure it's a number
+        });
         setExistingId(result.id);
         alert('Hero Section aangemaakt!');
       }
