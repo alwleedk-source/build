@@ -166,6 +166,12 @@ async function startServer() {
     await debugR2Config(req, res);
   });
 
+  // Migrate projects for gallery
+  app.post('/api/migrate-projects-gallery', async (req, res) => {
+    const { migrateProjectsGallery } = await import('../migrate-projects-gallery');
+    await migrateProjectsGallery(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');

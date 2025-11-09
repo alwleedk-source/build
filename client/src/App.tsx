@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { SiteSettingsProvider } from "./contexts/SiteSettingsContext";
 import Home from "./pages/Home";
 import ProjectsPage from "./pages/ProjectsPage";
+import ProjectDetail from "./pages/ProjectDetail";
 import ServicesPage from "./pages/ServicesPage";
 import OverOns from "./pages/OverOns";
 import ServiceDetail from "./pages/ServiceDetail";
@@ -43,6 +44,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/projecten" component={ProjectsPage} />
+      <Route path="/projects/:slug" component={ProjectDetail} />
       <Route path="/diensten" component={ServicesPage} />
       <Route path="/over-ons" component={OverOns} />
       <Route path="/diensten/:slug" component={ServiceDetail} />

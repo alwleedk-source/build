@@ -37,6 +37,11 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await db.getProjectById(input.id);
       }),
+    getBySlug: publicProcedure
+      .input(z.string())
+      .query(async ({ input }) => {
+        return await db.getProjectBySlug(input);
+      }),
     create: publicProcedure
       .input(z.object({
         title: z.string(),

@@ -135,6 +135,13 @@ export async function getProjectById(id: number) {
   return result[0] || null;
 }
 
+export async function getProjectBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(projects).where(eq(projects.slug, slug)).limit(1);
+  return result[0] || null;
+}
+
 export async function createProject(project: InsertProject) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

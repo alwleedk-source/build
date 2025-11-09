@@ -33,10 +33,14 @@ export const projects = pgTable("projects", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   title: varchar("title", { length: 255 }).notNull(),
   titleEn: varchar("titleEn", { length: 255 }),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
   description: text("description").notNull(),
   descriptionEn: text("descriptionEn"),
+  content: text("content"), // Detailed project content
+  contentEn: text("contentEn"),
   category: categoryEnum("category").notNull(),
-  image: varchar("image", { length: 500 }).notNull(),
+  image: varchar("image", { length: 500 }).notNull(), // Main image
+  images: text("images"), // JSON array of additional images
   featured: integer("featured").default(0).notNull(), // 0 = false, 1 = true
   showOnHomepage: integer("showOnHomepage").default(0).notNull(), // 0 = false, 1 = true
   order: integer("order").default(0).notNull(),

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { ArrowLeft } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 import Header from '@/components/Header';
@@ -9,6 +9,7 @@ type ProjectCategory = 'Alle' | 'Residentieel' | 'Commercieel' | 'Industrieel';
 
 export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('Alle');
+  const [, setLocation] = useLocation();
   const projectsQuery = trpc.projects.getAll.useQuery();
 
   if (projectsQuery.isLoading) {
@@ -80,6 +81,7 @@ export default function ProjectsPage() {
             {filteredProjects.map((project: any) => (
               <div
                 key={project.id}
+                onClick={() => setLocation(`/projects/${project.slug}`)}
                 className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
               >
                 <div className="relative h-64 overflow-hidden">
