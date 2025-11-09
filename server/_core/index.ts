@@ -100,6 +100,13 @@ async function startServer() {
     await publishAllTestimonials(req, res);
   });
 
+  // Manual migration endpoint
+  app.post('/api/run-migration', async (req, res) => {
+    const { runManualMigration } = await import('../manual-migration');
+    const result = await runManualMigration();
+    res.json(result);
+  });
+
   // Publish all partners endpoint
   app.post('/api/publish-partners', async (req, res) => {
     const { publishAllPartners } = await import('../publish-partners-endpoint');
