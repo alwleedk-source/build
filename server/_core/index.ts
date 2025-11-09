@@ -124,6 +124,12 @@ async function startServer() {
     await addTimestampsEndpoint(req, res);
   });
 
+  // Check testimonials columns
+  app.get('/api/check-testimonials-columns', async (req, res) => {
+    const { checkTestimonialsColumns } = await import('../check-testimonials-columns');
+    await checkTestimonialsColumns(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
