@@ -71,7 +71,7 @@ function HeroSettingsContent() {
         secondaryButtonText: heroData.secondaryButtonText || '',
         secondaryButtonTextEn: heroData.secondaryButtonTextEn || '',
         secondaryButtonLink: heroData.secondaryButtonLink || '',
-        showStats: heroData.showStats || 1,
+        showStats: heroData.showStats ?? 1,
         stat1Value: heroData.stat1Value || 0,
         stat1Label: heroData.stat1Label || '',
         stat1LabelEn: heroData.stat1LabelEn || '',
