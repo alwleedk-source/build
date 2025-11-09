@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ImageUploader from "@/components/admin/ImageUploader";
+import ImageUploaderR2 from "@/components/admin/ImageUploaderR2";
 import {
   DndContext,
   closestCenter,
@@ -387,7 +387,7 @@ export default function Partners() {
               />
             </div>
             <div>
-              <ImageUploader
+              <ImageUploaderR2
                 currentImage={formData.logo}
                 onImageUploaded={(url) => setFormData({ ...formData, logo: url })}
                 folder="partners"
