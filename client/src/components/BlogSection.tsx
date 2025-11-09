@@ -1,5 +1,4 @@
 import { Calendar, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import ScrollReveal from '@/components/ScrollReveal';
 import { trpc } from '@/lib/trpc';
 
@@ -35,8 +34,8 @@ export default function BlogSection() {
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           {featuredPosts.map((post, index) => (
             <ScrollReveal key={post.id} delay={index * 0.15}>
-              <Link
-                to={`/blog/${post.slug}`}
+              <a
+                href={`/blog/${post.slug}`}
                 className="group block bg-card rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:scale-105"
               >
                 {/* Image */}
@@ -84,7 +83,7 @@ export default function BlogSection() {
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
-              </Link>
+              </a>
             </ScrollReveal>
           ))}
         </div>
@@ -93,13 +92,13 @@ export default function BlogSection() {
         {blogPosts.length > 3 && (
           <ScrollReveal>
             <div className="text-center">
-              <Link
-                to="/blog"
+              <a
+                href="/blog"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 transition-all hover:scale-105 hover:shadow-lg"
               >
                 Bekijk alle artikelen
                 <ArrowRight className="w-5 h-5" />
-              </Link>
+              </a>
             </div>
           </ScrollReveal>
         )}
