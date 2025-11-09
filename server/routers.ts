@@ -217,7 +217,9 @@ export const appRouter = router({
       return await db.getAllBlogPosts();
     }),
     getPublished: publicProcedure.query(async () => {
-      return await db.getPublishedBlogPosts();
+      const posts = await db.getPublishedBlogPosts();
+      console.log('[TRPC] blog.getPublished called, returning', posts.length, 'posts');
+      return posts;
     }),
     getBySlug: publicProcedure
       .input(z.object({ slug: z.string() }))
