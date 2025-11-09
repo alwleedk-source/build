@@ -184,6 +184,10 @@ async function startServer() {
   const quickAddServiceImagesRouter = (await import('../quick-add-service-images')).default;
   app.use('/api', quickAddServiceImagesRouter);
 
+  // Test service update
+  const testServiceUpdateRouter = (await import('../test-service-update')).default;
+  app.use('/api', testServiceUpdateRouter);
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
