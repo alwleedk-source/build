@@ -206,13 +206,13 @@ export async function deleteService(id: number) {
 export async function getAllBlogPosts() {
   const db = await getDb();
   if (!db) return [];
-  return await db.select().from(blogPosts).orderBy(desc(blogPosts.publishedAt));
+  return await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
 }
 
 export async function getPublishedBlogPosts() {
   const db = await getDb();
   if (!db) return [];
-  return await db.select().from(blogPosts).where(eq(blogPosts.published, true)).orderBy(desc(blogPosts.publishedAt));
+  return await db.select().from(blogPosts).where(eq(blogPosts.published, 1)).orderBy(desc(blogPosts.createdAt));
 }
 
 export async function getBlogPostById(id: number) {
@@ -259,7 +259,7 @@ export async function getAllPartners() {
 export async function getFeaturedPartners() {
   const db = await getDb();
   if (!db) return [];
-  return await db.select().from(partners).where(eq(partners.featured, true)).orderBy(asc(partners.order));
+  return await db.select().from(partners).where(eq(partners.isActive, 1)).orderBy(asc(partners.order));
 }
 
 export async function getPartnerById(id: number) {
@@ -299,7 +299,7 @@ export async function getAllTestimonials() {
 export async function getFeaturedTestimonials() {
   const db = await getDb();
   if (!db) return [];
-  return await db.select().from(testimonials).where(eq(testimonials.featured, true)).orderBy(desc(testimonials.createdAt));
+  return await db.select().from(testimonials).orderBy(desc(testimonials.createdAt)).limit(6);
 }
 
 export async function getTestimonialById(id: number) {
