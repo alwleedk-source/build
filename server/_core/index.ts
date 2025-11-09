@@ -136,6 +136,12 @@ async function startServer() {
     await simpleCheckTestimonials(req, res);
   });
 
+  // Simple seed
+  app.post('/api/seed-simple', async (req, res) => {
+    const { seedSimple } = await import('../seed-simple');
+    await seedSimple(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
