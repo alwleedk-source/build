@@ -127,11 +127,16 @@ export const appRouter = router({
       .input(z.object({
         id: z.number(),
         title: z.string().optional(),
+        titleEn: z.string().optional(),
         slug: z.string().optional(),
         description: z.string().optional(),
+        descriptionEn: z.string().optional(),
         longDescription: z.string().optional(),
+        longDescriptionEn: z.string().optional(),
         icon: z.string().optional(),
+        image: z.string().optional(),
         features: z.string().optional(),
+        featuresEn: z.string().optional(),
         showOnHomepage: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
