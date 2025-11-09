@@ -118,6 +118,12 @@ async function startServer() {
     await seedTestimonialsPartnersDirect(req, res);
   });
 
+  // Add timestamps to testimonials and partners tables
+  app.post('/api/add-timestamps', async (req, res) => {
+    const { addTimestampsEndpoint } = await import('../add-timestamps-endpoint');
+    await addTimestampsEndpoint(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
