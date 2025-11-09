@@ -35,7 +35,7 @@ const upload = multer({
 
 // Upload endpoint with error handling
 router.post('/upload-r2', (req, res, next) => {
-  upload.single('image')(req, res, (err) => {
+  upload.single('file')(req, res, (err) => {
     if (err) {
       console.error('[R2 Upload] Multer error:', err);
       if (err.code === 'LIMIT_FILE_SIZE') {
