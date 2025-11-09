@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as db from './db';
+import { sql } from 'drizzle-orm';
 
 export async function handleMigratePublished(req: Request, res: Response) {
   try {
@@ -10,55 +11,94 @@ export async function handleMigratePublished(req: Request, res: Response) {
 
     console.log('🔄 Starting migration: published integer -> boolean');
 
+    const steps = [];
+
     // Step 1: Check current type
-    const checkTypeQuery = `
-      SELECT data_type 
-      FROM information_schema.columns 
-      WHERE table_name = 'blog_posts' AND column_name = 'published'
-    `;
-    
-    const typeResult = await database.execute(checkTypeQuery);
-    console.log('📊 Current type:', typeResult);
-
-    // Step 2: If it's integer, convert to boolean
-    const migrationSteps = [
-      // Drop default first
-      `ALTER TABLE blog_posts ALTER COLUMN published DROP DEFAULT`,
-      
-      // Change type using USING clause
-      `ALTER TABLE blog_posts ALTER COLUMN published TYPE BOOLEAN USING (published != 0)`,
-      
-      // Set new default
-      `ALTER TABLE blog_posts ALTER COLUMN published SET DEFAULT false`,
-      
-      // Ensure NOT NULL
-      `ALTER TABLE blog_posts ALTER COLUMN published SET NOT NULL`,
-    ];
-
-    for (const step of migrationSteps) {
-      try {
-        console.log(`🔧 Executing: ${step}`);
-        await database.execute(step);
-        console.log('✅ Success');
-      } catch (error: any) {
-        console.log(`⚠️ Step failed (might be already applied): ${error.message}`);
-      }
+    try {
+      const typeResult = await database.execute(sql`
+        SELECT data_type 
+        FROM information_schema.columns 
+        WHERE table_name = 'blog_posts' AND column_name = 'published'
+      `);
+      console.log('📊 Current type:', typeResult.rows);
+      steps.push({ step: 'check_type', result: typeResult.rows });
+    } catch (error: any) {
+      console.error('❌ Check type failed:', error.message);
+      steps.push({ step: 'check_type', error: error.message });
     }
 
-    // Step 3: Verify final type
-    const finalTypeResult = await database.execute(checkTypeQuery);
-    console.log('📊 Final type:', finalTypeResult);
+    // Step 2: Drop default
+    try {
+      await database.execute(sql.raw(`ALTER TABLE blog_posts ALTER COLUMN published DROP DEFAULT`));
+      console.log('✅ Dropped default');
+      steps.push({ step: 'drop_default', success: true });
+    } catch (error: any) {
+      console.log(`⚠️ Drop default failed: ${error.message}`);
+      steps.push({ step: 'drop_default', error: error.message });
+    }
 
-    // Step 4: Check current values
-    const valuesQuery = `SELECT id, title, published FROM blog_posts ORDER BY id`;
-    const values = await database.execute(valuesQuery);
-    console.log('📝 Current values:', values);
+    // Step 3: Convert type
+    try {
+      await database.execute(sql.raw(`ALTER TABLE blog_posts ALTER COLUMN published TYPE BOOLEAN USING (published != 0)`));
+      console.log('✅ Converted to boolean');
+      steps.push({ step: 'convert_type', success: true });
+    } catch (error: any) {
+      console.log(`⚠️ Convert type failed: ${error.message}`);
+      steps.push({ step: 'convert_type', error: error.message });
+    }
+
+    // Step 4: Set new default
+    try {
+      await database.execute(sql.raw(`ALTER TABLE blog_posts ALTER COLUMN published SET DEFAULT false`));
+      console.log('✅ Set default false');
+      steps.push({ step: 'set_default', success: true });
+    } catch (error: any) {
+      console.log(`⚠️ Set default failed: ${error.message}`);
+      steps.push({ step: 'set_default', error: error.message });
+    }
+
+    // Step 5: Set NOT NULL
+    try {
+      await database.execute(sql.raw(`ALTER TABLE blog_posts ALTER COLUMN published SET NOT NULL`));
+      console.log('✅ Set NOT NULL');
+      steps.push({ step: 'set_not_null', success: true });
+    } catch (error: any) {
+      console.log(`⚠️ Set NOT NULL failed: ${error.message}`);
+      steps.push({ step: 'set_not_null', error: error.message });
+    }
+
+    // Step 6: Verify final type
+    try {
+      const finalTypeResult = await database.execute(sql`
+        SELECT data_type 
+        FROM information_schema.columns 
+        WHERE table_name = 'blog_posts' AND column_name = 'published'
+      `);
+      console.log('📊 Final type:', finalTypeResult.rows);
+      steps.push({ step: 'verify_type', result: finalTypeResult.rows });
+    } catch (error: any) {
+      console.error('❌ Verify type failed:', error.message);
+      steps.push({ step: 'verify_type', error: error.message });
+    }
+
+    // Step 7: Check current values
+    try {
+      const valuesResult = await database.execute(sql`
+        SELECT id, title, published 
+        FROM blog_posts 
+        ORDER BY id
+      `);
+      console.log('📝 Current values:', valuesResult.rows);
+      steps.push({ step: 'check_values', result: valuesResult.rows });
+    } catch (error: any) {
+      console.error('❌ Check values failed:', error.message);
+      steps.push({ step: 'check_values', error: error.message });
+    }
 
     res.json({
       success: true,
       message: 'Migration completed',
-      finalType: finalTypeResult,
-      currentValues: values,
+      steps: steps,
       timestamp: new Date().toISOString(),
     });
   } catch (error: any) {
