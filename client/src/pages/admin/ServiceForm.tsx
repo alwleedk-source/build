@@ -197,7 +197,7 @@ export default function ServiceForm() {
               <Label>Dienst Afbeelding</Label>
               <ImageUploaderR2
                 currentImage={formData.image}
-                onImageChange={(url) => setFormData({ ...formData, image: url })}
+                onImageUploaded={(url) => setFormData({ ...formData, image: url })}
                 folder="services"
               />
               <p className="text-sm text-muted-foreground">
