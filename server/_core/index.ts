@@ -94,6 +94,12 @@ async function startServer() {
   const seedFooterRouter = (await import('../seed-footer-endpoint')).default;
   app.use('/api', seedFooterRouter);
 
+  // Check footer columns endpoint
+  app.get('/api/check-footer-columns', async (req, res) => {
+    const { handleCheckFooterColumns } = await import('../check-footer-columns');
+    await handleCheckFooterColumns(req, res);
+  });
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {
