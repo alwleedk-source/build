@@ -151,7 +151,7 @@ export default function ProjectDetail() {
               Neem contact met ons op voor meer informatie over dit project of om een vergelijkbaar project te bespreken.
             </p>
             <Button
-              onClick={() => setLocation("/contact")}
+              onClick={() => window.location.href = "/#contact"}
               className="w-full"
             >
               Neem Contact Op

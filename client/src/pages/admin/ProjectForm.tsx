@@ -18,6 +18,7 @@ import { ArrowLeft, Save } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import ImageUploaderR2 from "@/components/admin/ImageUploaderR2";
+import MultipleImageUploaderR2 from "@/components/admin/MultipleImageUploaderR2";
 
 export default function ProjectForm() {
   const [, setLocation] = useLocation();
@@ -32,6 +33,7 @@ export default function ProjectForm() {
     descriptionEn: "",
     category: "Residentieel" as "Residentieel" | "Commercieel" | "Industrieel",
     image: "",
+    images: [] as string[],
     featured: false,
     showOnHomepage: false,
   });
@@ -70,6 +72,7 @@ export default function ProjectForm() {
         descriptionEn: projectQuery.data.descriptionEn || "",
         category: projectQuery.data.category,
         image: projectQuery.data.image,
+        images: projectQuery.data.images ? JSON.parse(projectQuery.data.images) : [],
         featured: projectQuery.data.featured === 1,
         showOnHomepage: projectQuery.data.showOnHomepage === 1,
       });
@@ -82,6 +85,7 @@ export default function ProjectForm() {
     const data = {
       ...formData,
       image: formData.image || '',
+      images: JSON.stringify(formData.images),
       featured: formData.featured ? 1 : 0,
       showOnHomepage: formData.showOnHomepage ? 1 : 0,
     };
@@ -202,11 +206,22 @@ export default function ProjectForm() {
                 currentImage={formData.image}
                 onImageUploaded={(url) => setFormData({ ...formData, image: url })}
                 folder="projects"
-                label="Project Afbeelding"
+                label="Hoofd Project Afbeelding"
               />
               <p className="text-sm text-muted-foreground">
-                Upload een afbeelding (max 5MB). Ondersteunde formaten: JPEG, PNG, WebP, GIF
+                Upload een hoofdafbeelding (max 5MB). Ondersteunde formaten: JPEG, PNG, WebP, GIF
               </p>
+            </div>
+
+            {/* Multiple Images Upload */}
+            <div className="space-y-2">
+              <MultipleImageUploaderR2
+                currentImages={formData.images}
+                onImagesChanged={(images) => setFormData({ ...formData, images })}
+                folder="projects"
+                label="Projectfoto's (Gallery)"
+                maxImages={10}
+              />
             </div>
 
             {/* Checkboxes */}
