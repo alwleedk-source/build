@@ -210,9 +210,21 @@ export async function getAllBlogPosts() {
 }
 
 export async function getPublishedBlogPosts() {
+  console.log('[DB] getPublishedBlogPosts() called');
   const db = await getDb();
-  if (!db) return [];
-  return await db.select().from(blogPosts).where(eq(blogPosts.published, 1)).orderBy(desc(blogPosts.createdAt));
+  if (!db) {
+    console.error('[DB] ❌ getDb() returned null! Database not available!');
+    return [];
+  }
+  console.log('[DB] ✅ Database connection available');
+  try {
+    const results = await db.select().from(blogPosts).where(eq(blogPosts.published, 1)).orderBy(desc(blogPosts.createdAt));
+    console.log('[DB] ✅ Query successful, found', results.length, 'published posts');
+    return results;
+  } catch (error) {
+    console.error('[DB] ❌ Query failed:', error);
+    return [];
+  }
 }
 
 export async function getBlogPostById(id: number) {
