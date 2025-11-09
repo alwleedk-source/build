@@ -78,6 +78,12 @@ async function startServer() {
     await handleMigratePublished(req, res);
   });
 
+  // Check tables endpoint
+  app.get('/api/check-tables', async (req, res) => {
+    const { handleCheckTables } = await import('../check-tables-endpoint');
+    await handleCheckTables(req, res);
+  });
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {
