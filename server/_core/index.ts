@@ -148,6 +148,12 @@ async function startServer() {
     await checkPartnersColumns(req, res);
   });
 
+  // Minimal seed
+  app.post('/api/seed-minimal', async (req, res) => {
+    const { seedMinimal } = await import('../seed-minimal');
+    await seedMinimal(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
