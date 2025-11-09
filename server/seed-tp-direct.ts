@@ -54,7 +54,6 @@ export async function seedTestimonialsPartnersDirect(req: any, res: any) {
         await sql`
           INSERT INTO testimonials (name, position, "positionEn", company, "companyEn", content, "contentEn", rating, image, featured, "order")
           VALUES (${t.name}, ${t.position}, ${t.positionEn}, ${t.company}, ${t.companyEn}, ${t.content}, ${t.contentEn}, ${t.rating}, ${t.image}, ${t.featured}, ${t.order})
-          ON CONFLICT (name) DO UPDATE SET featured = true
         `;
         console.log(`[Seed TP Direct] ✅ Testimonial: ${t.name}`);
       } catch (error: any) {
@@ -77,7 +76,6 @@ export async function seedTestimonialsPartnersDirect(req: any, res: any) {
         await sql`
           INSERT INTO partners (name, logo, url, "isActive", "order")
           VALUES (${p.name}, ${p.logo}, ${p.url}, ${p.isActive}, ${p.order})
-          ON CONFLICT (name) DO UPDATE SET "isActive" = 1
         `;
         console.log(`[Seed TP Direct] ✅ Partner: ${p.name}`);
       } catch (error: any) {
