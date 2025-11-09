@@ -94,6 +94,18 @@ async function startServer() {
   const seedFooterRouter = (await import('../seed-footer-endpoint')).default;
   app.use('/api', seedFooterRouter);
 
+  // Publish all testimonials endpoint
+  app.post('/api/publish-testimonials', async (req, res) => {
+    const { publishAllTestimonials } = await import('../publish-testimonials-endpoint');
+    await publishAllTestimonials(req, res);
+  });
+
+  // Publish all partners endpoint
+  app.post('/api/publish-partners', async (req, res) => {
+    const { publishAllPartners } = await import('../publish-partners-endpoint');
+    await publishAllPartners(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
