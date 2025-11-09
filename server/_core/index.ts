@@ -56,6 +56,12 @@ async function startServer() {
     await handleCleanRequest(req, res);
   });
 
+  // Debug DB endpoint
+  app.get('/api/debug-db', async (req, res) => {
+    const { handleDebugDbRequest } = await import('../debug-db-endpoint');
+    await handleDebugDbRequest(req, res);
+  });
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {
