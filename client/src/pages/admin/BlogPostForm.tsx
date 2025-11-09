@@ -81,7 +81,7 @@ export default function BlogPostForm() {
         image: postQuery.data.image,
         category: postQuery.data.category,
         authorId: postQuery.data.authorId,
-        published: postQuery.data.published === 1,
+        published: postQuery.data.published,
       });
     }
   }, [postQuery.data]);
@@ -91,7 +91,7 @@ export default function BlogPostForm() {
 
     const data = {
       ...formData,
-      published: formData.published ? 1 : 0,
+      published: formData.published,
     };
 
     if (isEdit && postId) {

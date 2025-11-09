@@ -240,7 +240,7 @@ export const appRouter = router({
         image: z.string(),
         category: z.string(),
         authorId: z.number(),
-        published: z.number().optional(),
+        published: z.boolean().optional(),
       }))
       .mutation(async ({ input }) => {
         return await db.createBlogPost(input as InsertBlogPost);
@@ -254,7 +254,7 @@ export const appRouter = router({
         content: z.string().optional(),
         image: z.string().optional(),
         category: z.string().optional(),
-        published: z.number().optional(),
+        published: z.boolean().optional(),
       }))
       .mutation(async ({ input }) => {
         const { id, ...data } = input;
