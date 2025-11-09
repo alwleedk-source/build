@@ -44,6 +44,12 @@ async function startServer() {
   const debugRouter = (await import('../routes/debug')).default;
   app.use('/api/debug', debugRouter);
 
+  // Seed endpoint
+  app.post('/api/seed', async (req, res) => {
+    const { handleSeedRequest } = await import('../seed-endpoint');
+    await handleSeedRequest(req, res);
+  });
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {
