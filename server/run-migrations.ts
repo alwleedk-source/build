@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -23,29 +23,44 @@ async function runMigrations() {
   try {
     console.log('🔄 Running migrations...');
     
-    // Read and execute the migration file
-    const migrationPath = join(__dirname, '../drizzle/0001_add_hero_footer_about.sql');
-    const migrationSQL = readFileSync(migrationPath, 'utf-8');
+    // Get all migration files from drizzle/migrations directory
+    const migrationsDir = join(__dirname, '../drizzle/migrations');
+    const migrationFiles = readdirSync(migrationsDir)
+      .filter(file => file.endsWith('.sql'))
+      .sort(); // Sort to run in order
     
-    // Split by statement breakpoint and execute each statement
-    const statements = migrationSQL
-      .split('--> statement-breakpoint')
-      .map(s => s.trim())
-      .filter(s => s.length > 0);
+    console.log(`Found ${migrationFiles.length} migration file(s)`);
     
-    for (const statement of statements) {
-      if (statement.startsWith('--')) continue; // Skip comments
-      try {
-        await db.execute(sql.raw(statement));
-      } catch (error: any) {
-        // Ignore "already exists" errors
-        if (!error.message?.includes('already exists')) {
-          console.error('Error executing statement:', error.message);
+    for (const migrationFile of migrationFiles) {
+      console.log(`\n📄 Running migration: ${migrationFile}`);
+      const migrationPath = join(migrationsDir, migrationFile);
+      const migrationSQL = readFileSync(migrationPath, 'utf-8');
+      
+      // Split by statement breakpoint and execute each statement
+      const statements = migrationSQL
+        .split('--> statement-breakpoint')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+      
+      for (const statement of statements) {
+        if (statement.startsWith('--') && !statement.includes('DO $$')) continue; // Skip pure comments
+        try {
+          await db.execute(sql.raw(statement));
+        } catch (error: any) {
+          // Ignore "already exists" errors
+          if (!error.message?.includes('already exists') && 
+              !error.message?.includes('duplicate')) {
+            console.error(`  ⚠️  Error in ${migrationFile}:`, error.message);
+          } else {
+            console.log(`  ℹ️  Skipped (already exists)`);
+          }
         }
       }
+      
+      console.log(`  ✅ ${migrationFile} completed`);
     }
     
-    console.log('✅ Migrations completed successfully!');
+    console.log('\n✅ All migrations completed successfully!');
   } catch (error) {
     console.error('❌ Migration failed:', error);
     process.exit(1);
