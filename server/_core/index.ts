@@ -172,6 +172,10 @@ async function startServer() {
     await migrateProjectsGallery(req, res);
   });
 
+  // Fix project images
+  const fixProjectImagesRouter = (await import('../fix-project-images')).default;
+  app.use('/api', fixProjectImagesRouter);
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');

@@ -4,6 +4,8 @@ import { ArrowLeft, Calendar, Tag, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function ProjectDetail() {
   const [, params] = useRoute("/projects/:slug");
@@ -40,7 +42,9 @@ export default function ProjectDetail() {
   const allImages = [project.image, ...additionalImages];
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <>
+      <Header />
+      <div className="min-h-screen bg-[var(--background)]">
       {/* Hero Section */}
       <div className="relative h-[60vh] bg-gray-900">
         <img
@@ -157,5 +161,7 @@ export default function ProjectDetail() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
