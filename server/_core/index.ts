@@ -84,6 +84,12 @@ async function startServer() {
     await handleCheckTables(req, res);
   });
 
+  // Publish all blog posts endpoint
+  app.post('/api/publish-all', async (req, res) => {
+    const { handlePublishAll } = await import('../publish-all-endpoint');
+    await handlePublishAll(req, res);
+  });
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {
