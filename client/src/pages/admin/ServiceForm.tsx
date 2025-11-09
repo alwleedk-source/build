@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Save } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import ImageUploaderR2 from "@/components/admin/ImageUploaderR2";
 
 export default function ServiceForm() {
   const [, setLocation] = useLocation();
@@ -26,6 +27,7 @@ export default function ServiceForm() {
     longDescription: "",
     longDescriptionEn: "",
     icon: "🏗️",
+    image: "",
     features: "",
     featuresEn: "",
     showOnHomepage: false,
@@ -67,6 +69,7 @@ export default function ServiceForm() {
         longDescription: serviceQuery.data.longDescription || "",
         longDescriptionEn: serviceQuery.data.longDescriptionEn || "",
         icon: serviceQuery.data.icon,
+        image: serviceQuery.data.image || "",
         features: serviceQuery.data.features || "",
         featuresEn: serviceQuery.data.featuresEn || "",
         showOnHomepage: serviceQuery.data.showOnHomepage === 1,
@@ -187,6 +190,19 @@ export default function ServiceForm() {
                 maxLength={2}
                 required
               />
+            </div>
+
+            {/* Service Image */}
+            <div className="space-y-2">
+              <Label>Dienst Afbeelding</Label>
+              <ImageUploaderR2
+                currentImage={formData.image}
+                onImageChange={(url) => setFormData({ ...formData, image: url })}
+                folder="services"
+              />
+              <p className="text-sm text-muted-foreground">
+                Upload een afbeelding voor deze dienst (max 5MB). Ondersteunde formaten: JPEG, PNG, WebP, GIF
+              </p>
             </div>
 
             {/* Short Description - Dutch & English */}

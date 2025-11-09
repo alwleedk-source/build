@@ -62,6 +62,7 @@ export const services = pgTable("services", {
   longDescription: text("longDescription").notNull(),
   longDescriptionEn: text("longDescriptionEn"),
   icon: varchar("icon", { length: 50 }).notNull(), // Icon name from lucide-react
+  image: varchar("image", { length: 500 }), // Service image URL
   features: text("features").notNull(), // JSON array of features
   featuresEn: text("featuresEn"), // JSON array of features in English
   showOnHomepage: integer("showOnHomepage").default(0).notNull(), // 0 = false, 1 = true

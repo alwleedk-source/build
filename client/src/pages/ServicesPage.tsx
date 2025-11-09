@@ -93,23 +93,20 @@ export default function ServicesPage() {
                     </div>
                   </a>
 
-                  {/* Image Placeholder */}
+                  {/* Image */}
                   <div className={`group ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
                     <div className="aspect-[4/3] rounded-2xl bg-muted border border-border overflow-hidden hover:shadow-2xl transition-all duration-300 relative">
-                      <img
-                        src={`https://images.unsplash.com/photo-${
-                          [
-                            '1600585154340-be6161a56a0c',
-                            '1581094794329-c8112a89af12',
-                            '1589939705384-5185137a336d',
-                            '1621905251189-08b45d6a269e',
-                            '1486406146926-c627a92ad1ab',
-                            '1565008576549-57569a49371d',
-                          ][index]
-                        }?w=800&h=600&fit=crop`}
-                        alt={service.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
+                      {service.image ? (
+                        <img
+                          src={service.image}
+                          alt={service.title}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                          <Building2 className="w-24 h-24" />
+                        </div>
+                      )}
                       {/* Dark Overlay on Hover */}
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
                     </div>
