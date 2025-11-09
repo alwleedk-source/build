@@ -65,6 +65,7 @@ export const appRouter = router({
         descriptionEn: z.string().optional(),
         category: z.enum(["Residentieel", "Commercieel", "Industrieel"]).optional(),
         image: z.string().optional(),
+        images: z.string().optional(),
         featured: z.number().optional(),
         showOnHomepage: z.number().optional(),
       }))
