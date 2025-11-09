@@ -218,7 +218,7 @@ export async function getPublishedBlogPosts() {
   }
   console.log('[DB] ✅ Database connection available');
   try {
-    const results = await db.select().from(blogPosts).where(eq(blogPosts.published, 1)).orderBy(desc(blogPosts.createdAt));
+    const results = await db.select().from(blogPosts).where(sql`${blogPosts.published} != 0`).orderBy(desc(blogPosts.createdAt));
     console.log('[DB] ✅ Query successful, found', results.length, 'published posts');
     return results;
   } catch (error) {
