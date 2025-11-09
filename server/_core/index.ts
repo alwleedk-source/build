@@ -160,6 +160,12 @@ async function startServer() {
     await fixAllColumns(req, res);
   });
 
+  // Debug R2 config
+  app.get('/api/debug-r2', async (req, res) => {
+    const { debugR2Config } = await import('../debug-r2');
+    await debugR2Config(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
