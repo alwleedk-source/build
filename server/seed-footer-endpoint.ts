@@ -6,7 +6,7 @@ const router = Router();
 
 router.post('/seed-footer', async (req, res) => {
   try {
-    const db = getDb();
+    const db = await getDb();
     if (!db) {
       return res.status(500).json({ error: 'Database not initialized' });
     }
