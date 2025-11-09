@@ -106,6 +106,12 @@ async function startServer() {
     await publishAllPartners(req, res);
   });
 
+  // Seed testimonials and partners endpoint
+  app.post('/api/seed-testimonials-partners', async (req, res) => {
+    const { handleSeedTestimonialsPartners } = await import('../seed-testimonials-partners-endpoint');
+    await handleSeedTestimonialsPartners(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
