@@ -83,7 +83,7 @@ export const blogPosts = pgTable("blogPosts", {
   category: varchar("category", { length: 100 }).notNull(),
   categoryEn: varchar("categoryEn", { length: 100 }),
   authorId: integer("authorId").notNull(),
-  published: integer("published").default(0).notNull(), // 0 = draft, 1 = published
+  published: boolean("published").default(false).notNull(),
   order: integer("order").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),

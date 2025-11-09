@@ -31,7 +31,7 @@ export async function seedBlogPosts() {
       category: "Trends",
       categoryEn: "Trends",
       authorId: 1,
-      published: 1,
+      published: true,
     },
     {
       title: "Renoveren of Nieuwbouw? Maak de Juiste Keuze",
@@ -75,7 +75,7 @@ export async function seedBlogPosts() {
       category: "Advies",
       categoryEn: "Advice",
       authorId: 1,
-      published: 1,
+      published: true,
     },
     {
       title: "5 Tips voor Duurzaam Bouwen",
@@ -111,7 +111,7 @@ export async function seedBlogPosts() {
       category: "Duurzaamheid",
       categoryEn: "Sustainability",
       authorId: 1,
-      published: 1,
+      published: true,
     },
   ];
 
