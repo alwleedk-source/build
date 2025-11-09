@@ -112,6 +112,12 @@ async function startServer() {
     await handleSeedTestimonialsPartners(req, res);
   });
 
+  // Seed testimonials and partners (direct SQL)
+  app.post('/api/seed-tp-direct', async (req, res) => {
+    const { seedTestimonialsPartnersDirect } = await import('../seed-tp-direct');
+    await seedTestimonialsPartnersDirect(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
