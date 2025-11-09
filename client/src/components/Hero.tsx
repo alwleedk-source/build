@@ -27,6 +27,8 @@ export default function Hero() {
   const stat2Label = hero ? getLocalizedContent(hero, 'stat2Label', i18n.language) : 'Projecten';
   const stat3Value = hero?.stat3Value?.toString() || '98%';
   const stat3Label = hero ? getLocalizedContent(hero, 'stat3Label', i18n.language) : 'Tevredenheid';
+  const stat4Value = hero?.stat4Value?.toString() || '99%';
+  const stat4Label = hero ? getLocalizedContent(hero, 'stat4Label', i18n.language) : 'Client Satisfaction';
 
   return (
     <section id="home" className="min-h-screen flex items-center pt-20 relative overflow-hidden">
@@ -80,7 +82,7 @@ export default function Hero() {
             {/* Stats */}
             {showStats && (
               <ScrollReveal delay={0.3}>
-              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-border">
                 <div>
                   <div className="text-3xl md:text-4xl font-bold text-primary">{stat1Value}</div>
                   <div className="text-sm text-muted-foreground mt-1">{stat1Label}</div>
@@ -92,6 +94,10 @@ export default function Hero() {
                 <div>
                   <div className="text-3xl md:text-4xl font-bold text-primary">{stat3Value}</div>
                   <div className="text-sm text-muted-foreground mt-1">{stat3Label}</div>
+                </div>
+                <div>
+                  <div className="text-3xl md:text-4xl font-bold text-primary">{stat4Value}</div>
+                  <div className="text-sm text-muted-foreground mt-1">{stat4Label}</div>
                 </div>
               </div>
               </ScrollReveal>
