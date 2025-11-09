@@ -1,11 +1,12 @@
 import { Request, Response, Router } from "express";
-import { db } from "./db";
+import { getDb } from "./db";
 import { sql } from "drizzle-orm";
 
 const router = Router();
 
 router.post("/quick-add-service-images", async (req: Request, res: Response) => {
   try {
+    const db = await getDb();
     // Add image column if not exists
     await db.execute(sql`ALTER TABLE services ADD COLUMN IF NOT EXISTS image TEXT`);
     

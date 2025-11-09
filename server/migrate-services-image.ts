@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { db } from "./db";
+import { getDb } from "./db";
 import { sql } from "drizzle-orm";
 
 const router = Router();
 
 router.post("/migrate-services-image", async (req, res) => {
   try {
+    const db = await getDb();
     // Add image column to services table
     await db.execute(sql`
       ALTER TABLE services 
