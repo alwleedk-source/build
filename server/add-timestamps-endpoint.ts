@@ -7,15 +7,15 @@ export async function addTimestampsEndpoint(req: any, res: any) {
     // Add createdAt and updatedAt to testimonials
     await sql`
       ALTER TABLE testimonials 
-      ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
-      ADD COLUMN IF NOT EXISTS "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL
+      ADD COLUMN IF NOT EXISTS createdat TIMESTAMP DEFAULT NOW() NOT NULL,
+      ADD COLUMN IF NOT EXISTS updatedat TIMESTAMP DEFAULT NOW() NOT NULL
     `;
 
     // Add createdAt and updatedAt to partners
     await sql`
       ALTER TABLE partners 
-      ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
-      ADD COLUMN IF NOT EXISTS "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL
+      ADD COLUMN IF NOT EXISTS createdat TIMESTAMP DEFAULT NOW() NOT NULL,
+      ADD COLUMN IF NOT EXISTS updatedat TIMESTAMP DEFAULT NOW() NOT NULL
     `;
 
     await sql.end();

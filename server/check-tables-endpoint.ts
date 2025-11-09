@@ -28,12 +28,30 @@ export async function handleCheckTables(req: Request, res: Response) {
       ORDER BY table_name, ordinal_position
     `;
 
+    // List all columns for testimonials tables
+    const testimonialsColumns = await sql`
+      SELECT table_name, column_name, data_type, is_nullable, column_default
+      FROM information_schema.columns 
+      WHERE table_name LIKE '%testimonial%'
+      ORDER BY table_name, ordinal_position
+    `;
+
+    // List all columns for partners tables
+    const partnersColumns = await sql`
+      SELECT table_name, column_name, data_type, is_nullable, column_default
+      FROM information_schema.columns 
+      WHERE table_name LIKE '%partner%'
+      ORDER BY table_name, ordinal_position
+    `;
+
     await sql.end();
 
     res.json({
       success: true,
       tables: tables,
       blogColumns: blogColumns,
+      testimonialsColumns: testimonialsColumns,
+      partnersColumns: partnersColumns,
       timestamp: new Date().toISOString(),
     });
   } catch (error: any) {
