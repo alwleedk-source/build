@@ -50,6 +50,12 @@ async function startServer() {
     await handleSeedRequest(req, res);
   });
 
+  // Clean endpoint
+  app.post('/api/clean', async (req, res) => {
+    const { handleCleanRequest } = await import('../clean-endpoint');
+    await handleCleanRequest(req, res);
+  });
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {
