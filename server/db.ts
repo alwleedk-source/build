@@ -542,3 +542,44 @@ export async function updateFooterSettings(id: number, data: Partial<InsertFoote
     .returning();
   return result[0];
 }
+
+// Order update functions for drag & drop
+export async function updateProjectsOrder(items: { id: number; order: number }[]) {
+  const dbInstance = await getDb();
+  for (const item of items) {
+    await dbInstance
+      .update(projects)
+      .set({ order: item.order })
+      .where(eq(projects.id, item.id));
+  }
+}
+
+export async function updateServicesOrder(items: { id: number; order: number }[]) {
+  const dbInstance = await getDb();
+  for (const item of items) {
+    await dbInstance
+      .update(services)
+      .set({ order: item.order })
+      .where(eq(services.id, item.id));
+  }
+}
+
+export async function updatePartnersOrder(items: { id: number; order: number }[]) {
+  const dbInstance = await getDb();
+  for (const item of items) {
+    await dbInstance
+      .update(partners)
+      .set({ order: item.order })
+      .where(eq(partners.id, item.id));
+  }
+}
+
+// Get active partners
+export async function getActivePartners() {
+  const dbInstance = await getDb();
+  return await dbInstance
+    .select()
+    .from(partners)
+    .where(eq(partners.isActive, true))
+    .orderBy(asc(partners.order));
+}
