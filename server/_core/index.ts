@@ -72,6 +72,12 @@ async function startServer() {
     await handleHealthCheck(req, res);
   });
 
+  // Migrate published field endpoint
+  app.post('/api/migrate-published', async (req, res) => {
+    const { handleMigratePublished } = await import('../migrate-published-endpoint');
+    await handleMigratePublished(req, res);
+  });
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {
