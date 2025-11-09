@@ -40,6 +40,10 @@ async function startServer() {
   const localUploadRouter = (await import('../local-upload')).default;
   app.use('/api', localUploadRouter);
 
+  // R2 file upload (Cloudflare R2)
+  const r2UploadRouter = (await import('../r2-upload')).default;
+  app.use('/api', r2UploadRouter);
+
   // Debug routes
   const debugRouter = (await import('../routes/debug')).default;
   app.use('/api/debug', debugRouter);
@@ -60,6 +64,12 @@ async function startServer() {
   app.get('/api/debug-db', async (req, res) => {
     const { handleDebugDbRequest } = await import('../debug-db-endpoint');
     await handleDebugDbRequest(req, res);
+  });
+
+  // Health check endpoint
+  app.get('/api/health', async (req, res) => {
+    const { handleHealthCheck } = await import('../health-endpoint');
+    await handleHealthCheck(req, res);
   });
 
   // Sitemap
