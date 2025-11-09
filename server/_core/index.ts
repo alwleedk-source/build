@@ -180,6 +180,10 @@ async function startServer() {
   const migrateServicesImageRouter = (await import('../migrate-services-image')).default;
   app.use('/api', migrateServicesImageRouter);
 
+  // Quick add service images
+  const quickAddServiceImagesRouter = (await import('../quick-add-service-images')).default;
+  app.use('/api', quickAddServiceImagesRouter);
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
