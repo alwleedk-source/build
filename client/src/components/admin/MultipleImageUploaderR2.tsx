@@ -52,7 +52,7 @@ export default function MultipleImageUploaderR2({
         }
 
         const formData = new FormData();
-        formData.append("image", file);
+        formData.append("file", file);
         formData.append("folder", folder);
 
         const response = await fetch("/api/upload-r2", {
