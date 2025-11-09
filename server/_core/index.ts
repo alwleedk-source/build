@@ -142,6 +142,12 @@ async function startServer() {
     await seedSimple(req, res);
   });
 
+  // Check partners columns
+  app.get('/api/check-partners-columns', async (req, res) => {
+    const { checkPartnersColumns } = await import('../check-partners-columns');
+    await checkPartnersColumns(req, res);
+  });
+
   // Check footer columns endpoint
   app.get('/api/check-footer-columns', async (req, res) => {
     const { handleCheckFooterColumns } = await import('../check-footer-columns');
