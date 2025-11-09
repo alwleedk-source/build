@@ -94,59 +94,10 @@ export default function BlogPost() {
             </div>
 
             {/* Content */}
-            <div className="prose prose-lg max-w-none">
-              {post.content.split('\n\n').map((paragraph, index) => {
-                // Handle headings
-                if (paragraph.startsWith('# ')) {
-                  return (
-                    <h1 key={index} className="text-3xl font-bold text-foreground mt-12 mb-6">
-                      {paragraph.replace('# ', '')}
-                    </h1>
-                  );
-                }
-                if (paragraph.startsWith('## ')) {
-                  return (
-                    <h2 key={index} className="text-2xl font-bold text-foreground mt-10 mb-4">
-                      {paragraph.replace('## ', '')}
-                    </h2>
-                  );
-                }
-                // Handle lists
-                if (paragraph.includes('- ')) {
-                  const items = paragraph.split('\n').filter(line => line.startsWith('- '));
-                  return (
-                    <ul key={index} className="space-y-2 my-6">
-                      {items.map((item, i) => (
-                        <li key={i} className="text-muted-foreground">
-                          {item.replace('- ', '')}
-                        </li>
-                      ))}
-                    </ul>
-                  );
-                }
-                // Handle bold text
-                const boldRegex = /\*\*(.*?)\*\*/g;
-                if (boldRegex.test(paragraph)) {
-                  const parts = paragraph.split(boldRegex);
-                  return (
-                    <p key={index} className="text-muted-foreground leading-relaxed mb-6">
-                      {parts.map((part, i) => 
-                        i % 2 === 1 ? <strong key={i} className="font-bold text-foreground">{part}</strong> : part
-                      )}
-                    </p>
-                  );
-                }
-                // Regular paragraphs
-                if (paragraph.trim()) {
-                  return (
-                    <p key={index} className="text-muted-foreground leading-relaxed mb-6">
-                      {paragraph}
-                    </p>
-                  );
-                }
-                return null;
-              })}
-            </div>
+            <div 
+              className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-ul:text-muted-foreground"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
 
             {/* CTA Section */}
             <div className="mt-16 p-8 bg-primary/5 rounded-2xl text-center">
