@@ -21,16 +21,16 @@ export async function seedSimple(req: any, res: any) {
     `;
     console.log('[Seed Simple] ✅ Inserted 3 testimonials');
     
-    // Insert partners
+    // Insert partners (without url column for now)
     await sql`
-      INSERT INTO partners (name, logo, url, "isActive", "order")
+      INSERT INTO partners (name, logo, "isActive", "order")
       VALUES 
-        ('BAM Bouw', '/images/partners/bam.png', 'https://www.bam.com', 1, 1),
-        ('Dura Vermeer', '/images/partners/dura-vermeer.png', 'https://www.duravermeer.nl', 1, 2),
-        ('VolkerWessels', '/images/partners/volkerwessels.png', 'https://www.volkerwessels.com', 1, 3),
-        ('Heijmans', '/images/partners/heijmans.png', 'https://www.heijmans.nl', 1, 4),
-        ('Ballast Nedam', '/images/partners/ballast-nedam.png', 'https://www.ballast-nedam.nl', 1, 5),
-        ('Van Wijnen', '/images/partners/van-wijnen.png', 'https://www.vanwijnen.nl', 1, 6)
+        ('BAM Bouw', '/images/partners/bam.png', 1, 1),
+        ('Dura Vermeer', '/images/partners/dura-vermeer.png', 1, 2),
+        ('VolkerWessels', '/images/partners/volkerwessels.png', 1, 3),
+        ('Heijmans', '/images/partners/heijmans.png', 1, 4),
+        ('Ballast Nedam', '/images/partners/ballast-nedam.png', 1, 5),
+        ('Van Wijnen', '/images/partners/van-wijnen.png', 1, 6)
     `;
     console.log('[Seed Simple] ✅ Inserted 6 partners');
     
