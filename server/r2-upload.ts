@@ -33,16 +33,38 @@ const upload = multer({
   },
 });
 
-// Upload endpoint
-router.post('/upload-r2', upload.single('file'), async (req, res) => {
+// Upload endpoint with error handling
+router.post('/upload-r2', (req, res, next) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      console.error('[R2 Upload] Multer error:', err);
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ 
+          error: 'File too large',
+          message: 'File size must be less than 5MB'
+        });
+      }
+      return res.status(400).json({ 
+        error: 'File upload error',
+        message: err.message 
+      });
+    }
+    next();
+  });
+}, async (req, res) => {
   try {
+    console.log('[R2 Upload] Request received');
+    console.log('[R2 Upload] File:', req.file ? req.file.originalname : 'NO FILE');
+    console.log('[R2 Upload] Folder:', req.body.folder);
+
     if (!req.file) {
+      console.error('[R2 Upload] No file in request');
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
     // Check R2 configuration
     if (!process.env.R2_ACCOUNT_ID || !process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY || !process.env.R2_BUCKET_NAME) {
-      console.error('R2 configuration missing');
+      console.error('[R2 Upload] R2 configuration missing');
       return res.status(500).json({ error: 'R2 storage not configured' });
     }
 
@@ -80,10 +102,12 @@ router.post('/upload-r2', upload.single('file'), async (req, res) => {
       key: key,
     });
   } catch (error: any) {
-    console.error('R2 upload error:', error);
+    console.error('[R2 Upload] Error:', error);
+    console.error('[R2 Upload] Error stack:', error.stack);
     res.status(500).json({ 
       error: 'Upload failed',
-      message: error.message 
+      message: error.message,
+      details: error.toString()
     });
   }
 });
