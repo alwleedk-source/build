@@ -7,20 +7,26 @@ import { getLocalizedContent } from '@/lib/i18n-helpers';
 
 export default function Hero() {
   const { i18n } = useTranslation();
-  const settingsQuery = trpc.homeSettings.get.useQuery();
-  const settings = settingsQuery.data;
+  const heroQuery = trpc.heroSection.get.useQuery();
+  const hero = heroQuery.data;
 
-  // Default values if no settings
-  const heroTitle = settings ? getLocalizedContent(settings, 'heroTitle', i18n.language) : 'Bouw uw dromen';
-  const heroSubtitle = settings ? getLocalizedContent(settings, 'heroSubtitle', i18n.language) : 'met BuildCraft';
-  const heroDescription = settings ? getLocalizedContent(settings, 'heroDescription', i18n.language) : 'Professionele bouw- en onderhoudsdiensten voor uw gebouwen.';
+  // Default values if no hero settings
+  const heroTitle = hero ? getLocalizedContent(hero, 'title', i18n.language) : 'Bouw uw dromen';
+  const heroSubtitle = hero ? getLocalizedContent(hero, 'subtitle', i18n.language) : 'met BuildCraft';
+  const heroDescription = hero ? getLocalizedContent(hero, 'description', i18n.language) : 'Professionele bouw- en onderhoudsdiensten voor uw gebouwen.';
   
-  const stat1Value = settings?.stat1Value || '15+';
-  const stat1Label = settings ? getLocalizedContent(settings, 'stat1Label', i18n.language) : 'Jaar ervaring';
-  const stat2Value = settings?.stat2Value || '500+';
-  const stat2Label = settings ? getLocalizedContent(settings, 'stat2Label', i18n.language) : 'Projecten';
-  const stat3Value = settings?.stat3Value || '98%';
-  const stat3Label = settings ? getLocalizedContent(settings, 'stat3Label', i18n.language) : 'Tevredenheid';
+  const primaryButtonText = hero ? getLocalizedContent(hero, 'primaryButtonText', i18n.language) : (i18n.language === 'en' ? 'Get In Touch' : 'Neem Contact Op');
+  const primaryButtonLink = hero?.primaryButtonLink || '#contact';
+  const secondaryButtonText = hero ? getLocalizedContent(hero, 'secondaryButtonText', i18n.language) : (i18n.language === 'en' ? 'Our Services' : 'Onze Diensten');
+  const secondaryButtonLink = hero?.secondaryButtonLink || '#diensten';
+  
+  const showStats = hero?.showStats !== 0; // Show stats by default unless explicitly disabled
+  const stat1Value = hero?.stat1Value?.toString() || '15+';
+  const stat1Label = hero ? getLocalizedContent(hero, 'stat1Label', i18n.language) : 'Jaar ervaring';
+  const stat2Value = hero?.stat2Value?.toString() || '500+';
+  const stat2Label = hero ? getLocalizedContent(hero, 'stat2Label', i18n.language) : 'Projecten';
+  const stat3Value = hero?.stat3Value?.toString() || '98%';
+  const stat3Label = hero ? getLocalizedContent(hero, 'stat3Label', i18n.language) : 'Tevredenheid';
 
   return (
     <section id="home" className="min-h-screen flex items-center pt-20 relative overflow-hidden">
@@ -46,7 +52,7 @@ export default function Hero() {
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-foreground">
                 {heroTitle}
-                <span className="block text-primary">{heroSubtitle}</span>
+                {heroSubtitle && <span className="block text-primary">{heroSubtitle}</span>}
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
                 {heroDescription}
@@ -58,36 +64,38 @@ export default function Hero() {
             <ScrollReveal delay={0.2}>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="rounded-full group" asChild>
-                <a href="#contact">
-                  {i18n.language === 'en' ? 'Get In Touch' : 'Neem Contact Op'}
+                <a href={primaryButtonLink}>
+                  {primaryButtonText}
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>
               <Button size="lg" variant="outline" className="rounded-full" asChild>
-                <a href="#diensten">
-                  {i18n.language === 'en' ? 'Our Services' : 'Onze Diensten'}
+                <a href={secondaryButtonLink}>
+                  {secondaryButtonText}
                 </a>
               </Button>
             </div>
             </ScrollReveal>
 
             {/* Stats */}
-            <ScrollReveal delay={0.3}>
-            <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-primary">{stat1Value}</div>
-                <div className="text-sm text-muted-foreground mt-1">{stat1Label}</div>
+            {showStats && (
+              <ScrollReveal delay={0.3}>
+              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
+                <div>
+                  <div className="text-3xl md:text-4xl font-bold text-primary">{stat1Value}</div>
+                  <div className="text-sm text-muted-foreground mt-1">{stat1Label}</div>
+                </div>
+                <div>
+                  <div className="text-3xl md:text-4xl font-bold text-primary">{stat2Value}</div>
+                  <div className="text-sm text-muted-foreground mt-1">{stat2Label}</div>
+                </div>
+                <div>
+                  <div className="text-3xl md:text-4xl font-bold text-primary">{stat3Value}</div>
+                  <div className="text-sm text-muted-foreground mt-1">{stat3Label}</div>
+                </div>
               </div>
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-primary">{stat2Value}</div>
-                <div className="text-sm text-muted-foreground mt-1">{stat2Label}</div>
-              </div>
-              <div>
-                <div className="text-3xl md:text-4xl font-bold text-primary">{stat3Value}</div>
-                <div className="text-sm text-muted-foreground mt-1">{stat3Label}</div>
-              </div>
-            </div>
-            </ScrollReveal>
+              </ScrollReveal>
+            )}
           </div>
 
           {/* Illustration */}
