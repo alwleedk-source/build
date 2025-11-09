@@ -12,7 +12,7 @@ export default function Footer() {
 
   // Default values
   const companyName = footerData?.companyName || 'BuildCraft';
-  const companyDescription = (currentLang === 'en' ? footerData?.companyDescriptionEn : footerData?.companyDescription) || 'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden in Nederland.';
+  const companyDescription = (currentLang === 'en' ? footerData?.descriptionEn : footerData?.description) || 'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden in Nederland.';
   const address = footerData?.address || 'Bouwstraat 123\n1234 AB Amsterdam';
   const phone = footerData?.phone || '+31 6 1234 5678';
   const email = footerData?.email || 'info@buildcraft.nl';

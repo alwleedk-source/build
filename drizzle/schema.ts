@@ -330,8 +330,8 @@ export type InsertHeroSection = typeof heroSection.$inferInsert;
 export const footerSettings = pgTable("footerSettings", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   companyName: varchar("companyName", { length: 255 }).notNull(),
-  companyDescription: text("companyDescription"),
-  companyDescriptionEn: text("companyDescriptionEn"),
+  description: text("description"),
+  descriptionEn: text("descriptionEn"),
   address: text("address"),
   phone: varchar("phone", { length: 50 }),
   email: varchar("email", { length: 320 }),

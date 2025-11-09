@@ -25,8 +25,8 @@ router.post('/seed-footer', async (req, res) => {
     // Insert default footer settings
     const [result] = await db.insert(footerSettings).values({
       companyName: 'BuildCraft',
-      companyDescription: 'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden in Nederland.',
-      companyDescriptionEn: 'Your trusted partner for all construction and maintenance work in the Netherlands.',
+      description: 'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden in Nederland.',
+      descriptionEn: 'Your trusted partner for all construction and maintenance work in the Netherlands.',
       address: 'Bouwstraat 123\n1234 AB Amsterdam\nNederland',
       phone: '+31 6 1234 5678',
       email: 'info@buildcraft.nl',

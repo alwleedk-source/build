@@ -936,8 +936,8 @@ export const appRouter = router({
     create: publicProcedure
       .input(z.object({
         companyName: z.string(),
-        companyDescription: z.string().optional(),
-        companyDescriptionEn: z.string().optional(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
         address: z.string().optional(),
         phone: z.string().optional(),
         email: z.string().optional(),
@@ -959,8 +959,8 @@ export const appRouter = router({
       .input(z.object({
         id: z.number(),
         companyName: z.string().optional(),
-        companyDescription: z.string().optional(),
-        companyDescriptionEn: z.string().optional(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
         address: z.string().optional(),
         phone: z.string().optional(),
         email: z.string().optional(),
