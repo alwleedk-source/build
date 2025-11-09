@@ -90,6 +90,10 @@ async function startServer() {
     await handlePublishAll(req, res);
   });
 
+  // Seed footer settings endpoint
+  const seedFooterRouter = (await import('../seed-footer-endpoint')).default;
+  app.use('/api', seedFooterRouter);
+
   // Sitemap
   app.get('/sitemap.xml', async (req, res) => {
     try {
