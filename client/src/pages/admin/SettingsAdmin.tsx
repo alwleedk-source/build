@@ -37,7 +37,10 @@ export default function SettingsAdmin() {
     metaTitle: "BuildCraft - Professional Construction Services",
     metaDescription: "Professionele bouw- en onderhoudsdiensten voor al uw projecten. Van nieuwbouw tot renovatie, wij maken het mogelijk.",
     metaKeywords: "bouw, constructie, nieuwbouw, renovatie, onderhoud, BuildCraft",
-    
+    metaTitleEn: "BuildCraft - Professional Construction Services",
+    metaDescriptionEn: "Professional construction and maintenance services for all your projects. From new construction to renovation, we make it possible.",
+    metaKeywordsEn: "construction, building, new construction, renovation, maintenance, BuildCraft",
+
     // Footer
     footerCopyright: "© 2024 BuildCraft. Alle rechten voorbehouden.",
     footerDescription: "BuildCraft is uw betrouwbare partner voor professionele bouw- en onderhoudsdiensten.",
@@ -90,9 +93,7 @@ export default function SettingsAdmin() {
         if (typeof value === 'boolean') {
           type = 'boolean';
           stringValue = value ? '1' : '0';
-        } else if (typeof value === 'number') {
-          type = 'number';
-        }
+        } else
         
         await upsertMutation.mutateAsync({
           key,
@@ -479,35 +480,95 @@ export default function SettingsAdmin() {
             <Card className="p-6 space-y-6">
               <div>
                 <h2 className="text-xl font-semibold mb-4">SEO Instellingen</h2>
-                <div className="space-y-4">
+                <p className="text-sm text-muted-foreground mb-6">
+                  Configureer SEO metadata voor beide talen (Nederlands en Engels)
+                </p>
+
+                {/* Dutch SEO Fields */}
+                <div className="space-y-4 mb-8">
+                  <h3 className="text-lg font-semibold text-primary border-b pb-2">🇳🇱 Nederlands</h3>
                   <div>
-                    <Label htmlFor="metaTitle">Meta Titel</Label>
+                    <Label htmlFor="metaTitle">Meta Titel (NL)</Label>
                     <Input
                       id="metaTitle"
                       value={settings.metaTitle}
                       onChange={(e) => setSettings({ ...settings, metaTitle: e.target.value })}
+                      placeholder="BuildCraft - Professionele Bouwdiensten"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Aanbevolen: 50-60 karakters
+                    </p>
                   </div>
                   <div>
-                    <Label htmlFor="metaDescription">Meta Beschrijving</Label>
+                    <Label htmlFor="metaDescription">Meta Beschrijving (NL)</Label>
                     <Textarea
                       id="metaDescription"
                       value={settings.metaDescription}
                       onChange={(e) => setSettings({ ...settings, metaDescription: e.target.value })}
                       rows={3}
+                      placeholder="Professionele bouw- en onderhoudsdiensten voor al uw projecten..."
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Aanbevolen: 150-160 karakters
+                    </p>
                   </div>
                   <div>
-                    <Label htmlFor="metaKeywords">Meta Keywords</Label>
+                    <Label htmlFor="metaKeywords">Meta Keywords (NL)</Label>
                     <Input
                       id="metaKeywords"
                       value={settings.metaKeywords}
                       onChange={(e) => setSettings({ ...settings, metaKeywords: e.target.value })}
-                      placeholder="keyword1, keyword2, keyword3"
+                      placeholder="bouw, constructie, renovatie, onderhoud, BuildCraft"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Scheid keywords met komma's
+                    </p>
                   </div>
                 </div>
-                <Button onClick={() => handleSave("SEO")} className="mt-4" disabled={upsertMutation.isPending}>
+
+                {/* English SEO Fields */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-primary border-b pb-2">🇬🇧 English</h3>
+                  <div>
+                    <Label htmlFor="metaTitleEn">Meta Title (EN)</Label>
+                    <Input
+                      id="metaTitleEn"
+                      value={settings.metaTitleEn || ''}
+                      onChange={(e) => setSettings({ ...settings, metaTitleEn: e.target.value })}
+                      placeholder="BuildCraft - Professional Construction Services"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Recommended: 50-60 characters
+                    </p>
+                  </div>
+                  <div>
+                    <Label htmlFor="metaDescriptionEn">Meta Description (EN)</Label>
+                    <Textarea
+                      id="metaDescriptionEn"
+                      value={settings.metaDescriptionEn || ''}
+                      onChange={(e) => setSettings({ ...settings, metaDescriptionEn: e.target.value })}
+                      rows={3}
+                      placeholder="Professional construction and maintenance services for all your projects..."
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Recommended: 150-160 characters
+                    </p>
+                  </div>
+                  <div>
+                    <Label htmlFor="metaKeywordsEn">Meta Keywords (EN)</Label>
+                    <Input
+                      id="metaKeywordsEn"
+                      value={settings.metaKeywordsEn || ''}
+                      onChange={(e) => setSettings({ ...settings, metaKeywordsEn: e.target.value })}
+                      placeholder="construction, building, renovation, maintenance, BuildCraft"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Separate keywords with commas
+                    </p>
+                  </div>
+                </div>
+
+                <Button onClick={() => handleSave("SEO")} className="mt-6" disabled={upsertMutation.isPending}>
                   {upsertMutation.isPending ? (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   ) : (
