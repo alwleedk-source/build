@@ -32,7 +32,7 @@ async function setupDatabase() {
       ORDER BY table_name;
     `);
     
-    const existingTables = (tablesResult.rows || []).map((row: any) => row.table_name);
+    const existingTables = (Array.isArray(tablesResult) ? tablesResult : []).map((row: any) => row.table_name);
     console.log(`   Found ${existingTables.length} tables:`, existingTables.join(', ') || 'none');
 
     // Step 2: Create ENUMs if they don't exist
@@ -306,12 +306,12 @@ async function setupDatabase() {
       ORDER BY table_name;
     `);
     
-    const finalTables = (finalTablesResult.rows || []).map((row: any) => row.table_name);
+    const finalTables = (Array.isArray(finalTablesResult) ? finalTablesResult : []).map((row: any) => row.table_name);
     console.log(`   ✅ Total tables: ${finalTables.length}`);
     console.log(`   Tables: ${finalTables.join(', ')}`);
 
     const adminCount = await db.execute(sql`SELECT COUNT(*) as count FROM "admins";`);
-    const count = adminCount.rows?.[0]?.count || adminCount[0]?.count || 0;
+    const count = (Array.isArray(adminCount) && adminCount[0]) ? adminCount[0].count : 0;
     console.log(`   ✅ Admin users: ${count}`);
 
     console.log('\n🎉 Database setup completed successfully!');
