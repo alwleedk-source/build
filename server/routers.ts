@@ -283,8 +283,17 @@ export const appRouter = router({
   // Site Settings router
   siteSettings: router({
     getAll: publicProcedure.query(async () => {
-      return await db.getSiteSettings();
+      return await db.getAllSiteSettings();
     }),
+    upsert: publicProcedure
+      .input(z.object({
+        key: z.string(),
+        value: z.string(),
+        type: z.enum(['text', 'boolean', 'number', 'json', 'image']).default('text'),
+      }))
+      .mutation(async ({ input }) => {
+        return await db.upsertSiteSetting(input.key, input.value, input.type);
+      }),
     update: publicProcedure
       .input(z.object({
         siteName: z.string().optional(),

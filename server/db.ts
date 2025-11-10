@@ -357,10 +357,45 @@ export async function getSiteSettings() {
   return result[0] || null;
 }
 
+export async function getAllSiteSettings() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(siteSettings);
+}
+
+export async function upsertSiteSetting(
+  key: string,
+  value: string,
+  type: 'text' | 'boolean' | 'number' | 'json' | 'image' = 'text'
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const existing = await db.select()
+    .from(siteSettings)
+    .where(eq(siteSettings.key, key))
+    .limit(1);
+
+  if (existing.length > 0) {
+    // Update existing setting
+    const result = await db.update(siteSettings)
+      .set({ value, type, updatedAt: new Date() })
+      .where(eq(siteSettings.key, key))
+      .returning();
+    return result[0];
+  } else {
+    // Insert new setting
+    const result = await db.insert(siteSettings)
+      .values({ key, value, type })
+      .returning();
+    return result[0];
+  }
+}
+
 export async function updateSiteSettings(settings: Partial<typeof siteSettings.$inferInsert>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  
+
   const existing = await getSiteSettings();
   if (existing) {
     const result = await db.update(siteSettings).set(settings).where(eq(siteSettings.id, existing.id)).returning();
