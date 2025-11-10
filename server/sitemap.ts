@@ -33,6 +33,11 @@ router.get('/sitemap.xml', async (req, res) => {
     const baseUrl = process.env.BASE_URL || 'https://build-production-09b2.up.railway.app';
     const db = await getDb();
 
+    if (!db) {
+      console.error('Database connection failed');
+      return res.status(500).send('Database connection failed');
+    }
+
     const urls: SitemapURL[] = [];
 
     // Static pages
