@@ -448,6 +448,25 @@ export async function getEmailSettings() {
   return result[0] || null;
 }
 
+export async function upsertEmailSettings(settings: Partial<InsertEmailSettings>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const existing = await getEmailSettings();
+  if (existing) {
+    const result = await db.update(emailSettings)
+      .set({ ...settings, updatedAt: new Date() })
+      .where(eq(emailSettings.id, existing.id))
+      .returning();
+    return result[0];
+  } else {
+    const result = await db.insert(emailSettings)
+      .values(settings as InsertEmailSettings)
+      .returning();
+    return result[0];
+  }
+}
+
 export async function updateEmailSettings(settings: Partial<InsertEmailSettings>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
