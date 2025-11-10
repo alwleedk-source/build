@@ -168,7 +168,10 @@ export async function runManualMigration() {
     try {
       await db.execute(sql`
         ALTER TABLE "teamMembers"
-        ADD COLUMN IF NOT EXISTS "positionEn" varchar(255),
+        ADD COLUMN IF NOT EXISTS "positionEn" varchar(255);
+      `);
+      await db.execute(sql`
+        ALTER TABLE "teamMembers"
         ADD COLUMN IF NOT EXISTS "bioEn" text;
       `);
       results.push('✅ teamMembers bilingual fields added');
