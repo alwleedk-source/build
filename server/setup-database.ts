@@ -8,6 +8,9 @@
  * Or on Railway: railway run pnpm db:setup
  */
 
+// noinspection SqlNoDataSourceInspection,SqlResolve
+// ^ Suppress SQL warnings - we use dynamic connection via DATABASE_URL
+
 import { sql } from 'drizzle-orm';
 import { getDb } from './db';
 import { createAdmin, getAdminByEmail } from './auth';
