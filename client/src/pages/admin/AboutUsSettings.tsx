@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
-import { Loader2, Save, Upload } from 'lucide-react';
+import { Loader2, Save, Upload, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function AboutUsSettings() {
@@ -18,7 +18,7 @@ export default function AboutUsSettings() {
 }
 
 function AboutUsSettingsContent() {
-
+  const [isUploading, setIsUploading] = useState(false);
   const utils = trpc.useUtils();
   
   const { data: aboutData, isLoading } = trpc.aboutUs.get.useQuery();
@@ -89,6 +89,53 @@ function AboutUsSettingsContent() {
 
   const handleChange = (field: string, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'about');
+
+      const response = await fetch('/api/upload-r2', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      handleChange('image', data.url);
+      toast.success('Image uploaded successfully');
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error('Failed to upload image');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    handleChange('image', '');
+    toast.success('Image removed');
   };
 
   if (isLoading) {
@@ -181,18 +228,34 @@ function AboutUsSettingsContent() {
           <h2 className="text-xl font-semibold mb-4">Image</h2>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="image">Image URL</Label>
+              <Label htmlFor="image">Image</Label>
               <div className="flex gap-2">
                 <Input
-                  id="image"
-                  value={formData.image}
-                  onChange={(e) => handleChange('image', e.target.value)}
-                  placeholder="https://example.com/image.jpg"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={isUploading}
+                  className="cursor-pointer"
                 />
-                <Button type="button" variant="outline" size="icon">
-                  <Upload className="w-4 h-4" />
-                </Button>
+                {isUploading && (
+                  <Button type="button" variant="outline" size="icon" disabled>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  </Button>
+                )}
               </div>
+              {formData.image && (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span className="truncate flex-1">{formData.image}</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleRemoveImage}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
             </div>
             {formData.image && (
               <div className="rounded-lg overflow-hidden border border-border">

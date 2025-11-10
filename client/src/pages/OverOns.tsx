@@ -1,33 +1,13 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Users, Target, Award, Heart } from "lucide-react";
+import { Users, Target, Award, Heart, Loader2 } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 export default function OverOns() {
-  const stats = [
-    { label: "Jaar ervaring", value: "15+" },
-    { label: "Projecten voltooid", value: "500+" },
-    { label: "Tevreden klanten", value: "98%" },
-    { label: "Medewerkers", value: "45+" },
-  ];
-
-  const values = [
-    {
-      icon: Target,
-      title: "Onze Missie",
-      description: "Het realiseren van hoogwaardige bouwprojecten die de verwachtingen van onze klanten overtreffen, met aandacht voor duurzaamheid en innovatie."
-    },
-    {
-      icon: Heart,
-      title: "Onze Visie",
-      description: "Toonaangevend zijn in de bouwsector door continue vernieuwing, vakmanschap en een persoonlijke benadering van elk project."
-    },
-    {
-      icon: Award,
-      title: "Onze Waarden",
-      description: "Kwaliteit, betrouwbaarheid, transparantie en duurzaamheid vormen de basis van alles wat wij doen."
-    },
-  ];
-
+  const { data: aboutData, isLoading } = trpc.aboutUs.get.useQuery();
+  const language = 'nl'; // Default to Dutch
+  
+  // Placeholder team data - will be replaced with dynamic data later
   const team = [
     {
       name: "Jan de Vries",
@@ -55,29 +35,87 @@ export default function OverOns() {
     },
   ];
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!aboutData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-muted-foreground">About Us content not found</p>
+      </div>
+    );
+  }
+
+  const title = false ? aboutData.titleEn : aboutData.title;
+  const subtitle = false ? aboutData.subtitleEn : aboutData.subtitle;
+  const description = false ? aboutData.descriptionEn : aboutData.description;
+  const mission = false ? aboutData.missionEn : aboutData.mission;
+  const vision = false ? aboutData.visionEn : aboutData.vision;
+  const values = false ? aboutData.valuesEn : aboutData.values;
+
+  const stats = [
+    { 
+      label: false ? "Years Experience" : "Jaar ervaring", 
+      value: `${aboutData.yearsExperience}+` 
+    },
+    { 
+      label: false ? "Projects Completed" : "Projecten voltooid", 
+      value: `${aboutData.projectsCompleted}+` 
+    },
+    { 
+      label: false ? "Happy Clients" : "Tevreden klanten", 
+      value: `${aboutData.happyClients}%` 
+    },
+    { 
+      label: false ? "Team Members" : "Medewerkers", 
+      value: `${aboutData.teamMembers}+` 
+    },
+  ];
+
+  const coreValues = [
+    {
+      icon: Target,
+      title: false ? "Our Mission" : "Onze Missie",
+      description: mission || ""
+    },
+    {
+      icon: Heart,
+      title: false ? "Our Vision" : "Onze Visie",
+      description: vision || ""
+    },
+    {
+      icon: Award,
+      title: false ? "Our Values" : "Onze Waarden",
+      description: values || ""
+    },
+  ];
+
   return (
     <div className="min-h-screen">
       <Header />
       
       <main className="pt-32 pb-24">
-        {/* Hero Section */}
+        {/* Hero Section - DYNAMIC */}
         <section className="container mb-24">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-4">
-              Over Ons
+              {false ? 'About Us' : 'Over Ons'}
             </p>
             <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              Bouwen aan de toekomst
+              {title}
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Sinds 2008 realiseren wij hoogwaardige bouwprojecten in heel Nederland. 
-              Met een team van ervaren professionals en een passie voor vakmanschap 
-              bouwen wij niet alleen gebouwen, maar ook langdurige relaties met onze klanten.
+              {subtitle}
             </p>
           </div>
         </section>
 
-        {/* Stats Section */}
+        {/* Stats Section - DYNAMIC */}
         <section className="bg-primary/5 py-16 mb-24">
           <div className="container">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -95,55 +133,48 @@ export default function OverOns() {
           </div>
         </section>
 
-        {/* Story Section */}
+        {/* Story Section - DYNAMIC */}
         <section className="container mb-24">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Ons verhaal
+                {false ? 'Our Story' : 'Ons verhaal'}
               </h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  BuildCraft werd opgericht in 2008 door Jan de Vries, een ervaren bouwprofessional 
-                  met een droom: hoogwaardige bouwprojecten realiseren met aandacht voor detail, 
-                  duurzaamheid en klanttevredenheid.
-                </p>
-                <p>
-                  Wat begon als een klein team van 5 mensen is uitgegroeid tot een gerenommeerd 
-                  bouwbedrijf met meer dan 45 medewerkers. We hebben honderden projecten succesvol 
-                  afgerond, van luxe villa's tot grote commerciële complexen.
-                </p>
-                <p>
-                  Onze kracht ligt in de combinatie van traditioneel vakmanschap en moderne 
-                  bouwtechnieken. We blijven investeren in innovatie en duurzaamheid, omdat wij 
-                  geloven dat dit de toekomst van bouwen is.
-                </p>
+              <div className="text-muted-foreground leading-relaxed whitespace-pre-line">
+                {description}
               </div>
             </div>
             <div className="relative h-[500px] rounded-2xl overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&h=1000&fit=crop"
-                alt="BuildCraft team"
-                className="w-full h-full object-cover"
-              />
+              {aboutData.image ? (
+                <img
+                  src={aboutData.image}
+                  alt={title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-muted flex items-center justify-center">
+                  <p className="text-muted-foreground">No image</p>
+                </div>
+              )}
             </div>
           </div>
         </section>
 
-        {/* Values Section */}
+        {/* Values Section - DYNAMIC */}
         <section className="container mb-24">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Onze kernwaarden
+              {false ? 'Our Core Values' : 'Onze kernwaarden'}
             </h2>
             <p className="text-lg text-muted-foreground">
-              Deze waarden vormen de basis van ons handelen en bepalen hoe wij 
-              met onze klanten, partners en medewerkers omgaan.
+              {false 
+                ? 'These values form the foundation of our actions and determine how we interact with our clients, partners and employees.'
+                : 'Deze waarden vormen de basis van ons handelen en bepalen hoe wij met onze klanten, partners en medewerkers omgaan.'}
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {values.map((value, index) => {
+            {coreValues.map((value, index) => {
               const Icon = value.icon;
               return (
                 <div
@@ -165,15 +196,16 @@ export default function OverOns() {
           </div>
         </section>
 
-        {/* Team Section */}
+        {/* Team Section - STATIC (will be made dynamic later) */}
         <section className="container mb-24">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Ons team
+              {false ? 'Our Team' : 'Ons team'}
             </h2>
             <p className="text-lg text-muted-foreground">
-              Maak kennis met de mensen achter BuildCraft. Een team van 
-              gepassioneerde professionals die elke dag het beste van zichzelf geven.
+              {false
+                ? 'Meet the people behind BuildCraft. A team of passionate professionals who give their best every day.'
+                : 'Maak kennis met de mensen achter BuildCraft. Een team van gepassioneerde professionals die elke dag het beste van zichzelf geven.'}
             </p>
           </div>
 
@@ -209,17 +241,18 @@ export default function OverOns() {
         <section className="container">
           <div className="bg-primary/5 rounded-3xl p-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Klaar om samen te bouwen?
+              {false ? 'Ready to build together?' : 'Klaar om samen te bouwen?'}
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Neem contact met ons op en ontdek hoe wij uw bouwproject tot een 
-              succes kunnen maken.
+              {false
+                ? 'Contact us and discover how we can make your construction project a success.'
+                : 'Neem contact met ons op en ontdek hoe wij uw bouwproject tot een succes kunnen maken.'}
             </p>
             <a
               href="/#contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-colors"
             >
-              Neem contact op
+              {false ? 'Get In Touch' : 'Neem contact op'}
             </a>
           </div>
         </section>
