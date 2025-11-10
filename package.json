@@ -14,6 +14,7 @@
     "db:seed": "tsx server/seed-admin.ts",
     "db:setup": "tsx server/setup-database.ts",
     "db:migrate": "tsx server/run-migrations.ts",
+    "db:create-team-table": "tsx create-team-members-table.ts",
     "fix-password": "tsx server/fix-admin-password.ts",
     "drop-tables": "tsx server/drop-all-tables.ts",
     "check-tables": "tsx server/check-tables.ts"

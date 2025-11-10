@@ -239,6 +239,33 @@ async function setupDatabase() {
       console.log('   ✅ contactMessages table created');
     }
 
+    // teamMembers table
+    if (!existingTables.includes('teamMembers')) {
+      await db.execute(sql`
+        CREATE TABLE IF NOT EXISTS "teamMembers" (
+          "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+          "name" varchar(255) NOT NULL,
+          "position" varchar(255) NOT NULL,
+          "positionEn" varchar(255),
+          "bio" text,
+          "bioEn" text,
+          "image" varchar(500) NOT NULL,
+          "email" varchar(320),
+          "phone" varchar(50),
+          "order" integer DEFAULT 0 NOT NULL,
+          "createdAt" timestamp DEFAULT now() NOT NULL,
+          "updatedAt" timestamp DEFAULT now() NOT NULL
+        );
+      `);
+      console.log('   ✅ teamMembers table created');
+
+      // Create index for faster ordering
+      await db.execute(sql`
+        CREATE INDEX IF NOT EXISTS "teamMembers_order_idx" ON "teamMembers"("order");
+      `);
+      console.log('   ✅ teamMembers index created');
+    }
+
     // Step 5: Create admin user
     console.log('\n📋 Step 5: Creating default admin user...');
     
