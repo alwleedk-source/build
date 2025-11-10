@@ -138,7 +138,8 @@ export async function runManualMigration() {
         'BuildCraft',
         'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden in Nederland.',
         'Your trusted partner for all construction and maintenance work in the Netherlands.',
-        E'Bouwstraat 123\n1234 AB Amsterdam',
+        'Bouwstraat 123
+1234 AB Amsterdam',
         '+31 6 1234 5678',
         'info@buildcraft.nl',
         'https://facebook.com',
