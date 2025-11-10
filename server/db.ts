@@ -444,8 +444,18 @@ export async function deleteContactMessage(id: number) {
 export async function getEmailSettings() {
   const db = await getDb();
   if (!db) return null;
-  const result = await db.select().from(emailSettings).limit(1);
-  return result[0] || null;
+  try {
+    const result = await db.select().from(emailSettings).limit(1);
+    return result[0] || null;
+  } catch (error) {
+    // Check if the error is due to the table not existing
+    if (error.message.includes('relation "emailSettings" does not exist')) {
+      console.warn('[Database] emailSettings table not found. Returning null.');
+      return null;
+    }
+    // Re-throw other errors
+    throw error;
+  }
 }
 
 export async function upsertEmailSettings(settings: Partial<InsertEmailSettings>) {
@@ -555,18 +565,21 @@ export async function updateAboutUs(id: number, data: Partial<InsertAboutUs>) {
 // Hero Section functions
 export async function getHeroSection() {
   const dbInstance = await getDb();
+  if (!dbInstance) return null;
   const result = await dbInstance.select().from(heroSection).limit(1);
   return result[0] || null;
 }
 
 export async function createHeroSection(data: InsertHeroSection) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   const result = await dbInstance.insert(heroSection).values(data).returning();
   return result[0];
 }
 
 export async function updateHeroSection(id: number, data: Partial<InsertHeroSection>) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   const result = await dbInstance
     .update(heroSection)
     .set({ ...data, updatedAt: new Date() })
@@ -578,18 +591,21 @@ export async function updateHeroSection(id: number, data: Partial<InsertHeroSect
 // Footer Settings functions
 export async function getFooterSettings() {
   const dbInstance = await getDb();
+  if (!dbInstance) return null;
   const result = await dbInstance.select().from(footerSettings).limit(1);
   return result[0] || null;
 }
 
 export async function createFooterSettings(data: InsertFooterSettings) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   const result = await dbInstance.insert(footerSettings).values(data).returning();
   return result[0];
 }
 
 export async function updateFooterSettings(id: number, data: Partial<InsertFooterSettings>) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   const result = await dbInstance
     .update(footerSettings)
     .set({ ...data, updatedAt: new Date() })
@@ -601,6 +617,7 @@ export async function updateFooterSettings(id: number, data: Partial<InsertFoote
 // Order update functions for drag & drop
 export async function updateProjectsOrder(items: { id: number; order: number }[]) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   for (const item of items) {
     await dbInstance
       .update(projects)
@@ -611,6 +628,7 @@ export async function updateProjectsOrder(items: { id: number; order: number }[]
 
 export async function updateServicesOrder(items: { id: number; order: number }[]) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   for (const item of items) {
     await dbInstance
       .update(services)
@@ -621,6 +639,7 @@ export async function updateServicesOrder(items: { id: number; order: number }[]
 
 export async function updatePartnersOrder(items: { id: number; order: number }[]) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   for (const item of items) {
     await dbInstance
       .update(partners)
@@ -632,16 +651,18 @@ export async function updatePartnersOrder(items: { id: number; order: number }[]
 // Get active partners
 export async function getActivePartners() {
   const dbInstance = await getDb();
+  if (!dbInstance) return [];
   return await dbInstance
     .select()
     .from(partners)
-    .where(eq(partners.isActive, true))
+    .where(eq(partners.isActive, 1))
     .orderBy(asc(partners.order));
 }
 
 // Team Members functions
 export async function getAllTeamMembers() {
   const dbInstance = await getDb();
+  if (!dbInstance) return [];
   return await dbInstance
     .select()
     .from(teamMembers)
@@ -650,6 +671,7 @@ export async function getAllTeamMembers() {
 
 export async function getTeamMemberById(id: number) {
   const dbInstance = await getDb();
+  if (!dbInstance) return null;
   const result = await dbInstance
     .select()
     .from(teamMembers)
@@ -660,12 +682,14 @@ export async function getTeamMemberById(id: number) {
 
 export async function createTeamMember(data: InsertTeamMember) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   const result = await dbInstance.insert(teamMembers).values(data).returning();
   return result[0];
 }
 
 export async function updateTeamMember(id: number, data: Partial<InsertTeamMember>) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   const result = await dbInstance
     .update(teamMembers)
     .set({ ...data, updatedAt: new Date() })
@@ -676,12 +700,14 @@ export async function updateTeamMember(id: number, data: Partial<InsertTeamMembe
 
 export async function deleteTeamMember(id: number) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   await dbInstance.delete(teamMembers).where(eq(teamMembers.id, id));
   return { success: true };
 }
 
 export async function updateTeamMembersOrder(items: { id: number; order: number }[]) {
   const dbInstance = await getDb();
+  if (!dbInstance) throw new Error("Database not available");
   for (const item of items) {
     await dbInstance
       .update(teamMembers)
