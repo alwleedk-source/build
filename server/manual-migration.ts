@@ -38,10 +38,13 @@ export async function runManualMigration() {
       console.log('⚠️ Step 1 error (continuing):', error.message);
     }
     
-    // 2. Create aboutUs table if it doesn't exist
+    // 2. Drop and recreate aboutUs table with correct columns
     try {
+      await db.execute(sql`DROP TABLE IF EXISTS "aboutUs" CASCADE;`);
+      console.log('Dropped old aboutUs table');
+      
       await db.execute(sql`
-        CREATE TABLE IF NOT EXISTS "aboutUs" (
+        CREATE TABLE "aboutUs" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "title" varchar(500) NOT NULL,
           "titleEn" varchar(500),
@@ -63,56 +66,51 @@ export async function runManualMigration() {
           "updatedAt" timestamp DEFAULT now() NOT NULL
         );
       `);
-      results.push('✅ aboutUs table created');
-      console.log('✅ Step 2: aboutUs table created');
+      results.push('✅ aboutUs table created with correct columns');
+      console.log('✅ Step 2: aboutUs table created with correct columns');
     } catch (error) {
       results.push(`⚠️ aboutUs table: ${error.message}`);
       console.log('⚠️ Step 2 error (continuing):', error.message);
     }
     
-    // 3. Insert default data for aboutUs if table is empty
+    // 3. Insert default data for aboutUs
     try {
-      const checkResult = await db.execute(sql`SELECT COUNT(*) as count FROM "aboutUs"`);
-      const count = checkResult.rows[0]?.count || 0;
-      
-      if (count === 0 || count === '0') {
-        await db.execute(sql`
-          INSERT INTO "aboutUs" (
-            "title", "titleEn", "subtitle", "subtitleEn",
-            "description", "descriptionEn", "image",
-            "mission", "missionEn", "vision", "visionEn",
-            "values", "valuesEn"
-          ) VALUES (
-            'Over Ons',
-            'About Us',
-            'Uw betrouwbare bouwpartner',
-            'Your trusted construction partner',
-            'BuildCraft is een toonaangevend bouwbedrijf met meer dan 15 jaar ervaring in de bouwsector.',
-            'BuildCraft is a leading construction company with over 15 years of experience.',
-            'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2000&q=80',
-            'Onze missie is om hoogwaardige bouwdiensten te leveren.',
-            'Our mission is to deliver high-quality construction services.',
-            'Wij streven ernaar de meest vertrouwde bouwpartner te worden.',
-            'We strive to become the most trusted construction partner.',
-            'Kwaliteit, Integriteit, Innovatie, Klanttevredenheid',
-            'Quality, Integrity, Innovation, Customer Satisfaction'
-          );
-        `);
-        results.push('✅ aboutUs default data inserted');
-        console.log('✅ Step 3: aboutUs default data inserted');
-      } else {
-        results.push('ℹ️ aboutUs already has data');
-        console.log('ℹ️ Step 3: aboutUs already has data');
-      }
+      await db.execute(sql`
+        INSERT INTO "aboutUs" (
+          "title", "titleEn", "subtitle", "subtitleEn",
+          "description", "descriptionEn", "image",
+          "mission", "missionEn", "vision", "visionEn",
+          "values", "valuesEn"
+        ) VALUES (
+          'Over Ons',
+          'About Us',
+          'Uw betrouwbare bouwpartner',
+          'Your trusted construction partner',
+          'BuildCraft is een toonaangevend bouwbedrijf met meer dan 15 jaar ervaring in de bouwsector.',
+          'BuildCraft is a leading construction company with over 15 years of experience.',
+          'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=2000&q=80',
+          'Onze missie is om hoogwaardige bouwdiensten te leveren.',
+          'Our mission is to deliver high-quality construction services.',
+          'Wij streven ernaar de meest vertrouwde bouwpartner te worden.',
+          'We strive to become the most trusted construction partner.',
+          'Kwaliteit, Integriteit, Innovatie, Klanttevredenheid',
+          'Quality, Integrity, Innovation, Customer Satisfaction'
+        );
+      `);
+      results.push('✅ aboutUs default data inserted');
+      console.log('✅ Step 3: aboutUs default data inserted');
     } catch (error) {
       results.push(`⚠️ aboutUs data: ${error.message}`);
       console.log('⚠️ Step 3 error (continuing):', error.message);
     }
     
-    // 4. Create footerSettings table if it doesn't exist
+    // 4. Drop and recreate footerSettings table
     try {
+      await db.execute(sql`DROP TABLE IF EXISTS "footerSettings" CASCADE;`);
+      console.log('Dropped old footerSettings table');
+      
       await db.execute(sql`
-        CREATE TABLE IF NOT EXISTS "footerSettings" (
+        CREATE TABLE "footerSettings" (
           "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
           "companyName" varchar(255) NOT NULL,
           "companyDescription" text,
@@ -137,38 +135,30 @@ export async function runManualMigration() {
       console.log('⚠️ Step 4 error (continuing):', error.message);
     }
     
-    // 5. Insert default data for footerSettings if table is empty
+    // 5. Insert default data for footerSettings
     try {
-      const checkResult = await db.execute(sql`SELECT COUNT(*) as count FROM "footerSettings"`);
-      const count = checkResult.rows[0]?.count || 0;
-      
-      if (count === 0 || count === '0') {
-        await db.execute(sql`
-          INSERT INTO "footerSettings" (
-            "companyName", "companyDescription", "companyDescriptionEn",
-            "address", "phone", "email",
-            "facebookUrl", "linkedinUrl", "instagramUrl",
-            "copyrightText", "copyrightTextEn"
-          ) VALUES (
-            'BuildCraft',
-            'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden.',
-            'Your trusted partner for all construction and maintenance work.',
-            'Bouwstraat 123, 1234 AB Amsterdam',
-            '+31 6 1234 5678',
-            'info@buildcraft.nl',
-            'https://facebook.com',
-            'https://linkedin.com',
-            'https://instagram.com',
-            '© 2024 BuildCraft. Alle rechten voorbehouden.',
-            '© 2024 BuildCraft. All rights reserved.'
-          );
-        `);
-        results.push('✅ footerSettings default data inserted');
-        console.log('✅ Step 5: footerSettings default data inserted');
-      } else {
-        results.push('ℹ️ footerSettings already has data');
-        console.log('ℹ️ Step 5: footerSettings already has data');
-      }
+      await db.execute(sql`
+        INSERT INTO "footerSettings" (
+          "companyName", "companyDescription", "companyDescriptionEn",
+          "address", "phone", "email",
+          "facebookUrl", "linkedinUrl", "instagramUrl",
+          "copyrightText", "copyrightTextEn"
+        ) VALUES (
+          'BuildCraft',
+          'Uw betrouwbare partner voor alle bouw- en onderhoudswerkzaamheden.',
+          'Your trusted partner for all construction and maintenance work.',
+          'Bouwstraat 123, 1234 AB Amsterdam',
+          '+31 6 1234 5678',
+          'info@buildcraft.nl',
+          'https://facebook.com',
+          'https://linkedin.com',
+          'https://instagram.com',
+          '© 2024 BuildCraft. Alle rechten voorbehouden.',
+          '© 2024 BuildCraft. All rights reserved.'
+        );
+      `);
+      results.push('✅ footerSettings default data inserted');
+      console.log('✅ Step 5: footerSettings default data inserted');
     } catch (error) {
       results.push(`⚠️ footerSettings data: ${error.message}`);
       console.log('⚠️ Step 5 error (continuing):', error.message);
@@ -177,7 +167,7 @@ export async function runManualMigration() {
     console.log('✅ Migration process completed!');
     return { 
       success: true, 
-      message: 'Migration process completed',
+      message: 'Migration process completed successfully!',
       results: results
     };
     
