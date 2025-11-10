@@ -164,20 +164,50 @@ export async function runManualMigration() {
       console.log('⚠️ Step 5 error (continuing):', error.message);
     }
     
-    // 6. Add bilingual fields to teamMembers table
+    // 6. Create or update teamMembers table
     try {
+      // First, try to create the table if it doesn't exist
       await db.execute(sql`
-        ALTER TABLE "teamMembers"
-        ADD COLUMN IF NOT EXISTS "positionEn" varchar(255);
+        CREATE TABLE IF NOT EXISTS "teamMembers" (
+          "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+          "name" varchar(255) NOT NULL,
+          "position" varchar(255) NOT NULL,
+          "positionEn" varchar(255),
+          "bio" text,
+          "bioEn" text,
+          "image" varchar(500) NOT NULL,
+          "email" varchar(320),
+          "phone" varchar(50),
+          "order" integer DEFAULT 0 NOT NULL,
+          "createdAt" timestamp DEFAULT now() NOT NULL,
+          "updatedAt" timestamp DEFAULT now() NOT NULL
+        );
       `);
+      
+      // Then add columns if they don't exist (for existing tables)
       await db.execute(sql`
-        ALTER TABLE "teamMembers"
-        ADD COLUMN IF NOT EXISTS "bioEn" text;
+        DO $$
+        BEGIN
+          IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'teamMembers' AND column_name = 'positionEn'
+          ) THEN
+            ALTER TABLE "teamMembers" ADD COLUMN "positionEn" varchar(255);
+          END IF;
+          
+          IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'teamMembers' AND column_name = 'bioEn'
+          ) THEN
+            ALTER TABLE "teamMembers" ADD COLUMN "bioEn" text;
+          END IF;
+        END$$;
       `);
-      results.push('✅ teamMembers bilingual fields added');
-      console.log('✅ Step 6: teamMembers bilingual fields added');
+      
+      results.push('✅ teamMembers table created/updated with bilingual fields');
+      console.log('✅ Step 6: teamMembers table created/updated');
     } catch (error) {
-      results.push(`⚠️ teamMembers fields: ${error.message}`);
+      results.push(`⚠️ teamMembers: ${error.message}`);
       console.log('⚠️ Step 6 error (continuing):', error.message);
     }
     
