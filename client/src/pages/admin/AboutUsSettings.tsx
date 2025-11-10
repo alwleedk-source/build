@@ -22,6 +22,7 @@ function AboutUsSettingsContent() {
   const utils = trpc.useUtils();
   
   const { data: aboutData, isLoading } = trpc.aboutUs.get.useQuery();
+  const [existingId, setExistingId] = useState<number | null>(null);
   const updateMutation = trpc.aboutUs.update.useMutation({
     onSuccess: () => {
       toast.success('About Us settings have been updated successfully');
@@ -41,9 +42,9 @@ function AboutUsSettingsContent() {
     descriptionEn: '',
     image: '',
     yearsExperience: 15,
-    teamSize: 50,
     projectsCompleted: 500,
-    clientSatisfaction: 98,
+    happyClients: 98,
+    teamMembers: 50,
     mission: '',
     missionEn: '',
     vision: '',
@@ -63,9 +64,9 @@ function AboutUsSettingsContent() {
         descriptionEn: aboutData.descriptionEn || '',
         image: aboutData.image || '',
         yearsExperience: aboutData.yearsExperience || 15,
-        teamSize: aboutData.teamSize || 50,
         projectsCompleted: aboutData.projectsCompleted || 500,
-        clientSatisfaction: aboutData.clientSatisfaction || 98,
+        happyClients: aboutData.happyClients || 98,
+        teamMembers: aboutData.teamMembers || 50,
         mission: aboutData.mission || '',
         missionEn: aboutData.missionEn || '',
         vision: aboutData.vision || '',
@@ -73,12 +74,17 @@ function AboutUsSettingsContent() {
         values: aboutData.values || '',
         valuesEn: aboutData.valuesEn || '',
       });
+      setExistingId(aboutData.id);
     }
   }, [aboutData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateMutation.mutate(formData);
+    if (existingId) {
+      updateMutation.mutate({ id: existingId, ...formData });
+    } else {
+      toast.error('No existing data found to update');
+    }
   };
 
   const handleChange = (field: string, value: string | number) => {
@@ -215,12 +221,12 @@ function AboutUsSettingsContent() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="teamSize">Team Size</Label>
+              <Label htmlFor="teamMembers">Team Members</Label>
               <Input
-                id="teamSize"
+                id="teamMembers"
                 type="number"
-                value={formData.teamSize}
-                onChange={(e) => handleChange('teamSize', parseInt(e.target.value))}
+                value={formData.teamMembers}
+                onChange={(e) => handleChange('teamMembers', parseInt(e.target.value))}
                 min="0"
               />
             </div>
@@ -235,14 +241,13 @@ function AboutUsSettingsContent() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="clientSatisfaction">Client Satisfaction (%)</Label>
+              <Label htmlFor="happyClients">Happy Clients</Label>
               <Input
-                id="clientSatisfaction"
+                id="happyClients"
                 type="number"
-                value={formData.clientSatisfaction}
-                onChange={(e) => handleChange('clientSatisfaction', parseInt(e.target.value))}
+                value={formData.happyClients}
+                onChange={(e) => handleChange('happyClients', parseInt(e.target.value))}
                 min="0"
-                max="100"
               />
             </div>
           </div>
