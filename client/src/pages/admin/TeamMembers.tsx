@@ -272,7 +272,7 @@ export default function TeamMembers() {
                 </label>
                 <ImageUploaderR2
                   currentImage={formData.image}
-                  onUploadSuccess={handleImageUpload}
+                  onImageUploaded={handleImageUpload}
                   folder="team"
                 />
               </div>

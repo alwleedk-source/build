@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 interface ImageUploaderProps {
   currentImage?: string;
   onImageUploaded: (url: string) => void;
-  folder: 'projects' | 'services' | 'blog' | 'partners' | 'testimonials' | 'general';
+  folder: 'projects' | 'services' | 'blog' | 'partners' | 'testimonials' | 'team' | 'general';
   label?: string;
   accept?: string;
 }
