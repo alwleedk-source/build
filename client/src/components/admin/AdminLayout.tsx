@@ -6,6 +6,7 @@ import {
   Wrench,
   FileText,
   Users,
+  UserCircle,
   MessageSquare,
   Settings,
   Image,
@@ -78,16 +79,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       path: "/admin/testimonials",
     },
     {
+      title: "Team",
+      icon: UserCircle,
+      path: "/admin/team",
+    },
+    {
       title: "Berichten",
       icon: MessageSquare,
       path: "/admin/messages",
     },
-    // Temporarily disabled - pages not created yet
-    // {
-    //   title: "Team",
-    //   icon: Users,
-    //   path: "/admin/team",
-    // },
     // {
     //   title: "Media",
     //   icon: Image,

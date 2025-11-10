@@ -8,6 +8,7 @@ import {
   blogPosts, InsertBlogPost,
   partners, InsertPartner,
   testimonials, InsertTestimonial,
+  teamMembers, InsertTeamMember,
   siteSettings,
   contactMessages, InsertContactMessage,
   emailSettings, InsertEmailSettings,
@@ -582,4 +583,55 @@ export async function getActivePartners() {
     .from(partners)
     .where(eq(partners.isActive, true))
     .orderBy(asc(partners.order));
+}
+
+// Team Members functions
+export async function getAllTeamMembers() {
+  const dbInstance = await getDb();
+  return await dbInstance
+    .select()
+    .from(teamMembers)
+    .orderBy(asc(teamMembers.order));
+}
+
+export async function getTeamMemberById(id: number) {
+  const dbInstance = await getDb();
+  const result = await dbInstance
+    .select()
+    .from(teamMembers)
+    .where(eq(teamMembers.id, id))
+    .limit(1);
+  return result[0] || null;
+}
+
+export async function createTeamMember(data: InsertTeamMember) {
+  const dbInstance = await getDb();
+  const result = await dbInstance.insert(teamMembers).values(data).returning();
+  return result[0];
+}
+
+export async function updateTeamMember(id: number, data: Partial<InsertTeamMember>) {
+  const dbInstance = await getDb();
+  const result = await dbInstance
+    .update(teamMembers)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(teamMembers.id, id))
+    .returning();
+  return result[0];
+}
+
+export async function deleteTeamMember(id: number) {
+  const dbInstance = await getDb();
+  await dbInstance.delete(teamMembers).where(eq(teamMembers.id, id));
+  return { success: true };
+}
+
+export async function updateTeamMembersOrder(items: { id: number; order: number }[]) {
+  const dbInstance = await getDb();
+  for (const item of items) {
+    await dbInstance
+      .update(teamMembers)
+      .set({ order: item.order })
+      .where(eq(teamMembers.id, item.id));
+  }
 }

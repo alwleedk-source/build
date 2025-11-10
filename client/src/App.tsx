@@ -23,6 +23,7 @@ import BlogPosts from "@/pages/admin/BlogPosts";
 import BlogPostForm from "@/pages/admin/BlogPostForm";
 import Partners from "@/pages/admin/Partners";
 import TestimonialsAdmin from "@/pages/admin/TestimonialsAdmin";
+import TeamMembers from "@/pages/admin/TeamMembers";
 import ContactMessages from "@/pages/admin/ContactMessages";
 import EmailSettings from "@/pages/admin/EmailSettings";
 import HomeSettings from "@/pages/admin/HomeSettings";
@@ -76,6 +77,9 @@ function Router() {
       </Route>
       <Route path="/admin/testimonials">
         {() => <AuthGuard><TestimonialsAdmin /></AuthGuard>}
+      </Route>
+      <Route path="/admin/team">
+        {() => <AuthGuard><TeamMembers /></AuthGuard>}
       </Route>
       <Route path="/admin/messages">
         {() => <AuthGuard><ContactMessages /></AuthGuard>}

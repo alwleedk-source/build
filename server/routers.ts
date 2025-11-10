@@ -989,6 +989,82 @@ export const appRouter = router({
         return await db.updateFooterSettings(id, data);
       }),
   }),
+
+  // Team Members router
+  teamMembers: router({
+    // Get all team members
+    getAll: publicProcedure.query(async () => {
+      const db = await import('./db');
+      return await db.getAllTeamMembers();
+    }),
+
+    // Get team member by ID
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        const db = await import('./db');
+        return await db.getTeamMemberById(input.id);
+      }),
+
+    // Create team member
+    create: publicProcedure
+      .input(z.object({
+        name: z.string(),
+        position: z.string(),
+        positionEn: z.string().optional(),
+        bio: z.string().optional(),
+        bioEn: z.string().optional(),
+        image: z.string(),
+        email: z.string().optional(),
+        phone: z.string().optional(),
+        order: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        return await db.createTeamMember(input);
+      }),
+
+    // Update team member
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        position: z.string().optional(),
+        positionEn: z.string().optional(),
+        bio: z.string().optional(),
+        bioEn: z.string().optional(),
+        image: z.string().optional(),
+        email: z.string().optional(),
+        phone: z.string().optional(),
+        order: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        const { id, ...data } = input;
+        return await db.updateTeamMember(id, data);
+      }),
+
+    // Delete team member
+    delete: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        return await db.deleteTeamMember(input.id);
+      }),
+
+    // Update team members order
+    updateOrder: publicProcedure
+      .input(z.object({
+        items: z.array(z.object({
+          id: z.number(),
+          order: z.number(),
+        })),
+      }))
+      .mutation(async ({ input }) => {
+        const db = await import('./db');
+        return await db.updateTeamMembersOrder(input.items);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

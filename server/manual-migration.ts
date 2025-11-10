@@ -164,6 +164,20 @@ export async function runManualMigration() {
       console.log('⚠️ Step 5 error (continuing):', error.message);
     }
     
+    // 6. Add bilingual fields to teamMembers table
+    try {
+      await db.execute(sql`
+        ALTER TABLE "teamMembers"
+        ADD COLUMN IF NOT EXISTS "positionEn" varchar(255),
+        ADD COLUMN IF NOT EXISTS "bioEn" text;
+      `);
+      results.push('✅ teamMembers bilingual fields added');
+      console.log('✅ Step 6: teamMembers bilingual fields added');
+    } catch (error) {
+      results.push(`⚠️ teamMembers fields: ${error.message}`);
+      console.log('⚠️ Step 6 error (continuing):', error.message);
+    }
+    
     console.log('✅ Migration process completed!');
     return { 
       success: true, 
